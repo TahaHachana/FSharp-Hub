@@ -5,6 +5,7 @@ About
 -----
 
 A Web site about F# powered by [WebSharper](http://www.websharper.com/ "WebSharper").
+Prototype: http://fsharpwebsite.apphb.com/
 
 Contribution
 ------------

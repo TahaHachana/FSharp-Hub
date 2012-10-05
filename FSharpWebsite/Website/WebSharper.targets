@@ -1,0 +1,11 @@
+﻿
+<Project xmlns='http://schemas.microsoft.com/developer/msbuild/2003'>
+    <PropertyGroup>
+        <WebSharperVersion>2.4.85.235</WebSharperVersion>
+        <PackagesFolder Condition=" !Exists('$(PackagesFolder)') ">$(MSBuildProjectDirectory)\..\packages</PackagesFolder>
+        <PackagesFolder Condition=" !Exists('$(PackagesFolder)') ">$(MSBuildProjectDirectory)\..\..\packages</PackagesFolder>
+        <PackagesFolder Condition=" !Exists('$(PackagesFolder)') ">$(MSBuildProjectDirectory)\..\..\..\packages</PackagesFolder>
+        <WebSharperHome>$(PackagesFolder)\WebSharper.$(WebSharperVersion)</WebSharperHome>
+        <WEBSHARPER_HOME Condition=" Exists('$(WebSharperHome)')">$(WebSharperHome)</WEBSHARPER_HOME>
+    </PropertyGroup>
+</Project>

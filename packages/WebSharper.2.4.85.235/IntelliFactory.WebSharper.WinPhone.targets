@@ -1,0 +1,45 @@
+﻿<!--
+***********************************************************************************************
+IntelliFactory.WebSharper.WinPhone.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+This file defines MSBuild targets used by IntelliFactory WebSharper(TM) Platform.
+
+This file is confidential and proprietary.
+
+Copyright (c) IntelliFactory, 2004-2012.
+
+All rights reserved.  Reproduction or use in whole or in part is
+prohibited without the written consent of the copyright holder.
+
+***********************************************************************************************
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="IntelliFactory.WebSharper.CSharp.targets" />
+
+  <PropertyGroup>
+    <BuildDependsOn>CreateWebSharperMobilePackage;$(BuildDependsOn)</BuildDependsOn>
+    <MobilePackage>$(MSBuildProjectDirectory)\bin\Mobile.pkg</MobilePackage>
+    <MobilePackageSources Condition="'$(MobilePackageSources)' == ''">$(MSBuildProjectDirectory)\..\Website\bin\html</MobilePackageSources>
+  </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(WEBSHARPER_HOME)\IntelliFactory.WebSharper.WinPhone.Tasks.dll"
+             TaskName="IntelliFactory.WebSharper.WinPhone.Tasks.PackageForWinPhone" />
+
+  <Target Name="CreateWebSharperMobilePackage">
+    <PackageForWinPhone SourceDirectory="$(MobilePackageSources)"
+                        PackageFile="$(MobilePackage)" />
+  </Target>
+
+  <ItemGroup>
+    <EmbeddedResource Include="$(MobilePackage)" />
+    <Reference Include="IntelliFactory.WebSharper.WinPhone.Runtime">
+      <HintPath>$(WEBSHARPER_HOME)\IntelliFactory.WebSharper.WinPhone.Runtime.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

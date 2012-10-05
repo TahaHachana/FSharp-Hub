@@ -1,0 +1,60 @@
+<!--
+***********************************************************************************************
+IntelliFactory.WebSharper.Android.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+This file defines MSBuild targets used by IntelliFactory WebSharper(TM) Platform.
+
+This file is confidential and proprietary.
+
+Copyright (c) IntelliFactory, 2004-2012.
+
+All rights reserved.  Reproduction or use in whole or in part is
+prohibited without the written consent of the copyright holder.
+
+***********************************************************************************************
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <WebSharperSiteletsOfflineDirectory>$(MSBuildProjectDirectory)\android\assets</WebSharperSiteletsOfflineDirectory>
+  </PropertyGroup>
+  <Import Project="IntelliFactory.WebSharper.Sitelets.targets" />
+  <PropertyGroup>
+    <BuildDependsOn>DeployDependencyJars;$(BuildDependsOn);BuildApkWithAnt;WarnIfNoAnt</BuildDependsOn>
+    <CleanDependsOn>$(CleanDependsOn);CleanWithAnt</CleanDependsOn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IntelliFactory.WebSharper.Android" />
+    <Reference Include="IntelliFactory.WebSharper.Mobile" />
+  </ItemGroup>
+  <Target Name="DeployDependencyJars">
+    <ItemGroup>
+      <DependencyJars Include="$(WEBSHARPER_HOME)\*.jar" />
+    </ItemGroup>
+    <PropertyGroup>
+      <JarLibDir>$(MSBuildProjectDirectory)\android\libs</JarLibDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(JarLibDir)" />
+    <Copy SourceFiles="@(DependencyJars)" DestinationFolder="$(JarLibDir)" SkipUnchangedFiles="true"/>
+  </Target>
+  <Target Name="BuildApkWithAnt" Condition=" '$(ANT_HOME)' != '' ">
+    <PropertyGroup>
+      <AntConfiguration>debug</AntConfiguration>
+      <AntConfiguration Condition="'$(Configuration)' == 'Release'">release</AntConfiguration>
+    </PropertyGroup>
+    <Exec Command='"$(ANT_HOME)\bin\ant" $(AntConfiguration)'
+          WorkingDirectory='$(MSBuildProjectDirectory)\android'
+          ContinueOnError='false' />
+  </Target>
+  <Target Name="WarnIfNoAnt" Condition=" '$(ANT_HOME)' == '' ">
+    <Warning Text="Consider setting ANT_HOME variable to automatically build Android APK packages." />
+  </Target>
+  <Target Name="CleanWithAnt" Condition=" '$(ANT_HOME)' != '' ">
+    <Exec Command='"$(ANT_HOME)\bin\ant" clean'
+          WorkingDirectory='$(MSBuildProjectDirectory)\android'
+          ContinueOnError='false' />
+  </Target>
+</Project>

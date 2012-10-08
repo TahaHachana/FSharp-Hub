@@ -55,6 +55,7 @@ module SharedContent =
                     LI [Class "active"] -< [A [ HRef "#"] -< [Text "Home"]]
                     LI [A [ HRef "#"] -< [Text "News"]]
                     LI [A [ HRef "#"] -< [Text "Books"]]
+                    LI [A [ HRef "#"] -< [Text "Videos"]]
                     LI [A [ HRef "#"] -< [Text "Resources"]]
                     LI [A [ HRef "#"] -< [Text "Community"]]
                     LI [A [ HRef "#"] -< [Text "Links"]]
@@ -63,9 +64,14 @@ module SharedContent =
             ]
         ]
 
+    let forkme =
+        A [HRef "https://github.com/TahaHachana/FSharpWebsite"; Target "_blank"] -< [
+            Img [Src "https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"; Alt "Fork me on GitHub"; Id "forkme"]
+        ]
+       
 module HomeContent =
     
-    let title = ""
+    let title = "FSharp Programming Language"
 
     let metaDescription = ""
 
@@ -83,13 +89,56 @@ module HomeContent =
             ]
         ]
 
+    let row1 =
+        Div [Class "row-fluid"] -< [
+            Div [Class "span4"] -< [
+                H2 [Class "centered"] -< [Text "Succinct"]
+                P [Text "FSharp's syntax is clean yet powerful and readable"]
+            ]
+            Div [Class "span4"] -< [
+                H2 [Class "centered"] -< [Text "Multi-Paradigm"]
+                P [Text "F# is a functional first language with support for object oriented and imperative programming"]
+            ]
+            Div [Class "span4"] -< [
+                H2 [Class "centered"] -< [Text "F# Library"]
+                P [Text "FSharp is a modern language that comes with it's own library"]
+            ]
+        ]
+
+    let row2 =
+        Div [Class "row-fluid"] -< [
+            Div [Class "span4 offset4 centered"] -< [
+                Button [Class "btn btn-primary btn-large pull-left"] -< [Text "Learn More"]
+                Button [Class "btn btn-success btn-large pull-right"] -< [Text "Download F#"]
+            ]
+        ]
+
+    let row3 =
+        Div [Class "row-fluid"] -< [
+            Div [Class "span6"] -< [
+                H3 [Class "centered"] -< [Text "Tweets"]
+                A [Class "twitter-timeline"; Attributes.HTML5.Data "widget-id" "254862016492212224"]
+                Script [Src "Scripts/TweetsWidget.js"]
+            ]
+            Div [Class "span6"] -< [
+                H3 [Class "centered"] -< [Text "Questions"]
+            ]
+
+        ]
+
 module Site =
 
     let HomePage =
         Skin.WithTemplate HomeContent.title HomeContent.metaDescription <| fun ctx ->
             [
                 SharedContent.navigation
+                SharedContent.forkme
                 HomeContent.heroUnit
+                Div [Class "container"] -< [
+                    HomeContent.row1
+                    HomeContent.row2
+                    HomeContent.row3
+                ]
             ]
 
     let Custom404Page =
@@ -104,12 +153,13 @@ module Site =
     let Main =
         Sitelet.Sum [
             Sitelet.Content "/" Home HomePage
+            Sitelet.Content "/Custom404" Custom404 Custom404Page
         ]
 
 type Website() =
     interface IWebsite<Action> with
         member this.Sitelet = Site.Main
-        member this.Actions = [Home]
+        member this.Actions = [Home; Custom404]
 
 [<assembly: WebsiteAttribute(typeof<Website>)>]
 do ()

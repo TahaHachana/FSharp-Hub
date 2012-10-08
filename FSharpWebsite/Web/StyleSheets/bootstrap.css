@@ -224,7 +224,7 @@ a:hover {
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 940px;
+  width: 1200px;
 }
 
 .span12 {
@@ -5726,7 +5726,7 @@ a.badge:hover {
 }
 
 .hero-unit {
-  padding: 60px;
+  padding: 50px;
   margin-bottom: 30px;
 /*  background-color: #eeeeee;*/
   -webkit-border-radius: 6px;

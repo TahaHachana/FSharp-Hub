@@ -49,7 +49,7 @@ module Helpers =
 module SharedContent =
 
     let navigation =
-        Div [Class "navbar navbar-fixed-top"] -< [
+        Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
             Div [Class "navbar-inner"] -< [
                 UL [Class "nav"] -< [
                     LI [Class "active"] -< [A [ HRef "#"] -< [Text "Home"]]
@@ -116,14 +116,12 @@ module HomeContent =
     let row3 =
         Div [Class "row-fluid"] -< [
             Div [Class "span6"] -< [
-                H3 [Class "centered"] -< [Text "Tweets"]
-                A [Class "twitter-timeline"; Attributes.HTML5.Data "widget-id" "254862016492212224"]
-                Script [Src "Scripts/TweetsWidget.js"]
+                H3 [Class "centered"] -< [Text "#fsharp Tweets"]
+                Div [Id "fsharpTweets"; Attributes.HTML5.Data "tweets-count" "0"; Attributes.HTML5.Data "tweet-id" ""] -< [new FSharpTweets.FsharpTweetsViewer ()]
             ]
             Div [Class "span6"] -< [
                 H3 [Class "centered"] -< [Text "Questions"]
             ]
-
         ]
 
 module Site =

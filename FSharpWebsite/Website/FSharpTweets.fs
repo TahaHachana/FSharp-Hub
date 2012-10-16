@@ -55,7 +55,7 @@ module FSharpTweets =
                 let tweets = queryFsharpTweets ()
                 let tweetsData = tweets |> Array.map (fun x ->
                     let text' = linkifyText x.Text
-                    x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate)
+                    x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate.ToString())
                 return tweetsData
             }
 
@@ -65,7 +65,7 @@ module FSharpTweets =
                 let tweets = queryFsharpTweets' skip
                 let tweetsData = tweets |> Array.map (fun x ->
                     let text' = linkifyText x.Text
-                    x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate)
+                    x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate.ToString())
                 return tweetsData
             }
 
@@ -78,7 +78,7 @@ module FSharpTweets =
                     | Some tweets ->
                         let tweetsData = tweets |> Array.map (fun x ->
                             let text' = linkifyText x.Text
-                            x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate)
+                            x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate.ToString())
                         return Some tweetsData
             }
 
@@ -101,9 +101,9 @@ module FSharpTweets =
                 tweetP
                 Div [Attr.Class "pull-right"] -< [
                     UL [Attr.Class "tweetActions"] -< [
-                        LI [Attr.Class "tweetAction"] -< [A [HRef replyLink] -< [Text "Reply"]]
-                        LI [Attr.Class "tweetAction"] -< [A [HRef retweetLink] -< [Text "Retweet"]]
-                        LI [Attr.Class "tweetAction"] -< [A [HRef favoriteLink] -< [Text "Favorite"]]
+                        LI [Attr.Class "tweetAction"] -< [A [HRef replyLink; Attr.Target "_blank"] -< [Text "Reply"]]
+                        LI [Attr.Class "tweetAction"] -< [A [HRef retweetLink; Attr.Target "_blank"] -< [Text "Retweet"]]
+                        LI [Attr.Class "tweetAction"] -< [A [HRef favoriteLink; Attr.Target "_blank"] -< [Text "Favorite"]]
                     ]
                 ]
             ]
@@ -127,17 +127,6 @@ module FSharpTweets =
                 JQuery.Of(".tweetActions", x).Css("visibility", "hidden").Ignore).Ignore
 
         [<JavaScriptAttribute>]
-        let displayInfoAlert msg =
-            let alertDiv =
-                Div [Attr.Class "alert alert-info"; Id "alertDiv"] -< [
-                    Button [Attr.Type "button"; Attr.Class "close"; HTML5.Attr.Data "dismiss" "alert"] -< [Text "×"]
-                    |>! OnClick (fun _ _ -> JQuery.Of("#alertDiv").Remove().Ignore)
-                    P [Attr.Class "centered"] -< [Text msg]
-                ]
-            JQuery.Of("#navigation").Append(alertDiv.Dom).Ignore
-            JQuery.Of("#alertDiv").Show().Ignore
-        
-        [<JavaScriptAttribute>]
         let checkNewTweets () =
             async {
                 let jquery = JQuery.Of("#fsharpTweets")
@@ -146,7 +135,6 @@ module FSharpTweets =
                 match tweetsOption with
                     | None -> ()
                     | Some tweets ->
-                        let count = jquery.Attr("data-tweets-count") |> int
                         let latestTweetId =
                             tweets.[0]
                             |> (fun (_, id, _, _, _, _) -> id)
@@ -156,23 +144,23 @@ module FSharpTweets =
                         |> Array.map (fun (screenName, tweetId, profileImage, displayName, text, creationDate) ->
                             makeTweetLi screenName tweetId profileImage displayName text creationDate)
                         |> Array.iter (fun x -> JQuery.Of("#tweetsList").Prepend(x.Dom).Ignore)
-                        let count' = Array.length tweets
-                        incrementTweetsCount count'
+                        let count = Array.length tweets
+                        incrementTweetsCount count
                         setTweetId latestTweetId
                         toggleActionsVisibility ()
                         let msg =
-                            match count' with
+                            match count with
                                 | 1 -> "1 new tweet"
-                                | _ -> string count' + " new tweets"
-                        displayInfoAlert msg
+                                | _ -> string count + " new tweets"
+                        Utilities.displayInfoAlert msg
             } |> Async.Start
 
         [<JavaScriptAttribute>]
         let tweetsDiv () =
             let tweetsList = UL [Id "tweetsList"]
 
-            JavaScript.SetInterval checkNewTweets 60000 |> ignore
-            
+            JavaScript.SetInterval checkNewTweets 300000 |> ignore
+
             let loadMoreBtn =
                 Button [Text "Load More"; Attr.Class "btn loadMore"]
                 |>! OnClick (fun x _ ->

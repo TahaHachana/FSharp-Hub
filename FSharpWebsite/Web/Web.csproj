@@ -43,7 +43,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="*.aspx" />
     <Content Include="robots.txt" />
-    <Content Include="Scripts\*.js" />
+    <Content Include="Scripts\IntelliFactory.WebSharper.Collections.dll.js" />
+    <Content Include="Scripts\IntelliFactory.WebSharper.Collections.dll.min.js" />
+    <Content Include="Scripts\IntelliFactory.WebSharper.Control.dll.js" />
+    <Content Include="Scripts\IntelliFactory.WebSharper.Control.dll.min.js" />
+    <Content Include="Scripts\IntelliFactory.WebSharper.dll.js" />
+    <Content Include="Scripts\IntelliFactory.WebSharper.dll.min.js" />
+    <Content Include="Scripts\IntelliFactory.WebSharper.Html.dll.js" />
+    <Content Include="Scripts\IntelliFactory.WebSharper.Html.dll.min.js" />
+    <Content Include="Scripts\TweetsWidget.js" />
+    <Content Include="Scripts\Website.dll.js" />
+    <Content Include="Scripts\Website.dll.min.js" />
     <Content Include="Content\**\*.*" />
     <Content Include="StyleSheets\bootstrap.css" />
     <Content Include="StyleSheets\StyleSheet1.css" />
@@ -57,6 +67,14 @@
   <ItemGroup>
     <Reference Include="FSharp.Core">
       <Private>true</Private>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=1.6.0.4624, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\mongocsharpdriver.1.6\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=1.6.0.4624, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\mongocsharpdriver.1.6\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -75,9 +93,7 @@
       <Name>Website</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -93,6 +109,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\FSharpWebsite.pubxml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

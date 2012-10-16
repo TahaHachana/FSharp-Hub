@@ -49,20 +49,24 @@ module Helpers =
 module SharedContent =
 
     let navigation =
-        Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
-            Div [Class "navbar-inner"] -< [
-                UL [Class "nav"] -< [
-                    LI [Class "active"] -< [A [ HRef "#"] -< [Text "Home"]]
-                    LI [A [ HRef "#"] -< [Text "News"]]
-                    LI [A [ HRef "#"] -< [Text "Books"]]
-                    LI [A [ HRef "#"] -< [Text "Videos"]]
-                    LI [A [ HRef "#"] -< [Text "Resources"]]
-                    LI [A [ HRef "#"] -< [Text "Community"]]
-                    LI [A [ HRef "#"] -< [Text "Links"]]
-                    LI [A [ HRef "#"] -< [Text "Contact"]]
+            Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
+                Div [Class "navbar-inner"] -< [
+                    UL [Class "nav"] -< [
+                        LI [Class "active"] -< [A [ HRef "#"] -< [Text "Home"]]
+                        LI [A [ HRef "#"] -< [Text "News"]]
+                        LI [A [ HRef "#"] -< [Text "Books"]]
+                        LI [A [ HRef "#"] -< [Text "Videos"]]
+                        LI [A [ HRef "#"] -< [Text "Resources"]]
+                        LI [A [ HRef "#"] -< [Text "Community"]]
+                        LI [A [ HRef "#"] -< [Text "Links"]]
+                        LI [A [ HRef "#"] -< [Text "Contact"]]
+                    ]
+                ]
+                Div [Class "alert alert-info"; Id "alertDiv"] -< [
+//                    Button [Type "button"; Class "close"; HTML5.Data "dismiss" "alert"] -< [Text "×"]
+                    P [Class "centered"; Id "alertText"] -< [Text ""]
                 ]
             ]
-        ]
 
     let forkme =
         A [HRef "https://github.com/TahaHachana/FSharpWebsite"; Target "_blank"] -< [
@@ -116,11 +120,12 @@ module HomeContent =
     let row3 =
         Div [Class "row-fluid"] -< [
             Div [Class "span6"] -< [
-                H3 [Class "centered"] -< [Text "#fsharp Tweets"]
+                H3 [Class "centered"] -< [Text "Tweets"]
                 Div [Id "fsharpTweets"; Attributes.HTML5.Data "tweets-count" "0"; Attributes.HTML5.Data "tweet-id" ""] -< [new FSharpTweets.FsharpTweetsViewer ()]
             ]
             Div [Class "span6"] -< [
                 H3 [Class "centered"] -< [Text "Questions"]
+                Div [Id "fsharpQuestions"; Attributes.HTML5.Data "questions-count" "0"; Attributes.HTML5.Data "question-id" ""] -< [new FSharpQuestions.FsharpQuestionsViewer ()]
             ]
         ]
 

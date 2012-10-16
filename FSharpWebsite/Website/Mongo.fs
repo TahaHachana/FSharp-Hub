@@ -10,21 +10,12 @@ open System.Linq
 open MongoDB.Bson
 open MongoDB.Driver
 open MongoDB.Driver.Builders
+open System.Globalization
 
 module Mongo =
-
-    [<CLIMutableAttribute>]
-    type FSharpTweet =
-        {
-            _id           : ObjectId 
-            TweetID       : string
-            UserID        : string
-            ProfileImage  : string
-            DisplayName   : string
-            ScreenName    : string
-            CreationDate  : string
-            Text          : string
-        }
+    
+    let culture = CultureInfo.CreateSpecificCulture "en-US"
+    CultureInfo.DefaultThreadCurrentCulture <- culture
 
     /// Creates a mongo server instance.
     let createServer (connectionString: string) = MongoServer.Create connectionString
@@ -38,36 +29,97 @@ module Mongo =
     let connectionString = ""
     let server = createServer connectionString
     let database = databaseByName server "fsharpwebsite"
-    let fsharpTweetsCollection = collectionByName<FSharpTweet> database "fsharptweets"
+    
+    [<AutoOpenAttribute>]
+    module Tweets =
+    
+        [<CLIMutableAttribute>]
+        type FSharpTweet =
+            {
+                _id           : ObjectId 
+                TweetID       : string
+                UserID        : string
+                ProfileImage  : string
+                DisplayName   : string
+                ScreenName    : string
+                CreationDate  : DateTime
+                Text          : string
+            }
 
-    let queryable = fsharpTweetsCollection.FindAll().AsQueryable()
+        let fsharpTweetsCollection = collectionByName<FSharpTweet> database "fsharptweets"
 
-    let queryFsharpTweets () =
-        query {
-            for x in queryable do
-                sortByDescending (DateTime.Parse x.CreationDate)
-                take 20
-                select x
-        }
-        |> Seq.toArray
+        let queryable = fsharpTweetsCollection.FindAll().AsQueryable()
 
-    let queryFsharpTweets' tweetsToSkip =
-        query {
-            for x in queryable do
-                sortByDescending (DateTime.Parse x.CreationDate)
-                skip tweetsToSkip
-                take 20
-                select x
-        }
-        |> Seq.toArray
+        let queryFsharpTweets () =
+            query {
+                for x in queryable do
+                    sortByDescending x.CreationDate
+                    take 20
+            }
+            |> Seq.toArray
 
-    let queryFsharpTweets'' latestTweetsId =
-        query {
-            for x in queryable do
-                sortByDescending (DateTime.Parse x.CreationDate)
-                takeWhile (x.TweetID <> latestTweetsId)
-        }
-        |> Seq.toArray
-        |> function
-            | [||] -> None
-            | arr  -> Some arr
+        let queryFsharpTweets' tweetsToSkip =
+            query {
+                for x in queryable do
+                    sortByDescending x.CreationDate
+                    skip tweetsToSkip
+                    take 20
+            }
+            |> Seq.toArray
+
+        let queryFsharpTweets'' latestTweetsId =
+            query {
+                for x in queryable do
+                    sortByDescending x.CreationDate
+                    takeWhile (x.TweetID <> latestTweetsId)
+            }
+            |> Seq.toArray
+            |> function
+                | [||] -> None
+                | arr  -> Some arr
+
+    [<AutoOpenAttribute>]
+    module Questions =
+
+        [<CLIMutableAttribute>]
+        type FSharpQuestion =
+            {
+                _id : ObjectId
+                Link : string
+                Title : string
+                Date : DateTime
+                Website : string
+                Summary : string
+            }
+
+        let fsharpQuestionsCollection = collectionByName<FSharpQuestion> database "fsharpquestions"
+
+        let queryable = fsharpQuestionsCollection.FindAll().AsQueryable()
+
+        let queryFsharpQuestions () =
+            query {
+                for x in queryable do
+                    sortByDescending x.Date
+                    take 20
+            }
+            |> Seq.toArray
+
+        let queryFsharpQuestions' questionsToSkip =
+            query {
+                for x in queryable do
+                    sortByDescending x.Date
+                    skip questionsToSkip
+                    take 20
+            }
+            |> Seq.toArray
+
+        let queryFsharpQuestions'' latestQuestionId =
+            query {
+                for x in queryable do
+                    sortByDescending x.Date
+                    takeWhile (x._id.ToString() <> latestQuestionId)
+            }
+            |> Seq.toArray
+            |> function
+                | [||] -> None
+                | arr  -> Some arr

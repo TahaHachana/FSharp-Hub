@@ -11,29 +11,30 @@ module FSharpTweets =
 
     module Server =
         
-        let compileRegex pattern = Regex(pattern, RegexOptions.Compiled)
+        let atRegex     = Utilities.compileRegex "^@[^\ :]+"
+        let atRegex'    = Utilities.compileRegex "@"
+        let hashRegex   = Utilities.compileRegex "^#[^\ ]+"
+        let urlRegex    = Utilities.compileRegex "^https?://.+"
+        let colonRegex  = Utilities.compileRegex "([^\ ]):\ "
+        let colonRegex' = Utilities.compileRegex " :"
+        let hashRegex'  = Utilities.compileRegex "#"
 
-        let atRegex = compileRegex "^@[^\ :]+"
-        let atRegex' = compileRegex "@"
-        let hashRegex = compileRegex "^#[^\ ]+"
-        let urlRegex = compileRegex "^https?://.+"
-        let colonRegex = compileRegex "([^\ ]):\ "
-        let colonRegex' = compileRegex " :"
-        let hashRegex' = compileRegex "#"
+        let inline spaceBeforeColon str =
+            colonRegex.Replace(str, (fun (x : Match) -> x.Groups.[1].Value + " : "))
+        let inline spaceBeforeColon' str = colonRegex'.Replace(str, ":")
 
-        let spaceBeforeColon str = colonRegex.Replace(str, (fun (x : Match) -> x.Groups.[1].Value + " : "))
-        let spaceBeforeColon' str = colonRegex'.Replace(str, ":")
+        let inline replaceAt x =
+            let x' = atRegex'.Replace(x, "") 
+            String.concat "" ["<a href=\"https://twitter.com/"; x'; "\" target=\"_blank\">"; x; "</a>"]
 
-        let replaceAt x =
-            let x' = atRegex'.Replace(x, "")            
-            "<a href=\"https://twitter.com/" + x' + "\" target=\"_blank\">" + x + "</a>"
-
-        let replaceHash x =
+        let inline replaceHash x =
             let x' = hashRegex'.Replace(x, "")
-            "<a href=\"https://twitter.com/search/?q=%23" + x' + "&src=hash\" target=\"_blank\">" + x + "</a>"
-        let replaceUrl x = "<a href=\"" + x + "\" target=\"_blank\">" + x + "</a>"
+            String.concat "" ["<a href=\"https://twitter.com/search/?q=%23"; x'; "&src=hash\" target=\"_blank\">"; x; "</a>"]
+        
+        let inline replaceUrl x =
+            String.concat "" ["<a href=\""; x; "\" target=\"_blank\">"; x; "</a>"]
 
-        let formatString (regex : Regex) (replacementFunc : string -> string) str =
+        let inline formatString (regex : Regex) (replacementFunc : string -> string) str =
             regex.Replace(str, replacementFunc str)
         
         let formatString' =
@@ -41,7 +42,7 @@ module FSharpTweets =
             >> formatString hashRegex replaceHash
             >> formatString urlRegex replaceUrl
         
-        let linkifyText (text : string) =
+        let inline linkifyText (text : string) =
             text
             |> spaceBeforeColon
             |> fun x -> x.Split([|' '|], StringSplitOptions.RemoveEmptyEntries)
@@ -49,24 +50,24 @@ module FSharpTweets =
             |> String.concat " "
             |> spaceBeforeColon'
 
+        let inline tweetData x =
+            let text' = linkifyText x.Text
+            x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate.ToString()
+
         [<RpcAttribute>]
         let latestTweets () =
             async {
-                let tweets = queryFsharpTweets ()
-                let tweetsData = tweets |> Array.map (fun x ->
-                    let text' = linkifyText x.Text
-                    x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate.ToString())
-                return tweetsData
+                return
+                    queryFsharpTweets ()
+                    |> Array.map tweetData
             }
 
         [<RpcAttribute>]
         let tweetsAfterSkip skip =
             async {
-                let tweets = queryFsharpTweets' skip
-                let tweetsData = tweets |> Array.map (fun x ->
-                    let text' = linkifyText x.Text
-                    x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate.ToString())
-                return tweetsData
+                return
+                    queryFsharpTweets' skip
+                    |> Array.map tweetData
             }
 
         [<RpcAttribute>]
@@ -76,10 +77,10 @@ module FSharpTweets =
                 match newTweetsOption with
                     | None -> return None
                     | Some tweets ->
-                        let tweetsData = tweets |> Array.map (fun x ->
-                            let text' = linkifyText x.Text
-                            x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate.ToString())
-                        return Some tweetsData
+                        return        
+                            tweets
+                            |> Array.map tweetData
+                            |> Some
             }
 
     module Client =
@@ -101,8 +102,8 @@ module FSharpTweets =
                 tweetP
                 Div [Attr.Class "pull-right"] -< [
                     UL [Attr.Class "tweetActions"] -< [
-                        LI [Attr.Class "tweetAction"] -< [A [HRef replyLink; Attr.Target "_blank"] -< [Text "Reply"]]
-                        LI [Attr.Class "tweetAction"] -< [A [HRef retweetLink; Attr.Target "_blank"] -< [Text "Retweet"]]
+                        LI [Attr.Class "tweetAction"] -< [A [HRef replyLink; Attr.Target "_blank"]    -< [Text "Reply"]]
+                        LI [Attr.Class "tweetAction"] -< [A [HRef retweetLink; Attr.Target "_blank"]  -< [Text "Retweet"]]
                         LI [Attr.Class "tweetAction"] -< [A [HRef favoriteLink; Attr.Target "_blank"] -< [Text "Favorite"]]
                     ]
                 ]
@@ -110,13 +111,11 @@ module FSharpTweets =
 
         [<JavaScriptAttribute>]
         let incrementTweetsCount x =
-            let jquery = JQuery.Of("#fsharpTweets")
-            let count = jquery.Attr("data-tweets-count") |> int
-            let count' = x + count |> string
-            jquery.Attr("data-tweets-count", count').Ignore
+            Utilities.incrementDataCount "#fsharpTweets" "data-tweets-count" x
 
         [<JavaScriptAttribute>]
-        let setTweetId id = JQuery.Of("#fsharpTweets").Attr("data-tweet-id", id).Ignore
+        let setTweetId id =
+            Utilities.setAttributeValue "#fsharpTweets" "data-tweet-id" id
 
         [<JavaScriptAttribute>]
         let toggleActionsVisibility () =
@@ -129,8 +128,8 @@ module FSharpTweets =
         [<JavaScriptAttribute>]
         let checkNewTweets () =
             async {
-                let jquery = JQuery.Of("#fsharpTweets")
-                let latestTweetId = jquery.Attr("data-tweet-id")
+                let jquery = JQuery.Of "#fsharpTweets"
+                let latestTweetId = jquery.Attr "data-tweet-id"
                 let! tweetsOption = Server.newTweets latestTweetId
                 match tweetsOption with
                     | None -> ()
@@ -143,11 +142,13 @@ module FSharpTweets =
                         |> Array.rev
                         |> Array.map (fun (screenName, tweetId, profileImage, displayName, text, creationDate) ->
                             makeTweetLi screenName tweetId profileImage displayName text creationDate)
-                        |> Array.iter (fun x -> JQuery.Of("#tweetsList").Prepend(x.Dom).Ignore)
+                        |> Array.iter (Utilities.prependElement "#tweetsList")
+                        
                         let count = Array.length tweets
                         incrementTweetsCount count
                         setTweetId latestTweetId
                         toggleActionsVisibility ()
+                        
                         let msg =
                             match count with
                                 | 1 -> "1 new tweet"
@@ -159,15 +160,13 @@ module FSharpTweets =
         let tweetsDiv () =
             let tweetsList = UL [Id "tweetsList"]
 
-            JavaScript.SetInterval checkNewTweets 300000 |> ignore
-
             let loadMoreBtn =
                 Button [Text "Load More"; Attr.Class "btn loadMore"]
                 |>! OnClick (fun x _ ->
                     async {
                         x.SetAttribute("disabled", "disabled")
-                        let jquery = JQuery.Of("#fsharpTweets")
-                        let count = jquery.Attr("data-tweets-count") |> int
+                        let jquery = JQuery.Of "#fsharpTweets"
+                        let count = jquery.Attr "data-tweets-count" |> int
                         let! fsharpTweets = Server.tweetsAfterSkip count
 
                         fsharpTweets
@@ -178,7 +177,7 @@ module FSharpTweets =
                         let count' = Array.length fsharpTweets
                         incrementTweetsCount count'
                         toggleActionsVisibility ()
-                        x.RemoveAttribute("disabled")
+                        x.RemoveAttribute "disabled"
                     } |> Async.Start)
                     
                     
@@ -197,6 +196,7 @@ module FSharpTweets =
                     setTweetId latestTweetId
                     loadMoreBtn.SetCss("visibility", "visible")
                     toggleActionsVisibility ()
+                    JavaScript.SetInterval checkNewTweets 300000 |> ignore
                 } |> Async.Start)
 
     type FsharpTweetsViewer () =

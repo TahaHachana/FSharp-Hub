@@ -3,41 +3,42 @@
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.Html
 open IntelliFactory.WebSharper.JQuery
+open Mongo
 
 module FSharpQuestions =
 
     module Server =
+        
+        let inline questionData question =
+            question.Link, question.Title, question.Date.ToString(), question.Website, question.Summary
 
         [<RpcAttribute>]
         let latestFSharpQuestions () =
             async {
-                let fsharpQuestions = Mongo.Questions.queryFsharpQuestions()
-                let latestQuestionsId = fsharpQuestions.[0]._id.ToString()
-                let questionsData = fsharpQuestions |> Array.map (fun x ->
-                    x.Link, x.Title, x.Date.ToString(), x.Website, x.Summary)
-                return latestQuestionsId, questionsData
+                let questions = Questions.queryFsharpQuestions()
+                let latestQuestionId = questions.[0]._id.ToString()
+                let questions' = questions |> Array.map questionData
+                return latestQuestionId, questions'
             }
 
         [<RpcAttribute>]
         let questionsAfterSkip skip =
             async {
-                let questions = Mongo.Questions.queryFsharpQuestions' skip
-                let questionsData = questions |> Array.map (fun x ->
-                    x.Link, x.Title, x.Date.ToString(), x.Website, x.Summary)
-                return questionsData
+                return
+                    Mongo.Questions.queryFsharpQuestions' skip
+                    |> Array.map questionData
             }
 
         [<RpcAttribute>]
         let newQuestions latestQuestionId =
             async {
-                let newQuestionsOption = Mongo.Questions.queryFsharpQuestions'' latestQuestionId
+                let newQuestionsOption = Questions.queryFsharpQuestions'' latestQuestionId
                 match newQuestionsOption with
                     | None -> return None
                     | Some questions ->
                         let latestQuestionId' = questions.[0]._id.ToString()
-                        let questionsData = questions |> Array.map (fun x ->
-                            x.Link, x.Title, x.Date.ToString(), x.Website, x.Summary)
-                        return Some (latestQuestionId', questionsData)
+                        let questions' = questions |> Array.map questionData
+                        return Some (latestQuestionId', questions')
             }
 
     module Client =
@@ -54,43 +55,41 @@ module FSharpQuestions =
 
         [<JavaScriptAttribute>]
         let incrementQuestionsCount x =
-            let jquery = JQuery.Of("#fsharpQuestions")
-            let count = jquery.Attr("data-questions-count") |> int
-            let count' = x + count |> string
-            jquery.Attr("data-questions-count", count').Ignore
+            Utilities.incrementDataCount "#fsharpQuestions" "data-questions-count" x
 
         [<JavaScriptAttribute>]
-        let setQuestionId id = JQuery.Of("#fsharpQuestions").Attr("data-question-id", id).Ignore
+        let setQuestionId id =
+            Utilities.setAttributeValue "#fsharpQuestions" "data-question-id" id
 
         [<JavaScriptAttribute>]
         let checkNewQuestions () =
             async {
-                let jquery = JQuery.Of("#fsharpQuestions")
-                let latestQuestionId = jquery.Attr("data-question-id")
+                let jquery = JQuery.Of "#fsharpQuestions"
+                let latestQuestionId = jquery.Attr "data-question-id"
                 let! questionsOption = Server.newQuestions latestQuestionId
                 match questionsOption with
                     | None -> ()
                     | Some (id, questions) ->
-
                         questions
                         |> Array.rev
                         |> Array.map (fun (link, title, date, website, summary) ->
                             makeQuestionLi link title date website summary)
-                        |> Array.iter (fun x -> JQuery.Of("#questionsList").Prepend(x.Dom).Ignore)
+                        |> Array.iter (Utilities.prependElement "#questionsList")
+
                         let count = Array.length questions
                         incrementQuestionsCount count
+
                         setQuestionId id
+
                         let msg =
                             match count with
                                 | 1 -> "1 new question"
-                                | _ -> string count + " new question"
+                                | _ -> string count + " new questions"
                         Utilities.displayInfoAlert msg
             } |> Async.Start
 
         [<JavaScriptAttribute>]
         let questionsDiv () =
-
-            JavaScript.SetInterval checkNewQuestions 300000 |> ignore
 
             let questionsList = UL [Id "questionsList"]
 
@@ -99,8 +98,8 @@ module FSharpQuestions =
                 |>! OnClick (fun x _ ->
                     async {
                         x.SetAttribute("disabled", "disabled")
-                        let jquery = JQuery.Of("#fsharpQuestions")
-                        let count = jquery.Attr("data-questions-count") |> int
+                        let jquery = JQuery.Of "#fsharpQuestions"
+                        let count = jquery.Attr "data-questions-count" |> int
                         let! fsharpQuestions = Server.questionsAfterSkip count
 
                         fsharpQuestions
@@ -124,6 +123,7 @@ module FSharpQuestions =
                     incrementQuestionsCount 20
                     setQuestionId id
                     loadMoreBtn.SetCss("visibility", "visible")
+                    JavaScript.SetInterval checkNewQuestions 420000 |> ignore
                 } |> Async.Start)
 
     type FsharpQuestionsViewer () =

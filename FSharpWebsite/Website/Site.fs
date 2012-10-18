@@ -6,6 +6,7 @@ open IntelliFactory.WebSharper.Sitelets
 
 type Action =
     | Home
+    | Books
     | Custom404
 
 module Skin =
@@ -52,18 +53,17 @@ module SharedContent =
             Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
                 Div [Class "navbar-inner"] -< [
                     UL [Class "nav"] -< [
-                        LI [Class "active"] -< [A [ HRef "#"] -< [Text "Home"]]
-                        LI [A [ HRef "#"] -< [Text "News"]]
-                        LI [A [ HRef "#"] -< [Text "Books"]]
-                        LI [A [ HRef "#"] -< [Text "Videos"]]
-                        LI [A [ HRef "#"] -< [Text "Resources"]]
-                        LI [A [ HRef "#"] -< [Text "Community"]]
-                        LI [A [ HRef "#"] -< [Text "Links"]]
-                        LI [A [ HRef "#"] -< [Text "Contact"]]
+                        LI [Class "active"] -< [A [ HRef "/"] -< [Text "Home"]]
+//                        LI [A [ HRef "#"] -< [Text "News"]]
+                        LI [A [ HRef "/fsharp-books"] -< [Text "Books"]]
+//                        LI [A [ HRef "#"] -< [Text "Videos"]]
+//                        LI [A [ HRef "#"] -< [Text "Resources"]]
+//                        LI [A [ HRef "#"] -< [Text "Community"]]
+//                        LI [A [ HRef "#"] -< [Text "Links"]]
+//                        LI [A [ HRef "#"] -< [Text "Contact"]]
                     ]
                 ]
                 Div [Class "alert alert-info"; Id "alertDiv"] -< [
-//                    Button [Type "button"; Class "close"; HTML5.Data "dismiss" "alert"] -< [Text "×"]
                     P [Class "centered"; Id "alertText"] -< [Text ""]
                 ]
             ]
@@ -129,6 +129,16 @@ module HomeContent =
             ]
         ]
 
+module BooksPageContent =
+
+    let Header elements = IntelliFactory.Html.Html.NewElement("header") elements
+
+    let header =
+        Header [
+            H1 [Text "FSharp Books"]
+            P [Class "lead"] -< [Text "F# books"]
+        ]
+
 module Site =
 
     let HomePage =
@@ -153,10 +163,22 @@ module Site =
                 ]
             ]
 
+    let BooksPage =
+        Skin.WithTemplate HomeContent.title HomeContent.metaDescription <| fun ctx ->
+            [
+                SharedContent.navigation
+                SharedContent.forkme
+                Div [Class "container"] -< [
+                    BooksPageContent.header
+                    Div [new FSharpBooks.FsharpBooksViewer ()]
+                ]
+            ]
+
     let Main =
         Sitelet.Sum [
             Sitelet.Content "/" Home HomePage
-            Sitelet.Content "/Custom404" Custom404 Custom404Page
+            Sitelet.Content "/fsharp-books" Books BooksPage
+            Sitelet.Content "/custom404" Custom404 Custom404Page
         ]
 
 type Website() =

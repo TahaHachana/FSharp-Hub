@@ -56,14 +56,16 @@
 }
 
 #fsharpTweets,
-#fsharpQuestions
+#fsharpQuestions,
+#fsharpSnippets
 {
     height:600px;
     overflow-y:scroll;
 }
 
 #tweetsList,
-#questionsList
+#questionsList,
+#snippetsList
 {
     list-style-type: none;         
 }
@@ -74,3 +76,5 @@
     margin-left: 30%;
     display:none;
 }
+
+.cover { height: 220px; }

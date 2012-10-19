@@ -9,7 +9,7 @@ module FSharpQuestions =
 
     module Server =
         
-        let inline questionData question =
+        let inline questionData (question : FSharpQuestion) =
             question.Link, question.Title, question.Date.ToString(), question.Website, question.Summary
 
         [<RpcAttribute>]

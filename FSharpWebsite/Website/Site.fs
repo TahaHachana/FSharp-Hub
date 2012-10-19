@@ -53,9 +53,9 @@ module SharedContent =
             Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
                 Div [Class "navbar-inner"] -< [
                     UL [Class "nav"] -< [
-                        LI [Class "active"] -< [A [ HRef "/"] -< [Text "Home"]]
+                        LI [A [HRef "/"] -< [Text "Home"]]
 //                        LI [A [ HRef "#"] -< [Text "News"]]
-                        LI [A [ HRef "/fsharp-books"] -< [Text "Books"]]
+                        LI [A [HRef "/fsharp-books"] -< [Text "Books"]]
 //                        LI [A [ HRef "#"] -< [Text "Videos"]]
 //                        LI [A [ HRef "#"] -< [Text "Resources"]]
 //                        LI [A [ HRef "#"] -< [Text "Community"]]
@@ -82,7 +82,7 @@ module HomeContent =
     let definition =
             P [
                 Strong [Text "FSharp"]
-                Text " is an advanced, multi-paradigm, strongly typed programming language. F# allows you to solve complex problems with simple code."
+                Text " is an advanced, multi-paradigm, strongly typed open source programming language. F# allows you to solve complex problems with simple code."
             ]
 
     let heroUnit =
@@ -119,22 +119,36 @@ module HomeContent =
 
     let row3 =
         Div [Class "row-fluid"] -< [
-            Div [Class "span6"] -< [
+            Div [Class "span4"] -< [
                 H3 [Class "centered"] -< [Text "Tweets"]
-                Div [Id "fsharpTweets"; Attributes.HTML5.Data "tweets-count" "0"; Attributes.HTML5.Data "tweet-id" ""] -< [new FSharpTweets.FsharpTweetsViewer ()]
+                Div [
+                    Id "fsharpTweets"
+                    Attributes.HTML5.Data "tweets-count" "0"
+                    Attributes.HTML5.Data "tweet-id" ""
+                ] -< [new FSharpTweets.FsharpTweetsViewer ()]
             ]
-            Div [Class "span6"] -< [
+            Div [Class "span4"] -< [
                 H3 [Class "centered"] -< [Text "Questions"]
-                Div [Id "fsharpQuestions"; Attributes.HTML5.Data "questions-count" "0"; Attributes.HTML5.Data "question-id" ""] -< [new FSharpQuestions.FsharpQuestionsViewer ()]
+                Div [
+                    Id "fsharpQuestions"
+                    Attributes.HTML5.Data "questions-count" "0"
+                    Attributes.HTML5.Data "question-id" ""
+                ] -< [new FSharpQuestions.FsharpQuestionsViewer ()]
             ]
+            Div [Class "span4"] -< [
+                H3 [Class "centered"] -< [Text "Snippets"]
+                Div [
+                    Id "fsharpSnippets"
+                    Attributes.HTML5.Data "snippets-count" "0"
+                ] -< [new FSharpSnippets.FsharpSnippetsViewer ()]
+            ]
+
         ]
 
 module BooksPageContent =
 
-    let Header elements = IntelliFactory.Html.Html.NewElement("header") elements
-
     let header =
-        Header [
+        Utilities.Header [
             H1 [Text "FSharp Books"]
             P [Class "lead"] -< [Text "F# books"]
         ]
@@ -170,7 +184,7 @@ module Site =
                 SharedContent.forkme
                 Div [Class "container"] -< [
                     BooksPageContent.header
-                    Div [new FSharpBooks.FsharpBooksViewer ()]
+                    Div [FSharpBooks.Server.booksDiv ()]
                 ]
             ]
 

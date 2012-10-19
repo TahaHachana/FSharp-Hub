@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Mongo.fs" />
     <Compile Include="Utilities.fs" />
+    <Compile Include="FSharpSnippets.fs" />
     <Compile Include="FSharpBooks.fs" />
     <Compile Include="FSharpTweets.fs" />
     <Compile Include="FSharpQuestions.fs" />

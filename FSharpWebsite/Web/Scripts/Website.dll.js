@@ -1,102 +1,8 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Html,Operators,Default,List,T,Remoting,FSharpWebsite,FSharpBooks,Client,Seq,Concurrency,Strings,jQuery,FSharpQuestions,Client1,Arrays,Utilities,EventsPervasives,setInterval,FSharpTweets,Client2;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,jQuery,WebSharper,Remoting,FSharpWebsite,FSharpQuestions,Client,Arrays,Utilities,Concurrency,Html,Operators,Default,List,EventsPervasives,setInterval,FSharpSnippets,Client1,FSharpTweets,Client2,T;
  Runtime.Define(Global,{
   FSharpWebsite:{
-   FSharpBooks:{
-    Client:{
-     booksDiv:function()
-     {
-      var makeBooksUl,makeDiv,x,f,f1;
-      makeBooksUl=function(li,_li_,_li__)
-      {
-       return Operators.add(Default.UL(List.ofArray([Default.Attr().Class("thumbnails")])),List.ofArray([li,_li_,_li__]));
-      };
-      makeDiv=function(ul)
-      {
-       return Operators.add(Default.Div(List.ofArray([Default.Attr().Class("row-fluid")])),List.ofArray([ul]));
-      };
-      x=Default.Div(Runtime.New(T,{
-       $:0
-      }));
-      f=(f1=function(div)
-      {
-       var x1,f2,f8;
-       x1=(f2=function()
-       {
-        var x2,f3;
-        x2=Remoting.Async("Website:6",[]);
-        f3=function(_arg1)
-        {
-         var x3,x4,x5,f4,mapping,f5,mapping1,f6,mapping2,f7,action;
-         x3=(x4=(x5=(f4=(mapping=Runtime.Tupled(function(tupledArg)
-         {
-          var x6,y,z,li,_li_,_li__;
-          x6=tupledArg[0];
-          y=tupledArg[1];
-          z=tupledArg[2];
-          li=Client.makeThumbnailLi(x6[0],x6[1],x6[2],x6[3],x6[4],x6[5],x6[6]);
-          _li_=Client.makeThumbnailLi(y[0],y[1],y[2],y[3],y[4],y[5],y[6]);
-          _li__=Client.makeThumbnailLi(z[0],z[1],z[2],z[3],z[4],z[5],z[6]);
-          return[li,_li_,_li__];
-         }),function(source)
-         {
-          return Seq.map(mapping,source);
-         }),f4(_arg1)),(f5=(mapping1=Runtime.Tupled(function(tupledArg)
-         {
-          var x6,y,z;
-          x6=tupledArg[0];
-          y=tupledArg[1];
-          z=tupledArg[2];
-          return makeBooksUl(x6,y,z);
-         }),function(source)
-         {
-          return Seq.map(mapping1,source);
-         }),f5(x5))),(f6=(mapping2=makeDiv,function(source)
-         {
-          return Seq.map(mapping2,source);
-         }),f6(x4)));
-         f7=(action=function(arg00)
-         {
-          return div.AppendI(arg00);
-         },function(source)
-         {
-          return Seq.iter(action,source);
-         });
-         f7(x3);
-         return Concurrency.Return(null);
-        };
-        return Concurrency.Bind(x2,f3);
-       },Concurrency.Delay(f2));
-       f8=function(arg00)
-       {
-        var t;
-        t={
-         $:0
-        };
-        return Concurrency.Start(arg00);
-       };
-       return f8(x1);
-      },function(w)
-      {
-       return Operators.OnAfterRender(f1,w);
-      });
-      f(x);
-      return x;
-     },
-     makeThumbnailLi:function(url,cover,title,authors,publisher,isbn,pages)
-     {
-      var x,x1,x2,x3,_this;
-      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("span4")])),List.ofArray([Operators.add(Default.Div(List.ofArray([Default.Attr().Class("thumbnail")])),List.ofArray([Default.Img(List.ofArray([Default.Src(cover),Default.Alt(title),Default.Width("180"),Default.Height("220")])),Default.H3(List.ofArray([Default.Text(title)])),Default.P(List.ofArray([(x="Authors: "+Strings.concat(", ",authors),Default.Text(x))])),Default.P(List.ofArray([(x1="Pbulisher: "+publisher,Default.Text(x1))])),Default.P(List.ofArray([(x2="ISBN: "+isbn,Default.Text(x2))])),Default.P(List.ofArray([(x3="Pages: "+pages,Default.Text(x3))])),Operators.add(Default.A(List.ofArray([Default.HRef(url),Default.Attr().Class("btn btn-primary"),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([Default.Text("Book Website")]))]))]));
-     }
-    },
-    FsharpBooksViewer:Runtime.Class({
-     get_Body:function()
-     {
-      return Client.booksDiv();
-     }
-    })
-   },
    FSharpQuestions:{
     Client:{
      checkNewQuestions:function()
@@ -126,7 +32,7 @@
            date=tupledArg[2];
            website=tupledArg[3];
            summary=tupledArg[4];
-           return Client1.makeQuestionLi(link,title,date,website,summary);
+           return Client.makeQuestionLi(link,title,date,website,summary);
           }),function(array)
           {
            return Arrays.map(mapping,array);
@@ -140,8 +46,8 @@
           });
           f4(x2);
           count=questions.length;
-          Client1.incrementQuestionsCount(count);
-          Client1.setQuestionId(id);
+          Client.incrementQuestionsCount(count);
+          Client.setQuestionId(id);
           msg=count===1?"1 new question":Global.String(count)+" new questions";
           Utilities.displayInfoAlert(msg);
           return Concurrency.Return(null);
@@ -209,7 +115,7 @@
            date=tupledArg[2];
            website=tupledArg[3];
            summary=tupledArg[4];
-           return Client1.makeQuestionLi(link,title,date,website,summary);
+           return Client.makeQuestionLi(link,title,date,website,summary);
           }),function(array)
           {
            return Arrays.map(mapping,array);
@@ -223,7 +129,7 @@
           });
           f5(x6);
           _count_=_arg11.length;
-          Client1.incrementQuestionsCount(_count_);
+          Client.incrementQuestionsCount(_count_);
           objectArg1=x2["HtmlProvider@32"];
           (arg002=x2.Body,function(arg10)
           {
@@ -268,7 +174,7 @@
           date=tupledArg[2];
           website=tupledArg[3];
           summary=tupledArg[4];
-          return Client1.makeQuestionLi(link,title,date,website,summary);
+          return Client.makeQuestionLi(link,title,date,website,summary);
          }),function(array)
          {
           return Arrays.map(mapping,array);
@@ -281,8 +187,8 @@
           return Arrays.iter(action,array);
          });
          f4(x4);
-         Client1.incrementQuestionsCount(20);
-         Client1.setQuestionId(id);
+         Client.incrementQuestionsCount(20);
+         Client.setQuestionId(id);
          objectArg=loadMoreBtn["HtmlProvider@32"];
          ((arg00=loadMoreBtn.Body,function(arg10)
          {
@@ -294,7 +200,7 @@
          x6=setInterval(function(_arg00_)
          {
           _arg00_;
-          return Client1.checkNewQuestions();
+          return Client.checkNewQuestions();
          },420000);
          f5=function(value)
          {
@@ -329,7 +235,158 @@
     FsharpQuestionsViewer:Runtime.Class({
      get_Body:function()
      {
-      return Client1.questionsDiv();
+      return Client.questionsDiv();
+     }
+    })
+   },
+   FSharpSnippets:{
+    Client:{
+     incrementSnippetsCount:function(x)
+     {
+      return Utilities.incrementDataCount("#fsharpSnippets","data-snippets-count",x);
+     },
+     makeSnippetLi:function(link,title,description)
+     {
+      var _this,x,_this1;
+      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),Default.P(List.ofArray([Default.Text(description)]))]));
+     },
+     snippetsDiv:function()
+     {
+      var snippetsList,loadMoreBtn,x,f,x1,x7,f7,f8;
+      snippetsList=Default.UL(List.ofArray([Default.Id("snippetsList")]));
+      loadMoreBtn=(x=Default.Button(List.ofArray([Default.Text("Load More"),Default.Attr().Class("btn loadMore")])),(f=(x1=function(x2)
+      {
+       return function()
+       {
+        var x3,f1,f6;
+        x3=(f1=function()
+        {
+         var objectArg,arg00,jquery,count,x4,f2,x5,f3;
+         objectArg=x2["HtmlProvider@32"];
+         ((arg00=x2.Body,function(arg10)
+         {
+          return function(arg20)
+          {
+           return objectArg.SetAttribute(arg00,arg10,arg20);
+          };
+         })("disabled"))("disabled");
+         jquery=jQuery("#fsharpSnippets");
+         count=(x4=jquery.attr("data-snippets-count"),(f2=function(value)
+         {
+          return value<<0;
+         },f2(x4)));
+         x5=Remoting.Async("Website:7",[count]);
+         f3=function(_arg11)
+         {
+          var x6,f4,mapping,f5,action,_count_,objectArg1,arg002;
+          x6=(f4=(mapping=Runtime.Tupled(function(tupledArg)
+          {
+           var link,title,description;
+           link=tupledArg[0];
+           title=tupledArg[1];
+           description=tupledArg[2];
+           return Client1.makeSnippetLi(link,title,description);
+          }),function(array)
+          {
+           return Arrays.map(mapping,array);
+          }),f4(_arg11));
+          f5=(action=function(arg001)
+          {
+           return snippetsList.AppendI(arg001);
+          },function(array)
+          {
+           return Arrays.iter(action,array);
+          });
+          f5(x6);
+          _count_=_arg11.length;
+          Client1.incrementSnippetsCount(_count_);
+          objectArg1=x2["HtmlProvider@32"];
+          (arg002=x2.Body,function(arg10)
+          {
+           return objectArg1.RemoveAttribute(arg002,arg10);
+          })("disabled");
+          return Concurrency.Return(null);
+         };
+         return Concurrency.Bind(x5,f3);
+        },Concurrency.Delay(f1));
+        f6=function(arg00)
+        {
+         var t;
+         t={
+          $:0
+         };
+         return Concurrency.Start(arg00);
+        };
+        return f6(x3);
+       };
+      },function(arg10)
+      {
+       return EventsPervasives.Events().OnClick(x1,arg10);
+      }),(f(x),x)));
+      x7=Operators.add(Default.Div(List.ofArray([Default.Id("snippetsDiv")])),List.ofArray([snippetsList,loadMoreBtn]));
+      f7=(f8=function()
+      {
+       var x2,f1,f5;
+       x2=(f1=function()
+       {
+        var x3,f2;
+        x3=Remoting.Async("Website:6",[]);
+        f2=function(_arg21)
+        {
+         var x4,f3,mapping,f4,action,objectArg,arg00;
+         x4=(f3=(mapping=Runtime.Tupled(function(tupledArg)
+         {
+          var link,title,description;
+          link=tupledArg[0];
+          title=tupledArg[1];
+          description=tupledArg[2];
+          return Client1.makeSnippetLi(link,title,description);
+         }),function(array)
+         {
+          return Arrays.map(mapping,array);
+         }),f3(_arg21));
+         f4=(action=function(x5)
+         {
+          return snippetsList.AppendI(x5);
+         },function(array)
+         {
+          return Arrays.iter(action,array);
+         });
+         f4(x4);
+         Client1.incrementSnippetsCount(20);
+         objectArg=loadMoreBtn["HtmlProvider@32"];
+         ((arg00=loadMoreBtn.Body,function(arg10)
+         {
+          return function(arg20)
+          {
+           return objectArg.SetCss(arg00,arg10,arg20);
+          };
+         })("visibility"))("visible");
+         return Concurrency.Return(null);
+        };
+        return Concurrency.Bind(x3,f2);
+       },Concurrency.Delay(f1));
+       f5=function(arg00)
+       {
+        var t;
+        t={
+         $:0
+        };
+        return Concurrency.Start(arg00);
+       };
+       return f5(x2);
+      },function(w)
+      {
+       return Operators.OnAfterRender(f8,w);
+      });
+      f7(x7);
+      return x7;
+     }
+    },
+    FsharpSnippetsViewer:Runtime.Class({
+     get_Body:function()
+     {
+      return Client1.snippetsDiv();
      }
     })
    },
@@ -648,28 +705,26 @@
  });
  Runtime.OnInit(function()
  {
+  jQuery=Runtime.Safe(Global.jQuery);
   WebSharper=Runtime.Safe(Global.IntelliFactory.WebSharper);
+  Remoting=Runtime.Safe(WebSharper.Remoting);
+  FSharpWebsite=Runtime.Safe(Global.FSharpWebsite);
+  FSharpQuestions=Runtime.Safe(FSharpWebsite.FSharpQuestions);
+  Client=Runtime.Safe(FSharpQuestions.Client);
+  Arrays=Runtime.Safe(WebSharper.Arrays);
+  Utilities=Runtime.Safe(FSharpWebsite.Utilities);
+  Concurrency=Runtime.Safe(WebSharper.Concurrency);
   Html=Runtime.Safe(WebSharper.Html);
   Operators=Runtime.Safe(Html.Operators);
   Default=Runtime.Safe(Html.Default);
   List=Runtime.Safe(WebSharper.List);
-  T=Runtime.Safe(List.T);
-  Remoting=Runtime.Safe(WebSharper.Remoting);
-  FSharpWebsite=Runtime.Safe(Global.FSharpWebsite);
-  FSharpBooks=Runtime.Safe(FSharpWebsite.FSharpBooks);
-  Client=Runtime.Safe(FSharpBooks.Client);
-  Seq=Runtime.Safe(WebSharper.Seq);
-  Concurrency=Runtime.Safe(WebSharper.Concurrency);
-  Strings=Runtime.Safe(WebSharper.Strings);
-  jQuery=Runtime.Safe(Global.jQuery);
-  FSharpQuestions=Runtime.Safe(FSharpWebsite.FSharpQuestions);
-  Client1=Runtime.Safe(FSharpQuestions.Client);
-  Arrays=Runtime.Safe(WebSharper.Arrays);
-  Utilities=Runtime.Safe(FSharpWebsite.Utilities);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
   setInterval=Runtime.Safe(Global.setInterval);
+  FSharpSnippets=Runtime.Safe(FSharpWebsite.FSharpSnippets);
+  Client1=Runtime.Safe(FSharpSnippets.Client);
   FSharpTweets=Runtime.Safe(FSharpWebsite.FSharpTweets);
-  return Client2=Runtime.Safe(FSharpTweets.Client);
+  Client2=Runtime.Safe(FSharpTweets.Client);
+  return T=Runtime.Safe(List.T);
  });
  Runtime.OnLoad(function()
  {

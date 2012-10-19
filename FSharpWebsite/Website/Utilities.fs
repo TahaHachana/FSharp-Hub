@@ -2,12 +2,34 @@
 
 open System.Text.RegularExpressions
 open IntelliFactory.WebSharper
+open IntelliFactory.Html
 open IntelliFactory.WebSharper.Html
 open IntelliFactory.WebSharper.JQuery
 
 module Utilities =
 
     let inline compileRegex pattern = Regex(pattern, RegexOptions.Compiled)
+
+    let inline triples (source: seq<'T>) =
+        use ie = source.GetEnumerator()
+        let rec loop () =
+            seq {  
+                if ie.MoveNext() then
+                    let x = ie.Current  
+                    if ie.MoveNext() then
+                        let y = ie.Current
+                        if ie.MoveNext() then
+                            let z = ie.Current
+                            yield [x; y; z]
+                            yield! loop ()
+                        else
+                            yield [x; y]
+                    else
+                        yield [x]
+            }
+        loop ()
+
+    let inline Header elements = IntelliFactory.Html.Html.NewElement("header") elements
 
     [<JavaScriptAttribute>]
     let displayInfoAlert msg =

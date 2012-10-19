@@ -1,89 +1,49 @@
 ﻿namespace FSharpWebsite
 
 open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.Html
+open IntelliFactory.Html
+open IntelliFactory.WebSharper.Sitelets
+
 open Mongo
 
 module FSharpBooks =
      
     module Server =
 
-        let toSeqTriplesFast (items:seq<_>) =
-          use e = items.GetEnumerator()
-          let rec loop() =
-            seq {
-              if e.MoveNext() then
-                let a = e.Current
-                if e.MoveNext() then 
-                  let b = e.Current
-                  if e.MoveNext() then
-                    let c = e.Current
-                    yield (a, b, c)
-                    yield! loop()
-            }
-          loop()
+        let fsharpBooks =
+            Books.queryFsharpQuestions ()
+            |> Array.map (fun x ->
+                x.Url, x.Cover, x.Title, x.Authors, x.Publisher, x.ISBN, x.Pages.ToString())
+            |> Utilities.triples
+            |> Seq.toArray
 
-        [<RpcAttribute>]
-        let fsharpBooks () =
-            async {
-                let books = Books.queryFsharpQuestions ()
-                let booksData =
-                    books
-                    |> Array.map (fun x ->
-                        x.Url, x.Cover, x.Title, x.Authors, x.Publisher, x.ISBN, x.Pages.ToString())
-                    |> toSeqTriplesFast
-                    |> Seq.toArray
-                return booksData
-            }
-
-    module Client =
-
-        [<JavaScriptAttribute>]
-        let makeThumbnailLi (url, cover, title, authors, publisher, isbn, pages) =
-            LI [Attr.Class "span4"] -< [
-                Div [Attr.Class "thumbnail"] -< [
-                    Img [Src cover; Alt title; Width "180"; Height "220"]
-                    H3 [Text title]
+        let inline makeThumbnailLi (url, cover, title, authors, publisher, isbn, pages) =
+            LI [Class "span4"] -< [
+                Div [Class "thumbnail"] -< [
+                    Img [Class "cover"; Src cover; Alt title; Height "220px"]
+                    H4 [Text title]
                     P [Text <| "Authors: " + String.concat ", " authors]
-                    P [Text <| "Pbulisher: " + publisher]
+                    P [Text <| "Publisher: " + publisher]
                     P [Text <| "ISBN: " + isbn]
                     P [Text <| "Pages: " + pages]
-                    A [HRef url; Attr.Class "btn btn-primary"; Attr.Target "_blank"] -< [Text "Book Website"]
+                    A [HRef url; Class "btn btn-block"; Target "_blank"] -< [Text "Book Website"]
                 ]
             ]
 
-        [<JavaScriptAttribute>]
-        let booksDiv () =
-            let makeBooksUl (li : Element) li' li'' =
-                UL [Attr.Class "thumbnails"] -< [
-                    li
-                    li'
-                    li''
-                ]
+        let inline makeBooksUl (lis : Element<_> list) =
+            UL [Class "thumbnails"] -< lis
 
-            let makeDiv ul = Div [Attr.Class "row-fluid"] -< [ul]
+        let inline makeDiv (ul : Element<_>) = Div [Class "row-fluid"] -< [ul]
 
+        let inline makeDiv' (lis : Element<_> []) = Div [] -< lis
 
-            Div [] //-< [booksUl]
-            |>! OnAfterRender (fun div ->
-                async {
-                    let! books = Server.fsharpBooks ()
-                    books
-                    |> Seq.map (fun (x, y, z) ->
-                        let li = makeThumbnailLi x
-                        let li' = makeThumbnailLi y
-                        let li'' = makeThumbnailLi z
-                        li, li', li'')
-                    |> Seq.map (fun (x, y, z) -> makeBooksUl x y z)
-                    |> Seq.map makeDiv
-                    |> Seq.iter div.Append
-                } |> Async.Start)
-                
-    type FsharpBooksViewer () =
-        inherit Web.Control ()
-
-        [<JavaScriptAttribute>]
-        override this.Body =
-            Client.booksDiv () :> _
+        let inline divs () =
+            fsharpBooks
+            |> Array.map (fun x ->
+                List.map makeThumbnailLi x)
+            |> Array.map makeBooksUl
+            |> Array.map makeDiv
+      
+        let inline booksDiv () = makeDiv' <| divs ()
 
 

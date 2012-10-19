@@ -59,6 +59,16 @@ module Mongo =
                 Summary : string
             }
 
+        [<CLIMutableAttribute>]
+        type FSharpSnippet =
+            {
+                _id         : ObjectId
+                Link        : string
+                Title       : string
+                Description : string
+                Date        : DateTime
+            }
+
     [<AutoOpenAttribute>]              
     module Tweets =
 
@@ -157,6 +167,30 @@ module Mongo =
             query {
                 for x in queryable do
                     sortByDescending x.ReleaseDate
+            }
+            |> Seq.toArray
+
+    [<AutoOpenAttribute>]
+    module Snippets =
+
+        let fsharpBooksCollection =
+            Utilities.collectionByName<FSharpSnippet> Utilities.database "fsharpsnippets"
+
+        let queryable = fsharpBooksCollection.FindAll().AsQueryable()
+
+        let inline queryFsharpSnippets () =
+            query {
+                for x in queryable do
+                    sortByDescending x.Date
+            }
+            |> Seq.toArray
+
+        let inline queryFsharpSnippets' snippetsToSkip =
+            query {
+                for x in queryable do
+                    sortByDescending x.Date
+                    skip snippetsToSkip
+                    take 20
             }
             |> Seq.toArray
 

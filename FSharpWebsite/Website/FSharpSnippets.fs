@@ -32,7 +32,7 @@ module FSharpSnippets =
         
         [<JavaScriptAttribute>]
         let makeSnippetLi link title description =
-            LI [Attr.Class ""] -< [
+            LI [Attr.Class "snippet"] -< [
                 A [HRef link; Attr.Target "_blank"] -< [
                     Strong [Text title]
                 ]
@@ -67,7 +67,7 @@ module FSharpSnippets =
                         x.RemoveAttribute("disabled")
                     } |> Async.Start)
 
-            Div [Id "snippetsDiv"] -< [snippetsList; loadMoreBtn]
+            Div [Id "snippetsDiv"] -< [snippetsList] //; loadMoreBtn]
             |>! OnAfterRender(fun _ ->
                 async {
                     let! fsharpSnippets = Server.latestFSharpSnippets ()
@@ -76,7 +76,7 @@ module FSharpSnippets =
                         makeSnippetLi link title description)
                     |> Array.iter (fun x -> snippetsList.Append x)
                     incrementSnippetsCount 20
-                    loadMoreBtn.SetCss("visibility", "visible")
+//                    loadMoreBtn.SetCss("visibility", "visible")
                 } |> Async.Start)
 
     type FsharpSnippetsViewer () =

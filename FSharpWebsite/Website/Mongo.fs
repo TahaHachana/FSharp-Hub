@@ -28,8 +28,7 @@ module Mongo =
         /// Gets the database collection with the specified name.
         let inline collectionByName<'T> (db : MongoDatabase) (name : string) = db.GetCollection<'T> name
 
-        let connectionString = ""
-        let server = createServer connectionString
+        let server = createServer Secure.mongoConnectionString
         let database = databaseByName server "fsharpwebsite"
 
     [<AutoOpenAttribute>]
@@ -67,6 +66,17 @@ module Mongo =
                 Title       : string
                 Description : string
                 Date        : DateTime
+            }
+
+        [<CLIMutableAttribute>]
+        type FSharpVideo =
+            {
+                _id       : ObjectId
+                Title     : string
+                Url       : string
+                Thumbnail : string
+                Website   : string
+                Date      : DateTime
             }
 
     [<AutoOpenAttribute>]              
@@ -194,182 +204,33 @@ module Mongo =
             }
             |> Seq.toArray
 
+    [<AutoOpenAttribute>]
+    module Videos =
+
+        let fsharpVideosCollection =
+            Utilities.collectionByName<FSharpVideo> Utilities.database "fsharpvideos"
+
+        let queryable = fsharpVideosCollection.FindAll().AsQueryable()
+
+        let inline queryFsharpVideos () =
+            query {
+                for x in queryable do
+                    sortByDescending x.Date
+            }
+            |> Seq.toArray
+
+//        let video =
+//            {
+//                _id = ObjectId.GenerateNewId ()
+//                Title       = ""
+//                Url         = ""
+//                Thumbnail   = ""
+//                Website     = "Vimeo"
+//                Date    = DateTime.Parse ""
+//            }
+//
+//        fsharpVideosCollection.Insert video
 
 
 
-
-
-//        let book1 =
-//                {
-//                   _id = ObjectId.GenerateNewId()
-//                   Url = "http://www.apress.com/9781590598504"
-//                   Title  = "Expert F#"
-//                   Authors = [|"Antonio Cisternino"; "Adam Granicz"; "Don Syme"|]
-//                   Publisher = "Apress"
-//                   ISBN = "978-1-59059-850-4"
-//                   Pages = 609
-//                   ReleaseDate = DateTime.Parse "10/10/2007"
-//                   Cover = "http://www.apress.com/media/catalog/product/cache/9/image/9df78eab33525d08d6e5fb8d27136e95/A/9/A9781590598504-3d_3.png"
-//                }
-//
-//        let book2 =
-//            {
-//                _id         = ObjectId.GenerateNewId()
-//                Url = "http://www.apress.com/9781430246503"
-//                Title       = "Expert F# 3.0"
-//                Authors     = [|"Antonio Cisternino"; "Adam Granicz"; "Don Syme"|]
-//                Publisher   = "Apress"
-//                ISBN        = "978-1-4302-4650-3"
-//                Pages       = 650
-//                ReleaseDate = DateTime.Parse "10/31/2012"
-//                Cover       = "http://www.apress.com/media/catalog/product/cache/9/image/9df78eab33525d08d6e5fb8d27136e95/A/9/A9781590598504-3d_3.png"
-//            }
-//
-//        let book3 =
-//            {
-//               _id = ObjectId.GenerateNewId()
-//               Url = "http://eu.wiley.com/WileyCDA/WileyTitle/productCd-047052801X.html"
-//               Title = "Professional F# 2.0"
-//               Authors = [|"Ted Neward"; "Aaron Erickson"; "Talbott Crowell"; "Rick Minerich"|]
-//               Publisher = "Wiley"
-//               ISBN = "978-0-470-52801-3"
-//               Pages = 432
-//               ReleaseDate = DateTime.Parse "November 2010"
-//               Cover = "http://media.wiley.com/product_data/coverImage300/1X/04705280/047052801X.jpg"
-//            }
-//
-//        let book4 =
-//            {
-//               _id = ObjectId.GenerateNewId()
-//               Url = "http://www.apress.com/9781590597576"
-//               Title = "Foundations of F#"
-//               Authors = [|"Robert Pickering"|]
-//               Publisher = "Apress"
-//               ISBN = "978-1-59059-757-6"
-//               Pages = 360
-//               ReleaseDate = DateTime.Parse "06/01/2007"
-//               Cover = "http://www.apress.com/media/catalog/product/cache/9/image/9df78eab33525d08d6e5fb8d27136e95/A/9/A9781590597576-3d_9.png"
-//            }
-//
-//        let book5 =
-//            {
-//               _id = ObjectId.GenerateNewId()
-//               Url = "http://www.apress.com/9781430224310"
-//               Title = "Expert F# 2.0"
-//               Authors = [|"Don Syme"; "Adam Granicz"; "Antonio Cisternino"|]
-//               Publisher = "Apress"
-//               ISBN = "978-1-4302-2431-0"
-//               Pages = 624
-//               ReleaseDate = DateTime.Parse "06/07/2010"
-//               Cover = "http://www.apress.com/media/catalog/product/cache/9/image/9df78eab33525d08d6e5fb8d27136e95/A/9/A9781430224310-3d_10.png"
-//            }
-//
-//        let book6 =
-//            {
-//               _id = ObjectId.GenerateNewId()
-//               Url = "http://www.apress.com/9781430223894"
-//               Title = "Beginning F#"
-//               Authors = [|"Robert Pickering"|]
-//               Publisher = "Apress"
-//               ISBN = "978-1-4302-2389-4"
-//               Pages = 448
-//               ReleaseDate = DateTime.Parse "12/21/2009"
-//               Cover = "http://www.apress.com/media/catalog/product/cache/9/image/9df78eab33525d08d6e5fb8d27136e95/A/9/A9781430223894-3d_10.png"
-//            }
-//
-//        let book7 =
-//            {
-//               _id = ObjectId.GenerateNewId()
-//               Url = "http://shop.oreilly.com/product/9780596153656.do"
-//               Title = "Programming F#"
-//               Authors = [|"Chris Smith"|]
-//               Publisher = "O'Reilly"
-//               ISBN = "978-0-596-15364-9"
-//               Pages = 410
-//               ReleaseDate = DateTime.Parse "October 2009"
-//               Cover = "http://akamaicovers.oreilly.com/images/9780596153656/cat.gif"
-//            }
-//
-//        let book8 =
-//            {
-//               _id = ObjectId.GenerateNewId()
-//               Url = "http://eu.wiley.com/WileyCDA/WileyTitle/productCd-0470242116.html"
-//               Title = "F# for Scientists"
-//               Authors = [|"Jon Harrop"; "Don Syme"|]
-//               Publisher = "Wiley"
-//               ISBN = "978-0-470-24211-7"
-//               Pages = 368
-//               ReleaseDate = DateTime.Parse "August 2008"
-//               Cover = "http://media.wiley.com/product_data/coverImage300/16/04702421/0470242116.jpg"
-//            }
-//
-//        let book9 =
-//            {
-//               _id = ObjectId.GenerateNewId()
-//               Url = "http://shop.oreilly.com/product/0636920024033.do"
-//               Title = "Programming F# 3.0"
-//               Authors = [|"Chris Smith"|]
-//               Publisher = "O'Reilly"
-//               ISBN = "978-1-4493-2029-4"
-//               Pages = 476
-//               ReleaseDate = DateTime.Parse "October 2012"
-//               Cover = "http://akamaicovers.oreilly.com/images/0636920024033/cat.gif"
-//            }
-//
-//        let book10 =
-//            {
-//               _id = ObjectId.GenerateNewId()
-//               Url = "http://shop.oreilly.com/product/0636920026099.do"
-//               Title = "Building Web, Cloud, and Mobile Solutions with F#"
-//               Authors = [|"Daniel Mohl"|]
-//               Publisher = "O'Reilly"
-//               ISBN = "978-1-4493-3376-8"
-//               Pages = 166
-//               ReleaseDate = DateTime.Parse "October 2012"
-//               Cover = "http://akamaicovers.oreilly.com/images/0636920026099/rc_cat.gif"
-//            }
-//
-//        let book11 =
-//            {
-//               _id = ObjectId.GenerateNewId()
-//               Url = "http://shop.oreilly.com/product/0790145366641.do"
-//               Title = "F# for C# Developers"
-//               Authors = [|"Tao Liu"|]
-//               Publisher = "Microsoft Press"
-//               ISBN = "978-0-7356-7026-6"
-//               Pages = 608
-//               ReleaseDate = DateTime.Parse "March 2013"
-//               Cover = "http://akamaicovers.oreilly.com/images/0790145366641/cat.gif"
-//            }
-//
-//        let book12 =
-//            {
-//               _id = ObjectId.GenerateNewId()
-//               Url = "http://www.manning.com/petricek/"
-//               Title = "Real-World Functional Programming"
-//               Authors = [|"Tomas Petricek"; "Jon Skeet"|]
-//               Publisher = "Manning"
-//               ISBN = "9781933988924"
-//               Pages = 560
-//               ReleaseDate = DateTime.Parse "December 2009"
-//               Cover = "http://www.manning.com/petricek/petricek_cover150.jpg"
-//            }
-//
-//        let books =
-//            [
-//                book1
-//                book2
-//                book3
-//                book4
-//                book5
-//                book6
-//                book7
-//                book8
-//                book9
-//                book10
-//                book11
-//                book12
-//            ]
-//
-//        fsharpBooksCollection.InsertBatch books
 

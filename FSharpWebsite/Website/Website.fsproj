@@ -35,8 +35,10 @@
   <Import Project="$(WEBSHARPER_HOME)/IntelliFactory.WebSharper.Sitelets.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <ItemGroup>
+    <Compile Include="Secure.fs" />
     <Compile Include="Mongo.fs" />
     <Compile Include="Utilities.fs" />
+    <Compile Include="FSharpVideos.fs" />
     <Compile Include="FSharpSnippets.fs" />
     <Compile Include="FSharpBooks.fs" />
     <Compile Include="FSharpTweets.fs" />

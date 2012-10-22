@@ -10,22 +10,23 @@ module Utilities =
 
     let inline compileRegex pattern = Regex(pattern, RegexOptions.Compiled)
 
-    let inline triples (source: seq<'T>) =
+    let inline toChunks length (source: seq<'T>) =
         use ie = source.GetEnumerator()
+        let sourceIsEmpty = ref false
         let rec loop () =
-            seq {  
-                if ie.MoveNext() then
-                    let x = ie.Current  
-                    if ie.MoveNext() then
-                        let y = ie.Current
-                        if ie.MoveNext() then
-                            let z = ie.Current
-                            yield [x; y; z]
-                            yield! loop ()
-                        else
-                            yield [x; y]
-                    else
-                        yield [x]
+            seq {
+                if ie.MoveNext () then
+                    yield [
+                            yield ie.Current
+                            for x in 2 .. length do
+                                if ie.MoveNext() then
+                                    yield ie.Current
+                                else
+                                    sourceIsEmpty := true
+                    ]
+                    match !sourceIsEmpty with
+                    | false -> yield! loop ()
+                    | true  -> ()
             }
         loop ()
 

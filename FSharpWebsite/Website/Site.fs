@@ -4,20 +4,22 @@ open IntelliFactory.Html
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.Sitelets
 
-type Action =
-    | Home
-    | Books
-    | Custom404
+[<AutoOpenAttribute>]
+module Helpers =
 
-module Skin =
-    open System.Web
+    let ( => ) text url =
+        A [HRef url] -< [Text text]
 
-    let TemplateLoadFrequency =
-        #if DEBUG
-        Content.Template.PerRequest
-        #else
-        Content.Template.Once
-        #endif
+[<AutoOpenAttribute>]
+module Models =
+
+    type PageId = int
+
+    type Action =
+        | Home
+        | Books
+        | Custom404
+        | Videos of PageId
 
     type Page =
         {
@@ -26,26 +28,31 @@ module Skin =
             Body            : list<Content.HtmlElement>
         }
 
-    let MainTemplate =
+module Skin =
+
+    open System.Web
+
+    let templateLoadFrequency = Content.Template.Once
+//        #if DEBUG
+//        Content.Template.PerRequest
+//        #else
+//        Content.Template.Once
+//        #endif
+
+    let mainTemplate =
         let path = HttpContext.Current.Server.MapPath("~/Main.html")
-        Content.Template<Page>(path, TemplateLoadFrequency)
+        Content.Template<Page>(path, templateLoadFrequency)
             .With("title", fun x -> x.Title)
             .With("metaDescription", fun x -> x.MetaDescription)
             .With("body", fun x -> x.Body)
 
-    let WithTemplate title metaDescription body : Content<Action> =
-        Content.WithTemplate MainTemplate <| fun context ->
+    let withTemplate title metaDescription body : Content<Action> =
+        Content.WithTemplate mainTemplate <| fun context ->
             {
                 Title           = title
                 MetaDescription = metaDescription
                 Body            = body context
             }
-
-[<AutoOpenAttribute>]
-module Helpers =
-
-    let ( => ) text url =
-        A [HRef url] -< [Text text]
 
 module SharedContent =
 
@@ -53,14 +60,9 @@ module SharedContent =
             Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
                 Div [Class "navbar-inner"] -< [
                     UL [Class "nav"] -< [
-                        LI [A [HRef "/"] -< [Text "Home"]]
-//                        LI [A [ HRef "#"] -< [Text "News"]]
-                        LI [A [HRef "/fsharp-books"] -< [Text "Books"]]
-//                        LI [A [ HRef "#"] -< [Text "Videos"]]
-//                        LI [A [ HRef "#"] -< [Text "Resources"]]
-//                        LI [A [ HRef "#"] -< [Text "Community"]]
-//                        LI [A [ HRef "#"] -< [Text "Links"]]
-//                        LI [A [ HRef "#"] -< [Text "Contact"]]
+                        LI [A [HRef "/Home"] -< [Text "Home"]]
+                        LI [A [HRef "/Books"] -< [Text "Books"]]
+                        LI [Class "active"] -< [A [HRef "/Videos/1"] -< [Text "Videos"]]
                     ]
                 ]
                 Div [Class "alert alert-info"; Id "alertDiv"] -< [
@@ -70,7 +72,10 @@ module SharedContent =
 
     let forkme =
         A [HRef "https://github.com/TahaHachana/FSharpWebsite"; Target "_blank"] -< [
-            Img [Src "https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"; Alt "Fork me on GitHub"; Id "forkme"]
+            Img [
+                Src "https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+                Alt "Fork me on GitHub"
+                Id "forkme"]
         ]
        
 module HomeContent =
@@ -79,10 +84,25 @@ module HomeContent =
 
     let metaDescription = ""
 
+    let navigation =
+            Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
+                Div [Class "navbar-inner"] -< [
+                    UL [Class "nav"] -< [
+                        LI [Class "active"] -< [A [HRef "/"] -< [Text "Home"]]
+                        LI [A [HRef "/Books"] -< [Text "Books"]]
+                        LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
+                    ]
+                ]
+                Div [Class "alert alert-info"; Id "alertDiv"] -< [
+                    P [Class "centered"; Id "alertText"] -< [Text ""]
+                ]
+            ]
+
     let definition =
             P [
                 Strong [Text "FSharp"]
-                Text " is an advanced, multi-paradigm, strongly typed open source programming language. F# allows you to solve complex problems with simple code."
+                Text " is an advanced, multi-paradigm, strongly typed open source programming language.
+                    F# allows you to solve complex problems with simple code."
             ]
 
     let heroUnit =
@@ -147,18 +167,63 @@ module HomeContent =
 
 module BooksPageContent =
 
+    let title = ""
+    let metaDescription = ""
+
+    let navigation =
+            Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
+                Div [Class "navbar-inner"] -< [
+                    UL [Class "nav"] -< [
+                        LI [A [HRef "/"] -< [Text "Home"]]
+                        LI [Class "active"] -< [A [HRef "/Books"] -< [Text "Books"]]
+                        LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
+                    ]
+                ]
+                Div [Class "alert alert-info"; Id "alertDiv"] -< [
+                    P [Class "centered"; Id "alertText"] -< [Text ""]
+                ]
+            ]
+
     let header =
         Utilities.Header [
             H1 [Text "FSharp Books"]
-            P [Class "lead"] -< [Text "F# books"]
+            P [Class "lead"] -< [
+                Text "Learn F# or dive into advanced topics by reading books by experts
+                    from Microsoft and the language community."
+            ]
         ]
 
-module Site =
+module VideosPageContent =
 
-    let HomePage =
-        Skin.WithTemplate HomeContent.title HomeContent.metaDescription <| fun ctx ->
+    let title pageId = sprintf "FSharp Videos - Page %d" pageId
+    let metaDescription = ""
+
+    let navigation =
+            Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
+                Div [Class "navbar-inner"] -< [
+                    UL [Class "nav"] -< [
+                        LI [A [HRef "/"] -< [Text "Home"]]
+                        LI [A [HRef "/Books"] -< [Text "Books"]]
+                        LI [A [HRef "/Videos/1"; Class "active"] -< [Text "Videos"]]
+                    ]
+                ]
+                Div [Class "alert alert-info"; Id "alertDiv"] -< [
+                    P [Class "centered"; Id "alertText"] -< [Text ""]
+                ]
+            ]
+
+    let header =
+        Utilities.Header [
+            H1 [Text "FSharp Videos"]
+            P [Class "lead"] -< [Text "F# videos"]
+        ]
+
+module Views =
+
+    let homeView =
+        Skin.withTemplate HomeContent.title HomeContent.metaDescription <| fun ctx ->
             [
-                SharedContent.navigation
+                HomeContent.navigation
                 SharedContent.forkme
                 HomeContent.heroUnit
                 Div [Class "container"] -< [
@@ -168,8 +233,8 @@ module Site =
                 ]
             ]
 
-    let Custom404Page =
-        Skin.WithTemplate "" "" <| fun ctx ->
+    let custom404View =
+        Skin.withTemplate "" "" <| fun ctx ->
             [
                  Div [
                     P [Text "The page you're trying to access doesn't exist."]
@@ -177,10 +242,10 @@ module Site =
                 ]
             ]
 
-    let BooksPage =
-        Skin.WithTemplate HomeContent.title HomeContent.metaDescription <| fun ctx ->
+    let booksView =
+        Skin.withTemplate BooksPageContent.title BooksPageContent.metaDescription <| fun ctx ->
             [
-                SharedContent.navigation
+                BooksPageContent.navigation
                 SharedContent.forkme
                 Div [Class "container"] -< [
                     BooksPageContent.header
@@ -188,17 +253,75 @@ module Site =
                 ]
             ]
 
+    let videosViews =
+        FSharpVideos.Server.divs ()
+        |> Array.map (fun (pageId, element) ->
+            
+            let title = VideosPageContent.title pageId
+            let navigation =
+                match pageId with
+                    | 1 -> SharedContent.navigation
+                    | _ -> VideosPageContent.navigation
+
+            let view = Skin.withTemplate title VideosPageContent.metaDescription <| fun ctx ->
+                [
+                    navigation
+                    SharedContent.forkme
+                    Div [Class "container"] -< [
+                        VideosPageContent.header
+                        Div [element]
+                        Span [
+                            Id "pager"
+                            Attributes.HTML5.Data "pages-count" FSharpVideos.Server.pagesCount
+                            Attributes.HTML5.Data "previous" (string (pageId - 1))
+                            Attributes.HTML5.Data "next" (string (pageId + 1))]
+                        Div [Class "offset6 span2"] -< [new FSharpVideos.PagerViewer()]
+                    ]
+                ]
+            pageId, view)
+
+
+    let videosView pageId =
+        videosViews
+        |> Array.find (fun (id, _) -> id = pageId)
+        |> snd
+
+module Controller =
+    
+    open Views
+
+    let controller =
+
+        let handle = function
+            | Home           -> homeView
+            | Books          -> booksView
+            | Custom404      -> custom404View
+            | Videos pageId  -> videosView pageId
+
+        { Handle = handle }
+
+module Site =
+
+    open Controller
+
+    let router : Router<Action> =
+        Router.Table
+            [
+                Home, "/"
+            ]
+        <|>
+        Router.Infer()
+
     let Main =
-        Sitelet.Sum [
-            Sitelet.Content "/" Home HomePage
-            Sitelet.Content "/fsharp-books" Books BooksPage
-            Sitelet.Content "/custom404" Custom404 Custom404Page
-        ]
+        {
+            Controller = controller
+            Router     = router
+        }
 
 type Website() =
     interface IWebsite<Action> with
         member this.Sitelet = Site.Main
-        member this.Actions = [Home; Custom404]
+        member this.Actions = [Home]
 
 [<assembly: WebsiteAttribute(typeof<Website>)>]
 do ()

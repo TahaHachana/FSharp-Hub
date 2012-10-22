@@ -49,7 +49,8 @@ module FSharpQuestions =
                 A [HRef link; Attr.Target "_blank"] -< [
                     Strong [Text title]
                 ]
-                Small [Text <| " (" + date + ", " + website + ")"]
+                Br []
+                Small [Text <| date + ", " + website]
                 P [Text summary]
             ]
 

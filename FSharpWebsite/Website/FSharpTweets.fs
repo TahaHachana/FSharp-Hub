@@ -98,7 +98,8 @@ module FSharpTweets =
                     Img [Src profileImage; Alt fullName; Attr.Class "avatar"; Height "48"; Width "48"]
                     Strong [Text fullName]
                 ] -< [Text (" @" + screenName)]
-                Small [Attr.Class "pull-right"] -< [Text <| "(" + creationDate + ")"]
+                Br []
+                Small [Text creationDate]
                 tweetP
                 Div [Attr.Class "pull-right"] -< [
                     UL [Attr.Class "tweetActions"] -< [

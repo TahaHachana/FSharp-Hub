@@ -41,7 +41,8 @@
 }
 
 .tweet,
-.question
+.question,
+.snippet
 {
     padding: 12px 12px 25px 12px;
     border-bottom: 1px solid;
@@ -78,3 +79,5 @@
 }
 
 .cover { height: 220px; }
+
+.videoThumb { height: 120px; }

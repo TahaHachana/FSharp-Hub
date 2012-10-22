@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,jQuery,WebSharper,Remoting,FSharpWebsite,FSharpQuestions,Client,Arrays,Utilities,Concurrency,Html,Operators,Default,List,EventsPervasives,setInterval,FSharpSnippets,Client1,FSharpTweets,Client2,T;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,jQuery,WebSharper,Remoting,FSharpWebsite,FSharpQuestions,Client,Arrays,Utilities,Concurrency,Html,Operators,Default,List,T,EventsPervasives,setInterval,FSharpSnippets,Client1,FSharpTweets,Client2,FSharpVideos,Client3;
  Runtime.Define(Global,{
   FSharpWebsite:{
    FSharpQuestions:{
@@ -76,7 +76,9 @@
      makeQuestionLi:function(link,title,date,website,summary)
      {
       var _this,x,_this1,x1,x2,_this2;
-      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("question")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),(x1=List.ofArray([(x2=" ("+date+", "+website+")",Default.Text(x2))]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),Default.P(List.ofArray([Default.Text(summary)]))]));
+      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("question")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),Default.Br(Runtime.New(T,{
+       $:0
+      })),(x1=List.ofArray([(x2=date+", "+website,Default.Text(x2))]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),Default.P(List.ofArray([Default.Text(summary)]))]));
      },
      questionsDiv:function()
      {
@@ -248,7 +250,7 @@
      makeSnippetLi:function(link,title,description)
      {
       var _this,x,_this1;
-      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),Default.P(List.ofArray([Default.Text(description)]))]));
+      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("snippet")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),Default.P(List.ofArray([Default.Text(description)]))]));
      },
      snippetsDiv:function()
      {
@@ -323,7 +325,7 @@
       {
        return EventsPervasives.Events().OnClick(x1,arg10);
       }),(f(x),x)));
-      x7=Operators.add(Default.Div(List.ofArray([Default.Id("snippetsDiv")])),List.ofArray([snippetsList,loadMoreBtn]));
+      x7=Operators.add(Default.Div(List.ofArray([Default.Id("snippetsDiv")])),List.ofArray([snippetsList]));
       f7=(f8=function()
       {
        var x2,f1,f5;
@@ -333,7 +335,7 @@
         x3=Remoting.Async("Website:6",[]);
         f2=function(_arg21)
         {
-         var x4,f3,mapping,f4,action,objectArg,arg00;
+         var x4,f3,mapping,f4,action;
          x4=(f3=(mapping=Runtime.Tupled(function(tupledArg)
          {
           var link,title,description;
@@ -354,14 +356,6 @@
          });
          f4(x4);
          Client1.incrementSnippetsCount(20);
-         objectArg=loadMoreBtn["HtmlProvider@32"];
-         ((arg00=loadMoreBtn.Body,function(arg10)
-         {
-          return function(arg20)
-          {
-           return objectArg.SetCss(arg00,arg10,arg20);
-          };
-         })("visibility"))("visible");
          return Concurrency.Return(null);
         };
         return Concurrency.Bind(x3,f2);
@@ -474,7 +468,7 @@
      },
      makeTweetLi:function(screenName,tweetId,profileImage,fullName,tweetHtml,creationDate)
      {
-      var profileLink,replyLink,retweetLink,favoriteLink,tweetP,_this,x,_this1,x1,_this2,x2,_this3,_this4,_this5;
+      var profileLink,replyLink,retweetLink,favoriteLink,tweetP,_this,x,_this1,x1,_this2,_this3,_this4,_this5;
       profileLink="https://twitter.com/"+screenName;
       replyLink="https://twitter.com/intent/tweet?in_reply_to="+tweetId;
       retweetLink="https://twitter.com/intent/retweet?tweet_id="+tweetId;
@@ -483,7 +477,9 @@
        $:0
       }));
       tweetP.set_Html(tweetHtml);
-      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweet")])),List.ofArray([Operators.add(Operators.add(Default.A(List.ofArray([Default.HRef(profileLink),Default.Attr().Class("twitterProfileLink"),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([Default.Img(List.ofArray([Default.Src(profileImage),Default.Alt(fullName),Default.Attr().Class("avatar"),Default.Height("48"),Default.Width("48")])),(x=List.ofArray([Default.Text(fullName)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),List.ofArray([Default.Text(" @"+screenName)])),Operators.add((x1=List.ofArray([Default.Attr().Class("pull-right")]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),List.ofArray([(x2="("+creationDate+")",Default.Text(x2))])),tweetP,Operators.add(Default.Div(List.ofArray([Default.Attr().Class("pull-right")])),List.ofArray([Operators.add(Default.UL(List.ofArray([Default.Attr().Class("tweetActions")])),List.ofArray([Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),(_this3=Default.Attr(),_this3.NewAttr("target","_blank"))])),List.ofArray([Default.Text("Reply")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),(_this4=Default.Attr(),_this4.NewAttr("target","_blank"))])),List.ofArray([Default.Text("Retweet")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),(_this5=Default.Attr(),_this5.NewAttr("target","_blank"))])),List.ofArray([Default.Text("Favorite")]))]))]))]))]));
+      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweet")])),List.ofArray([Operators.add(Operators.add(Default.A(List.ofArray([Default.HRef(profileLink),Default.Attr().Class("twitterProfileLink"),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([Default.Img(List.ofArray([Default.Src(profileImage),Default.Alt(fullName),Default.Attr().Class("avatar"),Default.Height("48"),Default.Width("48")])),(x=List.ofArray([Default.Text(fullName)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),List.ofArray([Default.Text(" @"+screenName)])),Default.Br(Runtime.New(T,{
+       $:0
+      })),(x1=List.ofArray([Default.Text(creationDate)]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),tweetP,Operators.add(Default.Div(List.ofArray([Default.Attr().Class("pull-right")])),List.ofArray([Operators.add(Default.UL(List.ofArray([Default.Attr().Class("tweetActions")])),List.ofArray([Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),(_this3=Default.Attr(),_this3.NewAttr("target","_blank"))])),List.ofArray([Default.Text("Reply")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),(_this4=Default.Attr(),_this4.NewAttr("target","_blank"))])),List.ofArray([Default.Text("Retweet")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),(_this5=Default.Attr(),_this5.NewAttr("target","_blank"))])),List.ofArray([Default.Text("Favorite")]))]))]))]))]));
      },
      setTweetId:function(id)
      {
@@ -672,6 +668,62 @@
      }
     })
    },
+   FSharpVideos:{
+    Client:{
+     pager:function()
+     {
+      var x,f,f1;
+      x=Operators.add(Default.UL(List.ofArray([Default.Attr().Class("pager")])),List.ofArray([Operators.add(Default.LI(List.ofArray([Default.Id("previous"),Default.Attr().Class("previous")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Id("prevLink"),Default.HRef("")])),List.ofArray([Default.Text("Prev")]))])),Operators.add(Default.LI(List.ofArray([Default.Id("next"),Default.Attr().Class("next")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Id("nextLink"),Default.HRef("")])),List.ofArray([Default.Text("Next")]))]))]));
+      f=(f1=function()
+      {
+       var jquery,previous,x1,f2,next,x2,f3,pagesCount,x3,x4,f4,f5;
+       jquery=jQuery("#pager");
+       previous=(x1=jquery.attr("data-previous"),(f2=function(value)
+       {
+        return value<<0;
+       },f2(x1)));
+       next=(x2=jquery.attr("data-next"),(f3=function(value)
+       {
+        return value<<0;
+       },f3(x2)));
+       pagesCount=(x3=(x4=jquery.attr("data-pages-count"),(f4=function(value)
+       {
+        return value<<0;
+       },f4(x4))),(f5=function(x5)
+       {
+        return x5+1;
+       },f5(x3)));
+       if(previous===0)
+        {
+         jQuery("#previous").addClass("disabled");
+        }
+       else
+        {
+         jQuery("#prevLink").attr("href","/Videos/"+Global.String(previous));
+        }
+       if(next===pagesCount)
+        {
+         return jQuery("#next").addClass("disabled");
+        }
+       else
+        {
+         return jQuery("#nextLink").attr("href","/Videos/"+Global.String(next));
+        }
+      },function(w)
+      {
+       return Operators.OnAfterRender(f1,w);
+      });
+      f(x);
+      return x;
+     }
+    },
+    PagerViewer:Runtime.Class({
+     get_Body:function()
+     {
+      return Client3.pager();
+     }
+    })
+   },
    Utilities:{
     displayInfoAlert:function(msg)
     {
@@ -718,13 +770,15 @@
   Operators=Runtime.Safe(Html.Operators);
   Default=Runtime.Safe(Html.Default);
   List=Runtime.Safe(WebSharper.List);
+  T=Runtime.Safe(List.T);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
   setInterval=Runtime.Safe(Global.setInterval);
   FSharpSnippets=Runtime.Safe(FSharpWebsite.FSharpSnippets);
   Client1=Runtime.Safe(FSharpSnippets.Client);
   FSharpTweets=Runtime.Safe(FSharpWebsite.FSharpTweets);
   Client2=Runtime.Safe(FSharpTweets.Client);
-  return T=Runtime.Safe(List.T);
+  FSharpVideos=Runtime.Safe(FSharpWebsite.FSharpVideos);
+  return Client3=Runtime.Safe(FSharpVideos.Client);
  });
  Runtime.OnLoad(function()
  {

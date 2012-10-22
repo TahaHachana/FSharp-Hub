@@ -3,7 +3,6 @@
 open IntelliFactory.WebSharper
 open IntelliFactory.Html
 open IntelliFactory.WebSharper.Sitelets
-
 open Mongo
 
 module FSharpBooks =
@@ -14,13 +13,13 @@ module FSharpBooks =
             Books.queryFsharpQuestions ()
             |> Array.map (fun x ->
                 x.Url, x.Cover, x.Title, x.Authors, x.Publisher, x.ISBN, x.Pages.ToString())
-            |> Utilities.triples
+            |> Utilities.toChunks 3
             |> Seq.toArray
 
         let inline makeThumbnailLi (url, cover, title, authors, publisher, isbn, pages) =
             LI [Class "span4"] -< [
                 Div [Class "thumbnail"] -< [
-                    Img [Class "cover"; Src cover; Alt title; Height "220px"]
+                    Img [Class "cover"; Src cover; Alt title; Height "220"]
                     H4 [Text title]
                     P [Text <| "Authors: " + String.concat ", " authors]
                     P [Text <| "Publisher: " + publisher]

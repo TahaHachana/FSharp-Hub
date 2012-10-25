@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\FSharpWebsite.pubxml" />
+    <None Include="Properties\PublishProfiles\FSharpWebsiteLocal.pubxml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

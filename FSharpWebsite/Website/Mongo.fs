@@ -219,13 +219,14 @@ module Mongo =
             }
             |> Seq.toArray
 
+        
 //        let video =
 //            {
 //                _id = ObjectId.GenerateNewId ()
 //                Title       = ""
 //                Url         = ""
 //                Thumbnail   = ""
-//                Website     = "Vimeo"
+//                Website     = ""
 //                Date    = DateTime.Parse ""
 //            }
 //

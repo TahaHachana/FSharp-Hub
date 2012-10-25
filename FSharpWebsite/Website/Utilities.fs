@@ -10,6 +10,7 @@ module Utilities =
 
     let inline compileRegex pattern = Regex(pattern, RegexOptions.Compiled)
 
+    /// Returns a sequence that yields chunks of length n. Each chunk is returned as a list.
     let inline toChunks length (source: seq<'T>) =
         use ie = source.GetEnumerator()
         let sourceIsEmpty = ref false
@@ -54,4 +55,3 @@ module Utilities =
     [<JavaScriptAttribute>]
     let prependElement (selector : string) (element : Element) =
         JQuery.Of(selector).Prepend(element.Dom).Ignore
-

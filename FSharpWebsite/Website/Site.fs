@@ -19,6 +19,7 @@ module Models =
         | Home
         | Books
         | Custom404
+        | Resources
         | Videos of PageId
 
     type Page =
@@ -62,7 +63,8 @@ module SharedContent =
                     UL [Class "nav"] -< [
                         LI [A [HRef "/Home"] -< [Text "Home"]]
                         LI [A [HRef "/Books"] -< [Text "Books"]]
-                        LI [Class "active"] -< [A [HRef "/Videos/1"] -< [Text "Videos"]]
+                        LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
+                        LI [A [HRef "/Resources"] -< [Text "Resources"]]
                     ]
                 ]
                 Div [Class "alert alert-info"; Id "alertDiv"] -< [
@@ -77,7 +79,7 @@ module SharedContent =
                 Alt "Fork me on GitHub"
                 Id "forkme"]
         ]
-       
+
 module HomeContent =
     
     let title = "FSharp Programming Language"
@@ -91,6 +93,7 @@ module HomeContent =
                         LI [Class "active"] -< [A [HRef "/"] -< [Text "Home"]]
                         LI [A [HRef "/Books"] -< [Text "Books"]]
                         LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
+                        LI [A [HRef "/Resources"] -< [Text "Resources"]]
                     ]
                 ]
                 Div [Class "alert alert-info"; Id "alertDiv"] -< [
@@ -162,7 +165,6 @@ module HomeContent =
                     Attributes.HTML5.Data "snippets-count" "0"
                 ] -< [new FSharpSnippets.FsharpSnippetsViewer ()]
             ]
-
         ]
 
 module BooksPageContent =
@@ -177,6 +179,7 @@ module BooksPageContent =
                         LI [A [HRef "/"] -< [Text "Home"]]
                         LI [Class "active"] -< [A [HRef "/Books"] -< [Text "Books"]]
                         LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
+                        LI [A [HRef "/Resources"] -< [Text "Resources"]]
                     ]
                 ]
                 Div [Class "alert alert-info"; Id "alertDiv"] -< [
@@ -204,7 +207,8 @@ module VideosPageContent =
                     UL [Class "nav"] -< [
                         LI [A [HRef "/"] -< [Text "Home"]]
                         LI [A [HRef "/Books"] -< [Text "Books"]]
-                        LI [A [HRef "/Videos/1"; Class "active"] -< [Text "Videos"]]
+                        LI [Class "active"] -< [A [HRef "/Videos/1"] -< [Text "Videos"]]
+                        LI [A [HRef "/Resources"] -< [Text "Resources"]]
                     ]
                 ]
                 Div [Class "alert alert-info"; Id "alertDiv"] -< [
@@ -216,6 +220,46 @@ module VideosPageContent =
         Utilities.Header [
             H1 [Text "FSharp Videos"]
             P [Class "lead"] -< [Text "F# videos"]
+        ]
+
+module ResourcesPageContent =
+
+    let title = "FSharp Resources"
+    let metaDescription = ""
+
+    let navigation =
+            Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
+                Div [Class "navbar-inner"] -< [
+                    UL [Class "nav"] -< [
+                        LI [A [HRef "/"] -< [Text "Home"]]
+                        LI [A [HRef "/Books"] -< [Text "Books"]]
+                        LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
+                        LI [Class "active"] -< [A [HRef "/Resources"] -< [Text "Resources"]]
+                    ]
+                ]
+                Div [Class "alert alert-info"; Id "alertDiv"] -< [
+                    P [Class "centered"; Id "alertText"] -< [Text ""]
+                ]
+            ]
+
+    let header =
+        Utilities.Header [
+            H1 [Text "FSharp Resources"]
+            P [Class "lead"] -< [Text "F# Resources"]
+        ]
+       
+    let tabs =
+        Div [Class "tabbable tabs-left"] -< [
+            UL [Class "nav nav-tabs"] -< [
+                LI [Class "active"] -< [A [HRef "#downloads"; HTML5.Data "toggle" "tab"] -< [Text "Downloads"]]
+                LI [A [HRef "#mailinglists"; HTML5.Data "toggle" "tab"] -< [Text "Mailing Lists"]]
+                LI [A [HRef "#codesamples"; HTML5.Data "toggle" "tab"] -< [Text "Code Samples"]]
+            ]
+            Div [Class "tab-content"] -< [
+                Div [Class "tab-pane active"; Id "downloads"] -< [P [Text "downloads"]]
+                Div [Class "tab-pane"; Id "mailinglists"] -< [P [Text "mailing lists"]]
+                Div [Class "tab-pane"; Id "codesamples"] -< [P [Text "code samples"]]
+            ]
         ]
 
 module Views =
@@ -236,7 +280,7 @@ module Views =
     let custom404View =
         Skin.withTemplate "" "" <| fun ctx ->
             [
-                 Div [
+                Div [
                     P [Text "The page you're trying to access doesn't exist."]
                     LI ["Home" => ctx.Link Home]
                 ]
@@ -260,8 +304,8 @@ module Views =
             let title = VideosPageContent.title pageId
             let navigation =
                 match pageId with
-                    | 1 -> SharedContent.navigation
-                    | _ -> VideosPageContent.navigation
+                    | 1 -> VideosPageContent.navigation
+                    | _ -> SharedContent.navigation
 
             let view = Skin.withTemplate title VideosPageContent.metaDescription <| fun ctx ->
                 [
@@ -286,6 +330,17 @@ module Views =
         |> Array.find (fun (id, _) -> id = pageId)
         |> snd
 
+    let resourcesView =
+        Skin.withTemplate ResourcesPageContent.title ResourcesPageContent.metaDescription <| fun ctx ->
+            [
+                ResourcesPageContent.navigation
+                SharedContent.forkme
+                Div [Class "container"] -< [
+                    ResourcesPageContent.header
+                    ResourcesPageContent.tabs
+                ]
+            ]
+
 module Controller =
     
     open Views
@@ -293,10 +348,11 @@ module Controller =
     let controller =
 
         let handle = function
-            | Home           -> homeView
-            | Books          -> booksView
-            | Custom404      -> custom404View
-            | Videos pageId  -> videosView pageId
+            | Home          -> homeView
+            | Books         -> booksView
+            | Custom404     -> custom404View
+            | Videos pageId -> videosView pageId
+            | Resources     -> resourcesView
 
         { Handle = handle }
 
@@ -317,7 +373,7 @@ module Site =
             Controller = controller
             Router     = router
         }
-
+    
 type Website() =
     interface IWebsite<Action> with
         member this.Sitelet = Site.Main
@@ -325,3 +381,4 @@ type Website() =
 
 [<assembly: WebsiteAttribute(typeof<Website>)>]
 do ()
+

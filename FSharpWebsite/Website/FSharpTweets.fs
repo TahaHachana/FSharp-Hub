@@ -11,13 +11,13 @@ module FSharpTweets =
 
     module Server =
         
-        let atRegex     = Utilities.compileRegex "^@[^\ :]+"
-        let atRegex'    = Utilities.compileRegex "@"
-        let hashRegex   = Utilities.compileRegex "^#[^\ ]+"
-        let urlRegex    = Utilities.compileRegex "^https?://.+"
-        let colonRegex  = Utilities.compileRegex "([^\ ]):\ "
-        let colonRegex' = Utilities.compileRegex " :"
-        let hashRegex'  = Utilities.compileRegex "#"
+        let atRegex     = Utilities.Server.compileRegex "^@[^\ :]+"
+        let atRegex'    = Utilities.Server.compileRegex "@"
+        let hashRegex   = Utilities.Server.compileRegex "^#[^\ ]+"
+        let urlRegex    = Utilities.Server.compileRegex "^https?://.+"
+        let colonRegex  = Utilities.Server.compileRegex "([^\ ]):\ "
+        let colonRegex' = Utilities.Server.compileRegex " :"
+        let hashRegex'  = Utilities.Server.compileRegex "#"
 
         let inline spaceBeforeColon str =
             colonRegex.Replace(str, (fun (x : Match) -> x.Groups.[1].Value + " : "))
@@ -112,11 +112,11 @@ module FSharpTweets =
 
         [<JavaScriptAttribute>]
         let incrementTweetsCount x =
-            Utilities.incrementDataCount "#fsharpTweets" "data-tweets-count" x
+            Utilities.Client.incrementDataCount "#fsharpTweets" "data-tweets-count" x
 
         [<JavaScriptAttribute>]
         let setTweetId id =
-            Utilities.setAttributeValue "#fsharpTweets" "data-tweet-id" id
+            Utilities.Client.setAttributeValue "#fsharpTweets" "data-tweet-id" id
 
         [<JavaScriptAttribute>]
         let toggleActionsVisibility () =
@@ -143,7 +143,7 @@ module FSharpTweets =
                         |> Array.rev
                         |> Array.map (fun (screenName, tweetId, profileImage, displayName, text, creationDate) ->
                             makeTweetLi screenName tweetId profileImage displayName text creationDate)
-                        |> Array.iter (Utilities.prependElement "#tweetsList")
+                        |> Array.iter (Utilities.Client.prependElement "#tweetsList")
                         
                         let count = Array.length tweets
                         incrementTweetsCount count
@@ -154,7 +154,7 @@ module FSharpTweets =
                             match count with
                                 | 1 -> "1 new tweet"
                                 | _ -> string count + " new tweets"
-                        Utilities.displayInfoAlert msg
+                        Utilities.Client.displayInfoAlert msg
             } |> Async.Start
 
         [<JavaScriptAttribute>]

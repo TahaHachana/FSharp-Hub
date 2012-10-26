@@ -12,7 +12,7 @@ module FSharpVideos =
             Videos.queryFsharpVideos ()
             |> Array.map (fun x ->
                 x.Url, x.Thumbnail, x.Title, x.Website)
-            |> Utilities.toChunks 4
+            |> Utilities.Server.toChunks 4
             |> Seq.toArray
 
         let pagesCount = float (Array.length fsharpVideos) / 4. |> ceil |> int |> string
@@ -39,7 +39,7 @@ module FSharpVideos =
                 List.map makeThumbnailLi x)
             |> Array.map makeVideosUl
             |> Array.map makeDiv
-            |> Utilities.toChunks 5
+            |> Utilities.Server.toChunks 5
             |> Seq.toArray
             |> Array.mapi (fun idx x -> idx + 1, x)
             |> Array.map (fun (page, x) -> page, makeDiv' x)

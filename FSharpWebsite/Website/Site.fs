@@ -188,13 +188,10 @@ module BooksPageContent =
             ]
 
     let header =
-        Utilities.Header [
-            H1 [Text "FSharp Books"]
-            P [Class "lead"] -< [
-                Text "Learn F# or dive into advanced topics by reading books by experts
-                    from Microsoft and the language community."
-            ]
-        ]
+        Utilities.Server.makeHeader
+            "FSharp Books"
+            "Learn F# or tackle advanced topics by reading books by experts
+            from Microsoft and the language community."
 
 module VideosPageContent =
 
@@ -217,10 +214,9 @@ module VideosPageContent =
             ]
 
     let header =
-        Utilities.Header [
-            H1 [Text "FSharp Videos"]
-            P [Class "lead"] -< [Text "F# videos"]
-        ]
+        Utilities.Server.makeHeader
+            "FSharp Videos"
+            "F# videos"
 
 module ResourcesPageContent =
 
@@ -243,11 +239,89 @@ module ResourcesPageContent =
             ]
 
     let header =
-        Utilities.Header [
-            H1 [Text "FSharp Resources"]
-            P [Class "lead"] -< [Text "F# Resources"]
+        Utilities.Server.makeHeader
+            "FSharp Resources"
+            "F# Resources"
+
+    let downloadsTab =
+        Div [
+            H2 [Text "IDE"]
+            H3 [Text ".NET"]
+            UL [Class "unstyled"] -< [
+                LI [
+                    A [HRef "http://www.microsoft.com/visualstudio/eng/downloads"; Target "_blank"]
+                        -< [Text "Download a trial version of a Visual Studio 2012 edition"]
+                ]
+                LI [
+                    A [HRef "http://www.microsoft.com/web/gallery/install.aspx?appid=FSharpVWD11"; Target "_blank"]
+                        -< [Text "Download the F# tools for Visual Studio Express 2012 for Web"]
+                ]
+            ]
+            H3 [Text "Mono"]
+            UL [Class "unstyled"] -< [
+                LI [
+                    A [HRef "http://monodevelop.com/Download"; Target "_blank"]
+                        -< [Text "Download MonoDevelop"]
+                ]
+                LI [
+                    A [HRef "http://fsharp.github.com/fsharpbinding/"; Target "_blank"]
+                        -< [Text "Download the F# language binding for MonoDevelop"]
+                ]
+            ]
+            HR []
+            H2 [Text "Language Specification"]
+            H3 [Text "F# 3.0"]
+            UL [Class "unstyled"] -< [
+                LI [
+                    A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html"; Target "_blank"]
+                        -< [Text "HTML"]
+                ]                
+                LI [
+                    A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.pdf"; Target "_blank"]
+                        -< [Text "PDF"]
+                ]                
+            ]
+            H3 [Text "F# 2.0"]
+            UL [Class "unstyled"] -< [
+                LI [
+                    A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec-2.0-final.html"; Target "_blank"]
+                        -< [Text "HTML"]
+                ]                
+                LI [
+                    A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec-2.0-final.pdf"; Target "_blank"]
+                        -< [Text "PDF"]
+                ]                
+            ]
         ]
-       
+
+    let mailingListsTab =
+        UL [Class "unstyled"] -< [
+            LI [
+                A [HRef "http://groups.google.com/group/fsharp-opensource"; Target "_blank"]
+                    -< [Text "FSharp Open Source Community"]
+            ]            
+            LI [
+                A [HRef "http://groups.google.com/group/fsharpMake"; Target "_blank"]
+                    -< [Text "FAKE - F# Make"]
+            ]            
+            LI [
+                A [HRef "http://groups.google.com/group/websharper"; Target "_blank"]
+                    -< [Text "WebSharper"]
+            ]            
+        ]
+
+    let codeSamplesTab =
+        UL [Class "unstyled"] -< [
+            LI [
+                A [HRef "http://fsharp3sample.codeplex.com/"; Target "_blank"]
+                    -< [Text "F# 3.0 Sample Pack"]
+            ]            
+            LI [
+                A [HRef "http://code.msdn.microsoft.com/site/search?f%5B0%5D.Type=ProgrammingLanguage&f%5B0%5D.Value=F%23&f%5B0%5D.Text=F%23"; Target "_blank"]
+                    -< [Text "MSDN Developer Code Samples"]
+            ]            
+        ]
+
     let tabs =
         Div [Class "tabbable tabs-left"] -< [
             UL [Class "nav nav-tabs"] -< [
@@ -256,9 +330,9 @@ module ResourcesPageContent =
                 LI [A [HRef "#codesamples"; HTML5.Data "toggle" "tab"] -< [Text "Code Samples"]]
             ]
             Div [Class "tab-content"] -< [
-                Div [Class "tab-pane active"; Id "downloads"] -< [P [Text "downloads"]]
-                Div [Class "tab-pane"; Id "mailinglists"] -< [P [Text "mailing lists"]]
-                Div [Class "tab-pane"; Id "codesamples"] -< [P [Text "code samples"]]
+                Div [Class "tab-pane active"; Id "downloads"] -< [downloadsTab]
+                Div [Class "tab-pane"; Id "mailinglists"] -< [mailingListsTab]
+                Div [Class "tab-pane"; Id "codesamples"] -< [codeSamplesTab]
             ]
         ]
 
@@ -381,4 +455,3 @@ type Website() =
 
 [<assembly: WebsiteAttribute(typeof<Website>)>]
 do ()
-

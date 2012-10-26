@@ -13,7 +13,7 @@ module FSharpBooks =
             Books.queryFsharpQuestions ()
             |> Array.map (fun x ->
                 x.Url, x.Cover, x.Title, x.Authors, x.Publisher, x.ISBN, x.Pages.ToString())
-            |> Utilities.toChunks 3
+            |> Utilities.Server.toChunks 3
             |> Seq.toArray
 
         let inline makeThumbnailLi (url, cover, title, authors, publisher, isbn, pages) =

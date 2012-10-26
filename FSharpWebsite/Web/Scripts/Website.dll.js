@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,jQuery,WebSharper,Remoting,FSharpWebsite,FSharpQuestions,Client,Arrays,Utilities,Concurrency,Html,Operators,Default,List,T,EventsPervasives,setInterval,FSharpSnippets,Client1,FSharpTweets,Client2,FSharpVideos,Client3;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,jQuery,WebSharper,Remoting,FSharpWebsite,FSharpQuestions,Client,Arrays,Utilities,Client1,Concurrency,Html,Operators,Default,List,T,EventsPervasives,setInterval,FSharpSnippets,Client2,FSharpTweets,Client3,FSharpVideos,Client4;
  Runtime.Define(Global,{
   FSharpWebsite:{
    FSharpQuestions:{
@@ -39,7 +39,7 @@
           }),f3(x3)));
           f4=(action=function(element)
           {
-           return Utilities.prependElement("#questionsList",element);
+           return Client1.prependElement("#questionsList",element);
           },function(array)
           {
            return Arrays.iter(action,array);
@@ -49,7 +49,7 @@
           Client.incrementQuestionsCount(count);
           Client.setQuestionId(id);
           msg=count===1?"1 new question":Global.String(count)+" new questions";
-          Utilities.displayInfoAlert(msg);
+          Client1.displayInfoAlert(msg);
           return Concurrency.Return(null);
          }
         else
@@ -71,7 +71,7 @@
      },
      incrementQuestionsCount:function(x)
      {
-      return Utilities.incrementDataCount("#fsharpQuestions","data-questions-count",x);
+      return Client1.incrementDataCount("#fsharpQuestions","data-questions-count",x);
      },
      makeQuestionLi:function(link,title,date,website,summary)
      {
@@ -231,7 +231,7 @@
      },
      setQuestionId:function(id)
      {
-      return Utilities.setAttributeValue("#fsharpQuestions","data-question-id",id);
+      return Client1.setAttributeValue("#fsharpQuestions","data-question-id",id);
      }
     },
     FsharpQuestionsViewer:Runtime.Class({
@@ -245,7 +245,7 @@
     Client:{
      incrementSnippetsCount:function(x)
      {
-      return Utilities.incrementDataCount("#fsharpSnippets","data-snippets-count",x);
+      return Client1.incrementDataCount("#fsharpSnippets","data-snippets-count",x);
      },
      makeSnippetLi:function(link,title,description)
      {
@@ -287,7 +287,7 @@
            link=tupledArg[0];
            title=tupledArg[1];
            description=tupledArg[2];
-           return Client1.makeSnippetLi(link,title,description);
+           return Client2.makeSnippetLi(link,title,description);
           }),function(array)
           {
            return Arrays.map(mapping,array);
@@ -301,7 +301,7 @@
           });
           f5(x6);
           _count_=_arg11.length;
-          Client1.incrementSnippetsCount(_count_);
+          Client2.incrementSnippetsCount(_count_);
           objectArg1=x2["HtmlProvider@32"];
           (arg002=x2.Body,function(arg10)
           {
@@ -342,7 +342,7 @@
           link=tupledArg[0];
           title=tupledArg[1];
           description=tupledArg[2];
-          return Client1.makeSnippetLi(link,title,description);
+          return Client2.makeSnippetLi(link,title,description);
          }),function(array)
          {
           return Arrays.map(mapping,array);
@@ -355,7 +355,7 @@
           return Arrays.iter(action,array);
          });
          f4(x4);
-         Client1.incrementSnippetsCount(20);
+         Client2.incrementSnippetsCount(20);
          return Concurrency.Return(null);
         };
         return Concurrency.Bind(x3,f2);
@@ -380,7 +380,7 @@
     FsharpSnippetsViewer:Runtime.Class({
      get_Body:function()
      {
-      return Client1.snippetsDiv();
+      return Client2.snippetsDiv();
      }
     })
    },
@@ -424,25 +424,25 @@
            displayName=tupledArg[3];
            text=tupledArg[4];
            creationDate=tupledArg[5];
-           return Client2.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
+           return Client3.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
           }),function(array)
           {
            return Arrays.map(mapping,array);
           }),f4(x4)));
           f5=(action=function(element)
           {
-           return Utilities.prependElement("#tweetsList",element);
+           return Client1.prependElement("#tweetsList",element);
           },function(array)
           {
            return Arrays.iter(action,array);
           });
           f5(x3);
           count=tweets.length;
-          Client2.incrementTweetsCount(count);
-          Client2.setTweetId(latestTweetId1);
-          Client2.toggleActionsVisibility();
+          Client3.incrementTweetsCount(count);
+          Client3.setTweetId(latestTweetId1);
+          Client3.toggleActionsVisibility();
           msg=count===1?"1 new tweet":Global.String(count)+" new tweets";
-          Utilities.displayInfoAlert(msg);
+          Client1.displayInfoAlert(msg);
           return Concurrency.Return(null);
          }
         else
@@ -464,7 +464,7 @@
      },
      incrementTweetsCount:function(x)
      {
-      return Utilities.incrementDataCount("#fsharpTweets","data-tweets-count",x);
+      return Client1.incrementDataCount("#fsharpTweets","data-tweets-count",x);
      },
      makeTweetLi:function(screenName,tweetId,profileImage,fullName,tweetHtml,creationDate)
      {
@@ -483,7 +483,7 @@
      },
      setTweetId:function(id)
      {
-      return Utilities.setAttributeValue("#fsharpTweets","data-tweet-id",id);
+      return Client1.setAttributeValue("#fsharpTweets","data-tweet-id",id);
      },
      toggleActionsVisibility:function()
      {
@@ -536,7 +536,7 @@
            displayName=tupledArg[3];
            text=tupledArg[4];
            creationDate=tupledArg[5];
-           return Client2.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
+           return Client3.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
           }),function(array)
           {
            return Arrays.map(mapping,array);
@@ -550,8 +550,8 @@
           });
           f5(x6);
           _count_=_arg11.length;
-          Client2.incrementTweetsCount(_count_);
-          Client2.toggleActionsVisibility();
+          Client3.incrementTweetsCount(_count_);
+          Client3.toggleActionsVisibility();
           objectArg1=x2["HtmlProvider@32"];
           (arg002=x2.Body,function(arg10)
           {
@@ -606,7 +606,7 @@
           displayName=tupledArg[3];
           text=tupledArg[4];
           creationDate=tupledArg[5];
-          return Client2.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
+          return Client3.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
          }),function(array)
          {
           return Arrays.map(mapping,array);
@@ -619,8 +619,8 @@
           return Arrays.iter(action,array);
          });
          f5(x5);
-         Client2.incrementTweetsCount(20);
-         Client2.setTweetId(latestTweetId);
+         Client3.incrementTweetsCount(20);
+         Client3.setTweetId(latestTweetId);
          objectArg=loadMoreBtn["HtmlProvider@32"];
          ((arg00=loadMoreBtn.Body,function(arg10)
          {
@@ -629,11 +629,11 @@
            return objectArg.SetCss(arg00,arg10,arg20);
           };
          })("visibility"))("visible");
-         Client2.toggleActionsVisibility();
+         Client3.toggleActionsVisibility();
          x8=setInterval(function(_arg00_)
          {
           _arg00_;
-          return Client2.checkNewTweets();
+          return Client3.checkNewTweets();
          },300000);
          f6=function(value)
          {
@@ -664,7 +664,7 @@
     FsharpTweetsViewer:Runtime.Class({
      get_Body:function()
      {
-      return Client2.tweetsDiv();
+      return Client3.tweetsDiv();
      }
     })
    },
@@ -720,37 +720,39 @@
     PagerViewer:Runtime.Class({
      get_Body:function()
      {
-      return Client3.pager();
+      return Client4.pager();
      }
     })
    },
    Utilities:{
-    displayInfoAlert:function(msg)
-    {
-     jQuery("#alertText").text(msg);
-     jQuery("#alertDiv").show(600);
-     return jQuery("#alertDiv").fadeOut(7000);
-    },
-    incrementDataCount:function(selector,dataAttribute,n)
-    {
-     var jquery,count,x,x1,f,f1;
-     jquery=jQuery(selector);
-     count=(x=(x1=jquery.attr(dataAttribute),(f=function(x2)
+    Client:{
+     displayInfoAlert:function(msg)
      {
-      return(x2<<0)+n;
-     },f(x1))),(f1=function(value)
+      jQuery("#alertText").text(msg);
+      jQuery("#alertDiv").show(600);
+      return jQuery("#alertDiv").fadeOut(7000);
+     },
+     incrementDataCount:function(selector,dataAttribute,n)
      {
-      return Global.String(value);
-     },f1(x)));
-     return jquery.attr(dataAttribute,count);
-    },
-    prependElement:function(selector,element)
-    {
-     return jQuery(selector).prepend(element.Body);
-    },
-    setAttributeValue:function(selector,attribute,value)
-    {
-     return jQuery(selector).attr(attribute,value);
+      var jquery,count,x,x1,f,f1;
+      jquery=jQuery(selector);
+      count=(x=(x1=jquery.attr(dataAttribute),(f=function(x2)
+      {
+       return(x2<<0)+n;
+      },f(x1))),(f1=function(value)
+      {
+       return Global.String(value);
+      },f1(x)));
+      return jquery.attr(dataAttribute,count);
+     },
+     prependElement:function(selector,element)
+     {
+      return jQuery(selector).prepend(element.Body);
+     },
+     setAttributeValue:function(selector,attribute,value)
+     {
+      return jQuery(selector).attr(attribute,value);
+     }
     }
    }
   }
@@ -765,6 +767,7 @@
   Client=Runtime.Safe(FSharpQuestions.Client);
   Arrays=Runtime.Safe(WebSharper.Arrays);
   Utilities=Runtime.Safe(FSharpWebsite.Utilities);
+  Client1=Runtime.Safe(Utilities.Client);
   Concurrency=Runtime.Safe(WebSharper.Concurrency);
   Html=Runtime.Safe(WebSharper.Html);
   Operators=Runtime.Safe(Html.Operators);
@@ -774,11 +777,11 @@
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
   setInterval=Runtime.Safe(Global.setInterval);
   FSharpSnippets=Runtime.Safe(FSharpWebsite.FSharpSnippets);
-  Client1=Runtime.Safe(FSharpSnippets.Client);
+  Client2=Runtime.Safe(FSharpSnippets.Client);
   FSharpTweets=Runtime.Safe(FSharpWebsite.FSharpTweets);
-  Client2=Runtime.Safe(FSharpTweets.Client);
+  Client3=Runtime.Safe(FSharpTweets.Client);
   FSharpVideos=Runtime.Safe(FSharpWebsite.FSharpVideos);
-  return Client3=Runtime.Safe(FSharpVideos.Client);
+  return Client4=Runtime.Safe(FSharpVideos.Client);
  });
  Runtime.OnLoad(function()
  {

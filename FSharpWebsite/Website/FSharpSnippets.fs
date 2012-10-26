@@ -41,7 +41,7 @@ module FSharpSnippets =
 
         [<JavaScriptAttribute>]
         let incrementSnippetsCount x =
-            Utilities.incrementDataCount "#fsharpSnippets" "data-snippets-count" x
+            Utilities.Client.incrementDataCount "#fsharpSnippets" "data-snippets-count" x
 
         [<JavaScriptAttribute>]
         let snippetsDiv () =

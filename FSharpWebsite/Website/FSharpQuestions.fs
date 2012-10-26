@@ -56,11 +56,11 @@ module FSharpQuestions =
 
         [<JavaScriptAttribute>]
         let incrementQuestionsCount x =
-            Utilities.incrementDataCount "#fsharpQuestions" "data-questions-count" x
+            Utilities.Client.incrementDataCount "#fsharpQuestions" "data-questions-count" x
 
         [<JavaScriptAttribute>]
         let setQuestionId id =
-            Utilities.setAttributeValue "#fsharpQuestions" "data-question-id" id
+            Utilities.Client.setAttributeValue "#fsharpQuestions" "data-question-id" id
 
         [<JavaScriptAttribute>]
         let checkNewQuestions () =
@@ -75,7 +75,7 @@ module FSharpQuestions =
                         |> Array.rev
                         |> Array.map (fun (link, title, date, website, summary) ->
                             makeQuestionLi link title date website summary)
-                        |> Array.iter (Utilities.prependElement "#questionsList")
+                        |> Array.iter (Utilities.Client.prependElement "#questionsList")
 
                         let count = Array.length questions
                         incrementQuestionsCount count
@@ -86,7 +86,7 @@ module FSharpQuestions =
                             match count with
                                 | 1 -> "1 new question"
                                 | _ -> string count + " new questions"
-                        Utilities.displayInfoAlert msg
+                        Utilities.Client.displayInfoAlert msg
             } |> Async.Start
 
         [<JavaScriptAttribute>]

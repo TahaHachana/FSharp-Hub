@@ -61,7 +61,7 @@ module FSharpVideos =
                     let jquery = JQuery.Of "#pager"
                     let previous = jquery.Attr "data-previous" |> int
                     let next = jquery.Attr "data-next" |> int
-                    let pagesCount = jquery.Attr "data-pages-count" |> int |> fun x -> x + 1
+                    let pagesCount = jquery.Attr "data-pages-count" |> int //|> fun x -> x + 1
                     match previous with
                         | 0 -> JQuery.Of("#previous").AddClass("disabled").Ignore
                         | _ -> JQuery.Of("#prevLink").Attr("href", ("/Videos/" + string previous)).Ignore

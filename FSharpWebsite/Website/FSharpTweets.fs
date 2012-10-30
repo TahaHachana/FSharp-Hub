@@ -182,7 +182,8 @@ module FSharpTweets =
                     } |> Async.Start)
                     
                     
-            Div [Id "tweetsDiv"] -< [tweetsList; loadMoreBtn]
+//            Div [Id "tweetsDiv"] -< [tweetsList; loadMoreBtn]
+            Div [Id "fsharpTweets"; HTML5.Attr.Data "tweets-count" "0"; HTML5.Attr.Data "tweet-id" ""] -< [tweetsList; loadMoreBtn]
             |>! OnAfterRender(fun _ ->
                 async {
                     let! fsharpTweets = Server.latestTweets ()

@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,jQuery,WebSharper,Remoting,FSharpWebsite,FSharpQuestions,Client,Arrays,Utilities,Client1,Concurrency,Html,Operators,Default,List,T,EventsPervasives,setInterval,FSharpSnippets,Client2,FSharpTweets,Client3,FSharpVideos,Client4;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,jQuery,WebSharper,Remoting,FSharpWebsite,FSharpQuestions,Client,Arrays,Utilities,Client1,Concurrency,Html,Operators,Default,List,T,EventsPervasives,HTML5,setInterval,FSharpSnippets,Client2,FSharpTweets,Client3,FSharpVideos,Client4;
  Runtime.Define(Global,{
   FSharpWebsite:{
    FSharpQuestions:{
@@ -82,7 +82,7 @@
      },
      questionsDiv:function()
      {
-      var questionsList,loadMoreBtn,x,f,x1,x7,f7,f8;
+      var questionsList,loadMoreBtn,x,f,x1,x7,_this,arg003,_this1,arg004,f7,f8;
       questionsList=Default.UL(List.ofArray([Default.Id("questionsList")]));
       loadMoreBtn=(x=Default.Button(List.ofArray([Default.Text("Load More"),Default.Attr().Class("btn loadMore")])),(f=(x1=function(x2)
       {
@@ -155,7 +155,7 @@
       {
        return EventsPervasives.Events().OnClick(x1,arg10);
       }),(f(x),x)));
-      x7=Operators.add(Default.Div(List.ofArray([Default.Id("questionsDiv")])),List.ofArray([questionsList,loadMoreBtn]));
+      x7=Operators.add(Default.Div(List.ofArray([Default.Id("fsharpQuestions"),(_this=HTML5.Attr(),(arg003="data-"+"questions-count",_this.NewAttr(arg003,"0"))),(_this1=HTML5.Attr(),(arg004="data-"+"question-id",_this1.NewAttr(arg004,"")))])),List.ofArray([questionsList,loadMoreBtn]));
       f7=(f8=function()
       {
        var x2,f1,f6;
@@ -254,7 +254,7 @@
      },
      snippetsDiv:function()
      {
-      var snippetsList,loadMoreBtn,x,f,x1,x7,f7,f8;
+      var snippetsList,loadMoreBtn,x,f,x1,x7,_this,arg003,f7,f8;
       snippetsList=Default.UL(List.ofArray([Default.Id("snippetsList")]));
       loadMoreBtn=(x=Default.Button(List.ofArray([Default.Text("Load More"),Default.Attr().Class("btn loadMore")])),(f=(x1=function(x2)
       {
@@ -325,7 +325,7 @@
       {
        return EventsPervasives.Events().OnClick(x1,arg10);
       }),(f(x),x)));
-      x7=Operators.add(Default.Div(List.ofArray([Default.Id("snippetsDiv")])),List.ofArray([snippetsList]));
+      x7=Operators.add(Default.Div(List.ofArray([Default.Id("fsharpSnippets"),(_this=HTML5.Attr(),(arg003="data-"+"snippets-count",_this.NewAttr(arg003,"0")))])),List.ofArray([snippetsList]));
       f7=(f8=function()
       {
        var x2,f1,f5;
@@ -500,7 +500,7 @@
      },
      tweetsDiv:function()
      {
-      var tweetsList,loadMoreBtn,x,f,x1,x7,f7,f8;
+      var tweetsList,loadMoreBtn,x,f,x1,x7,_this,arg003,_this1,arg004,f7,f8;
       tweetsList=Default.UL(List.ofArray([Default.Id("tweetsList")]));
       loadMoreBtn=(x=Default.Button(List.ofArray([Default.Text("Load More"),Default.Attr().Class("btn loadMore")])),(f=(x1=function(x2)
       {
@@ -575,7 +575,7 @@
       {
        return EventsPervasives.Events().OnClick(x1,arg10);
       }),(f(x),x)));
-      x7=Operators.add(Default.Div(List.ofArray([Default.Id("tweetsDiv")])),List.ofArray([tweetsList,loadMoreBtn]));
+      x7=Operators.add(Default.Div(List.ofArray([Default.Id("fsharpTweets"),(_this=HTML5.Attr(),(arg003="data-"+"tweets-count",_this.NewAttr(arg003,"0"))),(_this1=HTML5.Attr(),(arg004="data-"+"tweet-id",_this1.NewAttr(arg004,"")))])),List.ofArray([tweetsList,loadMoreBtn]));
       f7=(f8=function()
       {
        var x2,f1,f9;
@@ -676,7 +676,7 @@
       x=Operators.add(Default.UL(List.ofArray([Default.Attr().Class("pager")])),List.ofArray([Operators.add(Default.LI(List.ofArray([Default.Id("previous"),Default.Attr().Class("previous")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Id("prevLink"),Default.HRef("")])),List.ofArray([Default.Text("Prev")]))])),Operators.add(Default.LI(List.ofArray([Default.Id("next"),Default.Attr().Class("next")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Id("nextLink"),Default.HRef("")])),List.ofArray([Default.Text("Next")]))]))]));
       f=(f1=function()
       {
-       var jquery,previous,x1,f2,next,x2,f3,pagesCount,x3,x4,f4,f5;
+       var jquery,previous,x1,f2,next,x2,f3,pagesCount,x3,f4;
        jquery=jQuery("#pager");
        previous=(x1=jquery.attr("data-previous"),(f2=function(value)
        {
@@ -686,13 +686,10 @@
        {
         return value<<0;
        },f3(x2)));
-       pagesCount=(x3=(x4=jquery.attr("data-pages-count"),(f4=function(value)
+       pagesCount=(x3=jquery.attr("data-pages-count"),(f4=function(value)
        {
         return value<<0;
-       },f4(x4))),(f5=function(x5)
-       {
-        return x5+1;
-       },f5(x3)));
+       },f4(x3)));
        if(previous===0)
         {
          jQuery("#previous").addClass("disabled");
@@ -775,6 +772,7 @@
   List=Runtime.Safe(WebSharper.List);
   T=Runtime.Safe(List.T);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
+  HTML5=Runtime.Safe(Default.HTML5);
   setInterval=Runtime.Safe(Global.setInterval);
   FSharpSnippets=Runtime.Safe(FSharpWebsite.FSharpSnippets);
   Client2=Runtime.Safe(FSharpSnippets.Client);

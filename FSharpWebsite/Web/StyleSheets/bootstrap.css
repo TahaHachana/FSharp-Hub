@@ -5747,6 +5747,8 @@ a.badge:hover {
   font-weight: 200;
   line-height: 30px;
   color: inherit;
+  padding:20px 60px;
+  text-align:justify;
 }
 
 .pull-right {

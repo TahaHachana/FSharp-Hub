@@ -113,7 +113,8 @@ module FSharpQuestions =
                         x.RemoveAttribute("disabled")
                     } |> Async.Start)
 
-            Div [Id "questionsDiv"] -< [questionsList; loadMoreBtn]
+//            Div [Id "questionsDiv"] -< [questionsList; loadMoreBtn]
+            Div [Id "fsharpQuestions"; HTML5.Attr.Data "questions-count" "0"; HTML5.Attr.Data "question-id" ""] -< [questionsList; loadMoreBtn]
             |>! OnAfterRender(fun _ ->
                 async {
                     let! id, fsharpQuestions = Server.latestFSharpQuestions ()

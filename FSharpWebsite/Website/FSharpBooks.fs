@@ -17,11 +17,17 @@ module FSharpBooks =
             |> Seq.toArray
 
         let inline makeThumbnailLi (url, cover, title, authors, publisher, isbn, pages) =
+            let authors' =
+                let length = Seq.length authors
+                let str = String.concat ", " authors
+                match length with
+                    | 1 -> "Author: "  + str
+                    | _ -> "Authors: " + str
             LI [Class "span4"] -< [
                 Div [Class "thumbnail"] -< [
                     Img [Class "cover"; Src cover; Alt title; Height "220"]
                     H4 [Text title]
-                    P [Text <| "Authors: " + String.concat ", " authors]
+                    P [Text authors']
                     P [Text <| "Publisher: " + publisher]
                     P [Text <| "ISBN: " + isbn]
                     P [Text <| "Pages: " + pages]

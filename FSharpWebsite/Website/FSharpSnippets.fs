@@ -67,7 +67,8 @@ module FSharpSnippets =
                         x.RemoveAttribute("disabled")
                     } |> Async.Start)
 
-            Div [Id "snippetsDiv"] -< [snippetsList] //; loadMoreBtn]
+//            Div [Id "snippetsDiv"] -< [snippetsList] //; loadMoreBtn]
+            Div [Id "fsharpSnippets"; HTML5.Attr.Data "snippets-count" "0"] -< [snippetsList] //; loadMoreBtn]
             |>! OnAfterRender(fun _ ->
                 async {
                     let! fsharpSnippets = Server.latestFSharpSnippets ()

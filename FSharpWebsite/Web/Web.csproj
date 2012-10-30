@@ -42,6 +42,18 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="*.aspx" />
+    <Content Include="Images\Books\BeginningFSharp.png" />
+    <Content Include="Images\Books\ExpertFSharp.png" />
+    <Content Include="Images\Books\ExpertFSharp2.png" />
+    <Content Include="Images\Books\ExpertFSharp3.png" />
+    <Content Include="Images\Books\FoundationsFSharp.png" />
+    <Content Include="Images\Books\FSharp4CSharpDevs.gif" />
+    <Content Include="Images\Books\FSharp4Scientists.jpg" />
+    <Content Include="Images\Books\ProfessionalFSharp2.jpg" />
+    <Content Include="Images\Books\ProgrammingFSharp.gif" />
+    <Content Include="Images\Books\ProgrammingFSharp3.gif" />
+    <Content Include="Images\Books\RealWorldFunctionalProgramming.jpg" />
+    <Content Include="Images\Books\WebCloudMobileFSharp.gif" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\IntelliFactory.WebSharper.Collections.dll.js" />
     <Content Include="Scripts\IntelliFactory.WebSharper.Collections.dll.min.js" />

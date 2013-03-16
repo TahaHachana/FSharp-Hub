@@ -199,9 +199,8 @@
            return objectArg.SetCss(arg00,arg10,arg20);
           };
          })("visibility"))("visible");
-         x6=setInterval(function(_arg00_)
+         x6=setInterval(function()
          {
-          _arg00_;
           return Client.checkNewQuestions();
          },420000);
          f5=function(value)
@@ -630,9 +629,8 @@
           };
          })("visibility"))("visible");
          Client3.toggleActionsVisibility();
-         x8=setInterval(function(_arg00_)
+         x8=setInterval(function()
          {
-          _arg00_;
           return Client3.checkNewTweets();
          },300000);
          f6=function(value)

@@ -37,6 +37,7 @@ module View =
                     BooksPageContent.header
                     Div [FSharpBooks.Server.booksDiv ()]
                 ]
+                Div [new FSharpBooks.Client.HiddenDivViewer ()]
             ]
 
     let videosViews =

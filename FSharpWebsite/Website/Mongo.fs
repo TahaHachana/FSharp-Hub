@@ -173,7 +173,7 @@ module Mongo =
 
         let queryable = fsharpBooksCollection.FindAll().AsQueryable()
 
-        let inline queryFsharpQuestions () =
+        let inline queryFsharpBooks () =
             query {
                 for x in queryable do
                     sortByDescending x.ReleaseDate

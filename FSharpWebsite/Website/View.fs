@@ -17,6 +17,7 @@ module View =
                     HomeContent.row2
                     HomeContent.row3
                 ]
+                SharedContent.footer
             ]
 
     let custom404View =
@@ -37,7 +38,7 @@ module View =
                     BooksPageContent.header
                     Div [FSharpBooks.Server.booksDiv ()]
                 ]
-                Div [new FSharpBooks.Client.HiddenDivViewer ()]
+                SharedContent.footer
             ]
 
     let videosViews =
@@ -64,9 +65,9 @@ module View =
                             Attributes.HTML5.Data "next" (string (pageId + 1))]
                         Div [Class "offset6 span2"] -< [new FSharpVideos.PagerViewer()]
                     ]
+                    SharedContent.footer
                 ]
             pageId, view)
-
 
     let videosView pageId =
         videosViews
@@ -82,5 +83,6 @@ module View =
                     ResourcesPageContent.header
                     ResourcesPageContent.tabs
                 ]
+                SharedContent.footer
             ]
 

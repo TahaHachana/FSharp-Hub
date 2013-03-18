@@ -30,6 +30,16 @@ module SiteContent =
                     Id "forkme"]
             ]
 
+        let footer : Content.HtmlElement =
+            Div [Id "footer"] -< [
+                HTML5.Footer [Class "footer container"] -< [
+                    Text "Powered by "
+                    A [HRef "http://www.websharper.com/"; Target "_blank"] -< [
+                        Text "WebSharper"
+                    ]
+                ]
+            ]
+
     module HomeContent =
     
         let title = "FSharp Programming Language"

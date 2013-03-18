@@ -1,6 +1,6 @@
 ﻿namespace FSharpWebsite
 
-open IntelliFactory.WebSharper.Sitelets
+open IntelliFactory.WebSharper.Sitelets.Content
 
 module Model =
 
@@ -17,5 +17,5 @@ module Model =
         {
             Title           : string
             MetaDescription : string
-            Body            : Content.HtmlElement list
+            Body            : HtmlElement list
         }

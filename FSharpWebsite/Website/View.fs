@@ -21,11 +21,13 @@ module View =
             ]
 
     let custom404View =
-        Skin.withTemplate "" "" <| fun ctx ->
+        Skin.withTemplate "Error - Page Not Found" "" <| fun ctx ->
             [
-                Div [
-                    P [Text "The page you're trying to access doesn't exist."]
-                    LI [A [HRef <| ctx.Link Home] -< [Text "Home"]]
+                Div [Class "container"] -< [
+                    P [Text "The page you're trying to access doesn't exist. "] -< [
+                        A [HRef <| ctx.Link Home] -< [Text "Click here"]
+                        Text " to return to the home page."
+                    ]
                 ]
             ]
 

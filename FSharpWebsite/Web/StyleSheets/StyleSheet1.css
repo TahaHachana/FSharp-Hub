@@ -46,7 +46,6 @@
 {
     padding: 12px 12px 25px 12px;
     border-bottom: 1px solid;
-    /*height:70px;*/
 }
 
 .loadMore
@@ -78,9 +77,15 @@
     display:none;
 }
 
-.cover { height: 220px; }
+.cover
+{
+    height: 220px;
+}
 
-.videoThumb { height: 120px; }
+.videoThumb
+{
+    height: 120px;
+}
 
 #footer
 {

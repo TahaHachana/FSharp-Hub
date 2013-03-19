@@ -35,9 +35,9 @@ module Utilities =
         let inline Header elements = IntelliFactory.Html.Html.NewElement("header") elements
 
         let inline makeHeader h1 p =
-            Header [
+            Header [Class "page-header"] -< [
                 H1 [Text h1]
-                P [Class "lead"] -< [Text p]
+                P [Text p]
             ]
 
     module Client =

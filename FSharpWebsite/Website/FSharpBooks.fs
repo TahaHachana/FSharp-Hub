@@ -32,7 +32,7 @@ module FSharpBooks =
                     P [Text <| "Publisher: " + publisher]
                     P [Text <| "ISBN: " + isbn]
                     P [Text <| "Pages: " + pages]
-                    A [HRef url; Class "btn btn-block"; Target "_blank"] -< [Text "Book Website"]
+                    A [HRef url; Class "btn btn-block"] -< [Text "Book Website"]
                 ]
             ]
 

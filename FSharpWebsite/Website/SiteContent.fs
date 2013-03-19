@@ -27,7 +27,8 @@ module SiteContent =
                 Img [
                     Src "https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
                     Alt "Fork me on GitHub"
-                    Id "forkme"]
+                    Id "forkme"
+                ]
             ]
 
         let footer : Content.HtmlElement =
@@ -79,59 +80,82 @@ module SiteContent =
                 ]
             ]
 
+//        let row1 : Content.HtmlElement =
+//            Div [Class "row-fluid"] -< [
+//                Div [Class "span4"] -< [
+//                    H2 [Class "centered"] -< [Text "Succinct"]
+//                    P [Text "FSharp's syntax is clean yet powerful and readable"]
+//                ]
+//                Div [Class "span4"] -< [
+//                    H2 [Class "centered"] -< [Text "Multi-Paradigm"]
+//                    P [Text "F# is a functional first language with support for object oriented and imperative programming"]
+//                ]
+//                Div [Class "span4"] -< [
+//                    H2 [Class "centered"] -< [Text "F# Library"]
+//                    P [Text "FSharp is a modern language that comes with it's own library"]
+//                ]
+//            ]
+
         let row1 : Content.HtmlElement =
-            Div [Class "row-fluid"] -< [
-                Div [Class "span4"] -< [
-                    H2 [Class "centered"] -< [Text "Succinct"]
-                    P [Text "FSharp's syntax is clean yet powerful and readable"]
-                ]
-                Div [Class "span4"] -< [
-                    H2 [Class "centered"] -< [Text "Multi-Paradigm"]
-                    P [Text "F# is a functional first language with support for object oriented and imperative programming"]
-                ]
-                Div [Class "span4"] -< [
-                    H2 [Class "centered"] -< [Text "F# Library"]
-                    P [Text "FSharp is a modern language that comes with it's own library"]
+            Div [Class "row-fluid"; Style "margin-bottom: 30px;"] -< [
+                Div [Class "span4 offset4 centered"] -< [
+                    A [Class "btn btn-primary btn-large pull-left"; HRef "http://www.tryfsharp.org/"; Style "width: 100px;"] -< [Text "Try F#"] 
+                    A [Class "btn btn-success btn-large pull-right"; HRef "/Resources"; Style "width: 100px;"] -< [Text "Download F#"] 
                 ]
             ]
 
         let row2 : Content.HtmlElement =
-            Div [Class "row-fluid"] -< [
-                Div [Class "span4 offset4 centered"] -< [
-                    Button [Class "btn btn-primary btn-large pull-left"] -< [Text "Learn More"]
-                    Button [Class "btn btn-success btn-large pull-right"] -< [Text "Download F#"]
+            Div [Class "row-fluid"; Style "margin-botton: 30px;"] -< [
+                Div [Class "span6"] -< [
+                    Div [Class "tabbable"] -< [
+                        UL [Class "nav nav-tabs"] -< [
+                            LI [Class "active"] -< [A [HRef "#tweets"; HTML5.Data "toggle" "tab"] -< [Text "Tweets"]]
+                            LI [A [HRef "#questions"; HTML5.Data "toggle" "tab"] -< [Text "Questions"]]
+                            LI [A [HRef "#snippets"; HTML5.Data "toggle" "tab"] -< [Text "Snippets"]]
+                        ]
+                        Div [Class "tab-content"] -< [
+                            Div [Class "tab-pane active"; Id "tweets"] -< [new FSharpTweets.FsharpTweetsViewer () :> INode<_>]
+                            Div [Class "tab-pane"; Id "questions"] -< [new FSharpQuestions.FsharpQuestionsViewer () :> INode<_>]
+                            Div [Class "tab-pane"; Id "snippets"] -< [new FSharpSnippets.FsharpSnippetsViewer () :> INode<_>]
+                        ]
+                    ]                
+                ]
+                Div [Class "span6"] -< [
+                    H3 [Class "centered"] -< [Text "News"]
+                    Div [Text "News item 1"]
+                    Div [Text "News item 2"]
+                    Div [Text "News item 3"]
                 ]
             ]
 
-        let row3 : Content.HtmlElement =
-            Div [Class "row-fluid"] -< [
-                Div [Class "span4"] -< [
-                    H3 [Class "centered"] -< [Text "Tweets"] :> INode<_>
-                    new FSharpTweets.FsharpTweetsViewer () :> _
-//                    Div [
-//                        Id "fsharpTweets"
-//                        Attributes.HTML5.Data "tweets-count" "0"
-//                        Attributes.HTML5.Data "tweet-id" ""
-//                    ] -< [new FSharpTweets.FsharpTweetsViewer ()]
-                ]
-                Div [Class "span4"] -< [
-                    H3 [Class "centered"] -< [Text "Questions"] :> INode<_>
-                    new FSharpQuestions.FsharpQuestionsViewer () :> _
-//                    Div [
-//                        Id "fsharpQuestions"
-//                        Attributes.HTML5.Data "questions-count" "0"
-//                        Attributes.HTML5.Data "question-id" ""
-//                    ] -< [new FSharpQuestions.FsharpQuestionsViewer ()]
-                ]
-                Div [Class "span4"] -< [
-                    H3 [Class "centered"] -< [Text "Snippets"] :> INode<_>
-                    new FSharpSnippets.FsharpSnippetsViewer () :> _
-//                    Div [
-//                        Id "fsharpSnippets"
-//                        Attributes.HTML5.Data "snippets-count" "0"
-//                    ] -< [new FSharpSnippets.FsharpSnippetsViewer ()]
-                ]
-            ]
+//            Div [Class "row-fluid"] -< [
+//                Div [Class "span4"] -< [
+//                    H3 [Class "centered"] -< [Text "Tweets"] :> INode<_>
+//                    new FSharpTweets.FsharpTweetsViewer () :> _
+////                    Div [
+////                        Id "fsharpTweets"
+////                        Attributes.HTML5.Data "tweets-count" "0"
+////                        Attributes.HTML5.Data "tweet-id" ""
+////                    ] -< [new FSharpTweets.FsharpTweetsViewer ()]
+//                ]
+//                Div [Class "span4"] -< [
+//                    H3 [Class "centered"] -< [Text "Questions"] :> INode<_>
+//                    new FSharpQuestions.FsharpQuestionsViewer () :> _
+////                    Div [
+////                        Id "fsharpQuestions"
+////                        Attributes.HTML5.Data "questions-count" "0"
+////                        Attributes.HTML5.Data "question-id" ""
+////                    ] -< [new FSharpQuestions.FsharpQuestionsViewer ()]
+//                ]
+//                Div [Class "span4"] -< [
+//                    H3 [Class "centered"] -< [Text "Snippets"] :> INode<_>
+//                    new FSharpSnippets.FsharpSnippetsViewer () :> _
+////                    Div [
+////                        Id "fsharpSnippets"
+////                        Attributes.HTML5.Data "snippets-count" "0"
+////                    ] -< [new FSharpSnippets.FsharpSnippetsViewer ()]
+//                ]
+//            ]
 
     module BooksPageContent =
 
@@ -156,7 +180,7 @@ module SiteContent =
         let header : Content.HtmlElement =
             Utilities.Server.makeHeader
                 "FSharp Books"
-                "Learn F# or tackle advanced topics by reading books by experts
+                "Learn F# and explore advanced topics by reading books by experts
                 from Microsoft and the language community."
 
     module VideosPageContent =
@@ -288,17 +312,27 @@ module SiteContent =
                 ]            
             ]
 
+        let userGroupsTab =
+            UL [Class "unstyled"] -< [
+                LI [
+                    A [HRef "http://www.meetup.com/nyc-fsharp/"]
+                        -< [Text "New York City F# User Group"]
+                ]            
+            ]
+            
         let tabs =
             Div [Class "tabbable tabs-left"] -< [
                 UL [Class "nav nav-tabs"] -< [
                     LI [Class "active"] -< [A [HRef "#downloads"; HTML5.Data "toggle" "tab"] -< [Text "Downloads"]]
                     LI [A [HRef "#mailinglists"; HTML5.Data "toggle" "tab"] -< [Text "Mailing Lists"]]
                     LI [A [HRef "#codesamples"; HTML5.Data "toggle" "tab"] -< [Text "Code Samples"]]
+                    LI [A [HRef "#user-groups"; HTML5.Data "toggle" "tab"] -< [Text "User Groups"]]
                 ]
                 Div [Class "tab-content"] -< [
                     Div [Class "tab-pane active"; Id "downloads"] -< [downloadsTab]
                     Div [Class "tab-pane"; Id "mailinglists"] -< [mailingListsTab]
                     Div [Class "tab-pane"; Id "codesamples"] -< [codeSamplesTab]
+                    Div [Class "tab-pane"; Id "user-groups"] -< [userGroupsTab]
                 ]
             ]
 

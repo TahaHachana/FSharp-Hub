@@ -15,7 +15,6 @@ module View =
                 Div [Class "container"] -< [
                     HomeContent.row1
                     HomeContent.row2
-                    HomeContent.row3
                 ]
                 SharedContent.footer
             ]

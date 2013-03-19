@@ -1,4 +1,4 @@
-namespace FSharpWebsite
+namespace Website
 
 module Secure =
 

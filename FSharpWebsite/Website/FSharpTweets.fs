@@ -1,4 +1,4 @@
-﻿namespace FSharpWebsite
+﻿namespace Website
 
 open System
 open System.Text.RegularExpressions

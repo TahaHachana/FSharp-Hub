@@ -1,26 +1,30 @@
-﻿namespace FSharpWebsite
+﻿namespace Website
 
 open IntelliFactory.Html
-open SiteContent
+open Content
 open Model
+open ExtSharper
 
-module View =
+module Views =
+
+    let mainTemplate = Skin.MakeDefaultTemplate "~/Main.html" Skin.LoadFrequency.Once 
+    let withMainTemplate = Skin.WithTemplate<Action> mainTemplate
 
     let homeView =
-        Skin.withTemplate HomeContent.title HomeContent.metaDescription <| fun ctx ->
+        withMainTemplate HomeContent.title HomeContent.metaDescription <| fun ctx ->
             [
                 HomeContent.navigation
-                SharedContent.forkme
+                Div [new Shared.Client.ForkmeViewer()]
                 HomeContent.heroUnit
                 Div [Class "container"] -< [
                     HomeContent.row1
                     HomeContent.row2
                 ]
-                SharedContent.footer
+                Shared.Server.footer
             ]
 
     let custom404View =
-        Skin.withTemplate "Error - Page Not Found" "" <| fun ctx ->
+        withMainTemplate "Error - Page Not Found" "" <| fun ctx ->
             [
                 Div [Class "container"] -< [
                     P [Text "The page you're trying to access doesn't exist. "] -< [
@@ -31,15 +35,15 @@ module View =
             ]
 
     let booksView =
-        Skin.withTemplate BooksPageContent.title BooksPageContent.metaDescription <| fun ctx ->
+        withMainTemplate BooksPageContent.title BooksPageContent.metaDescription <| fun ctx ->
             [
                 BooksPageContent.navigation
-                SharedContent.forkme
+                Div [new Shared.Client.ForkmeViewer()]
                 Div [Class "container"] -< [
                     BooksPageContent.header
                     Div [FSharpBooks.Server.booksDiv ()]
                 ]
-                SharedContent.footer
+                Shared.Server.footer
             ]
 
     let videosViews =
@@ -50,12 +54,12 @@ module View =
             let navigation =
                 match pageId with
                     | 1 -> VideosPageContent.navigation
-                    | _ -> SharedContent.navigation
+                    | _ -> Shared.Server.navigation
 
-            let view = Skin.withTemplate title VideosPageContent.metaDescription <| fun ctx ->
+            let view = withMainTemplate title VideosPageContent.metaDescription <| fun ctx ->
                 [
                     navigation
-                    SharedContent.forkme
+                    Div [new Shared.Client.ForkmeViewer()]
                     Div [Class "container"] -< [
                         VideosPageContent.header
                         Div [element]
@@ -66,7 +70,7 @@ module View =
                             Attributes.HTML5.Data "next" (string (pageId + 1))]
                         Div [Class "offset6 span2"] -< [new FSharpVideos.PagerViewer()]
                     ]
-                    SharedContent.footer
+                    Shared.Server.footer
                 ]
             pageId, view)
 
@@ -76,14 +80,14 @@ module View =
         |> snd
 
     let resourcesView =
-        Skin.withTemplate ResourcesPageContent.title ResourcesPageContent.metaDescription <| fun ctx ->
+        withMainTemplate ResourcesPageContent.title ResourcesPageContent.metaDescription <| fun ctx ->
             [
                 ResourcesPageContent.navigation
-                SharedContent.forkme
+                Div [new Shared.Client.ForkmeViewer()]
                 Div [Class "container"] -< [
                     ResourcesPageContent.header
                     ResourcesPageContent.tabs
                 ]
-                SharedContent.footer
+                Shared.Server.footer
             ]
 

@@ -1,8 +1,8 @@
-﻿namespace FSharpWebsite
+﻿namespace Website
 
 open IntelliFactory.WebSharper.Sitelets
 open Model
-open View
+open Views
 
 module Controller =
 

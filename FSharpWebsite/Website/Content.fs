@@ -1,45 +1,70 @@
-﻿namespace FSharpWebsite
+﻿namespace Website
 
+open IntelliFactory.WebSharper
 open IntelliFactory.Html
 open IntelliFactory.WebSharper.Sitelets
 
-module SiteContent =
+module Content =
 
-    module SharedContent =
+    module Shared =
+        
+        module Server =
 
-        let navigation : Content.HtmlElement =
-                Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
-                    Div [Class "navbar-inner"] -< [
-                        UL [Class "nav"] -< [
-                            LI [A [HRef "/Home"] -< [Text "Home"]]
-                            LI [A [HRef "/Books"] -< [Text "Books"]]
-                            LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
-                            LI [A [HRef "/Resources"] -< [Text "Resources"]]
+            let navigation : Content.HtmlElement = Utilities.Server.makeNavigation None
+    //                Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
+    //                    Div [Class "navbar-inner"] -< [
+    //                        UL [Class "nav"] -< [
+    //                            LI [A [HRef "/Home"] -< [Text "Home"]]
+    //                            LI [A [HRef "/Books"] -< [Text "Books"]]
+    //                            LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
+    //                            LI [A [HRef "/Resources"] -< [Text "Resources"]]
+    //                        ]
+    //                    ]
+    //                    Div [Class "alert alert-info"; Id "alertDiv"] -< [
+    //                        P [Class "centered"; Id "alertText"] -< [Text ""]
+    //                    ]
+    //                ]
+
+//            let forkme : Content.HtmlElement =
+//                A [HRef "https://github.com/TahaHachana/FSharpWebsite"; Target "_blank"] -< [
+//                    Img [
+//                        Src "https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+//                        Alt "Fork me on GitHub"
+//                        Id "forkme"
+//                    ]
+//                ]
+
+            let footer : Content.HtmlElement =
+                Div [Id "footer"] -< [
+                    HTML5.Footer [Class "footer container"] -< [
+                        Text "Powered by "
+                        A [HRef "http://www.websharper.com/"; Target "_blank"] -< [
+                            Text "WebSharper"
                         ]
                     ]
-                    Div [Class "alert alert-info"; Id "alertDiv"] -< [
-                        P [Class "centered"; Id "alertText"] -< [Text ""]
+                ]
+
+        module Client =
+
+            open IntelliFactory.WebSharper.Html
+
+            [<JavaScript>]
+            let forkme() =
+                A [HRef "https://github.com/TahaHachana/FSharpWebsite"] -< [
+                    Img [
+                        Src "https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+                        Alt "Fork me on GitHub"
+                        Id "forkme"
                     ]
                 ]
 
-        let forkme : Content.HtmlElement =
-            A [HRef "https://github.com/TahaHachana/FSharpWebsite"; Target "_blank"] -< [
-                Img [
-                    Src "https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
-                    Alt "Fork me on GitHub"
-                    Id "forkme"
-                ]
-            ]
+            type ForkmeViewer() =
+                
+                inherit IntelliFactory.WebSharper.Web.Control()
 
-        let footer : Content.HtmlElement =
-            Div [Id "footer"] -< [
-                HTML5.Footer [Class "footer container"] -< [
-                    Text "Powered by "
-                    A [HRef "http://www.websharper.com/"; Target "_blank"] -< [
-                        Text "WebSharper"
-                    ]
-                ]
-            ]
+                [<JavaScript>]
+                override __.Body = forkme() :> _
+
 
     module HomeContent =
     
@@ -47,20 +72,7 @@ module SiteContent =
 
         let metaDescription = ""
 
-        let navigation : Content.HtmlElement =
-                Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
-                    Div [Class "navbar-inner"] -< [
-                        UL [Class "nav"] -< [
-                            LI [Class "active"] -< [A [HRef "/"] -< [Text "Home"]]
-                            LI [A [HRef "/Books"] -< [Text "Books"]]
-                            LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
-                            LI [A [HRef "/Resources"] -< [Text "Resources"]]
-                        ]
-                    ]
-                    Div [Class "alert alert-info"; Id "alertDiv"] -< [
-                        P [Class "centered"; Id "alertText"] -< [Text ""]
-                    ]
-                ]
+        let navigation : Content.HtmlElement = Utilities.Server.makeNavigation <| Some "Home"
 
         let definition : Content.HtmlElement =
                 P [
@@ -162,20 +174,12 @@ module SiteContent =
         let title = ""
         let metaDescription = ""
 
-        let navigation : Content.HtmlElement =
-                Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
-                    Div [Class "navbar-inner"] -< [
-                        UL [Class "nav"] -< [
-                            LI [A [HRef "/"] -< [Text "Home"]]
-                            LI [Class "active"] -< [A [HRef "/Books"] -< [Text "Books"]]
-                            LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
-                            LI [A [HRef "/Resources"] -< [Text "Resources"]]
-                        ]
-                    ]
-                    Div [Class "alert alert-info"; Id "alertDiv"] -< [
-                        P [Class "centered"; Id "alertText"] -< [Text ""]
-                    ]
-                ]
+        let navigation : Content.HtmlElement = Utilities.Server.makeNavigation <| Some "Books"
+
+//                    Div [Class "alert alert-info"; Id "alertDiv"] -< [
+//                        P [Class "centered"; Id "alertText"] -< [Text ""]
+//                    ]
+//                ]
 
         let header : Content.HtmlElement =
             Utilities.Server.makeHeader
@@ -188,20 +192,7 @@ module SiteContent =
         let title pageId = sprintf "FSharp Videos - Page %d" pageId
         let metaDescription = ""
 
-        let navigation : Content.HtmlElement =
-                Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
-                    Div [Class "navbar-inner"] -< [
-                        UL [Class "nav"] -< [
-                            LI [A [HRef "/"] -< [Text "Home"]]
-                            LI [A [HRef "/Books"] -< [Text "Books"]]
-                            LI [Class "active"] -< [A [HRef "/Videos/1"] -< [Text "Videos"]]
-                            LI [A [HRef "/Resources"] -< [Text "Resources"]]
-                        ]
-                    ]
-                    Div [Class "alert alert-info"; Id "alertDiv"] -< [
-                        P [Class "centered"; Id "alertText"] -< [Text ""]
-                    ]
-                ]
+        let navigation : Content.HtmlElement = Utilities.Server.makeNavigation <| Some "Videos"
 
         let header : Content.HtmlElement =
             Utilities.Server.makeHeader
@@ -213,20 +204,7 @@ module SiteContent =
         let title = "FSharp Resources"
         let metaDescription = ""
 
-        let navigation : Content.HtmlElement =
-                Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
-                    Div [Class "navbar-inner"] -< [
-                        UL [Class "nav"] -< [
-                            LI [A [HRef "/"] -< [Text "Home"]]
-                            LI [A [HRef "/Books"] -< [Text "Books"]]
-                            LI [A [HRef "/Videos/1"] -< [Text "Videos"]]
-                            LI [Class "active"] -< [A [HRef "/Resources"] -< [Text "Resources"]]
-                        ]
-                    ]
-                    Div [Class "alert alert-info"; Id "alertDiv"] -< [
-                        P [Class "centered"; Id "alertText"] -< [Text ""]
-                    ]
-                ]
+        let navigation : Content.HtmlElement = Utilities.Server.makeNavigation <| Some "Resources"
 
         let header : Content.HtmlElement =
             Utilities.Server.makeHeader

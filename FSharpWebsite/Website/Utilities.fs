@@ -1,4 +1,4 @@
-﻿namespace FSharpWebsite
+﻿namespace Website
 
 open System.Text.RegularExpressions
 open IntelliFactory.WebSharper
@@ -38,6 +38,28 @@ module Utilities =
             Header [Class "page-header"] -< [
                 H1 [Text h1]
                 P [Text p]
+            ]
+
+        let makeLi activeLiOption href txt =
+            match activeLiOption with
+                | None -> LI [A [HRef href] -< [Text txt]]
+                | Some activeLi ->
+                    if txt = activeLi then
+                        LI [Class "active"] -< [A [HRef href] -< [Text txt]]
+                    else
+                        LI [A [HRef href] -< [Text txt]]
+
+        let makeNavigation activeLiOption =
+            let makeLi' = makeLi activeLiOption
+            Div [Class "navbar navbar-fixed-top"; Id "navigation"] -< [
+                Div [Class "navbar-inner"] -< [
+                    UL [Class "nav"] -< [
+                        makeLi' "/"          "Home"
+                        makeLi' "/Books"      "Books"
+                        makeLi' "/Videos/1"  "Videos"
+                        makeLi' "/Resources" "Resources"
+                    ]
+                ]
             ]
 
     module Client =

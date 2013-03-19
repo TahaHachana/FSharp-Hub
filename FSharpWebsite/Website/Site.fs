@@ -1,8 +1,7 @@
-﻿namespace FSharpWebsite
+﻿namespace Website
 
 open IntelliFactory.WebSharper.Sitelets
 open Model
-open Skin
 open Controller
 
 module Site =

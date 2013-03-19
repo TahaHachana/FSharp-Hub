@@ -43,16 +43,19 @@
     <Compile Include="FSharpBooks.fs" />
     <Compile Include="FSharpTweets.fs" />
     <Compile Include="FSharpQuestions.fs" />
-    <Compile Include="SiteContent.fs" />
+    <Compile Include="Content.fs" />
     <Compile Include="Model.fs" />
-    <Compile Include="Skin.fs" />
-    <Compile Include="View.fs" />
+    <Compile Include="Views.fs" />
     <Compile Include="Controller.fs" />
     <Compile Include="Site.fs" />
     <None Include="WebSharper.targets" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ExtSharper">
+      <HintPath>..\..\packages\ExtSharper.0.1.13\lib\Net45\ExtSharper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\..\packages\mongocsharpdriver.1.6\lib\net35\MongoDB.Bson.dll</HintPath>
       <Private>True</Private>

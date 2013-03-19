@@ -1,4 +1,4 @@
-﻿namespace FSharpWebsite
+﻿namespace Website
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.Html

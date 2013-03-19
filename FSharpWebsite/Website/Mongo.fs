@@ -1,4 +1,4 @@
-﻿namespace FSharpWebsite
+﻿namespace Website
 
 #if INTERACTIVE
 #r "MongoDB.Bson.dll"

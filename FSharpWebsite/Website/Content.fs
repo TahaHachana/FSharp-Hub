@@ -292,10 +292,17 @@ module Content =
 
         let userGroupsTab =
             UL [Class "unstyled"] -< [
-                LI [
-                    A [HRef "http://www.meetup.com/nyc-fsharp/"]
-                        -< [Text "New York City F# User Group"]
-                ]            
+                LI [A [HRef "http://www.meetup.com/nyc-fsharp/"] -< [Text "New York City F# User Group"]]            
+                LI [A [HRef "http://www.meetup.com/Chicago-F-Users/"] -< [Text "Chicago F# Users"]]            
+                LI [A [HRef "http://www.meetup.com/FSharpHelsinki/"] -< [Text "The Greater Helsinki Area F# User Group"]]            
+                LI [A [HRef "http://www.meetup.com/Houston-FSharp-User-Group/"] -< [Text "Houston F# User Group"]]            
+                LI [A [HRef "http://www.meetup.com/FSharpLondon/"] -< [Text "F#unctional Londoners Meetup Group"]]            
+                LI [A [HRef "http://www.meetup.com/New-England-F-Users-Group/"] -< [Text "New England F# Users Group"]]            
+                LI [A [HRef "http://fpish.net/org/c4fs"] -< [Text "Community For F#"]]            
+                LI [A [HRef "http://www.meetup.com/sfsharp/"] -< [Text "The San Francisco Bay Area F# User Group"]]            
+                LI [A [HRef "http://www.meetup.com/FSharpSeattle/"] -< [Text "F# Seattle User Group"]]            
+                LI [A [HRef "http://www.meetup.com/zurich-fsharp-users/"] -< [Text "Zurich FSharp Users"]]            
+                LI [A [HRef "https://github.com/Nobuhisa/FSUG_JP/wiki"] -< [Text "F# User Group - Japan"]]
             ]
             
         let tabs =

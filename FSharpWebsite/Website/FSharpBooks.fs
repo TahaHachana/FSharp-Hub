@@ -16,6 +16,7 @@ module FSharpBooks =
                 x.Url, x.Cover, x.Title, x.Authors, x.Publisher, x.ISBN, x.Pages.ToString())
             |> Utilities.Server.toChunks 3
             |> Seq.toArray
+            |> Array.map (fun x -> Seq.toList x)
 
         let inline makeThumbnailLi (url, cover, title, authors, publisher, isbn, pages) =
             let authors' =

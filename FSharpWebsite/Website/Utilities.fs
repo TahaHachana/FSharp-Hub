@@ -12,25 +12,18 @@ module Utilities =
         let inline compileRegex pattern = Regex(pattern, RegexOptions.Compiled)
 
         /// Returns a sequence that yields chunks of length n. Each chunk is returned as a list.
-        let inline toChunks length (source: seq<'T>) =
-            use ie = source.GetEnumerator()
-            let sourceIsEmpty = ref false
-            let rec loop () =
+        let rec toChunks count (source: seq<'T>) =           
+            let rec loop source =
                 seq {
-                    if ie.MoveNext () then
-                        yield [
-                                yield ie.Current
-                                for x in 2 .. length do
-                                    if ie.MoveNext() then
-                                        yield ie.Current
-                                    else
-                                        sourceIsEmpty := true
-                        ]
-                        match !sourceIsEmpty with
-                        | false -> yield! loop ()
-                        | true  -> ()
+                    yield Seq.truncate count source
+                    let len = Seq.length source
+                    match Seq.length source < count with
+                        | false ->
+                            let source' = Seq.skip count source
+                            yield! loop source'
+                        | true -> ()
                 }
-            loop ()
+            loop source
 
         let inline Header elements = IntelliFactory.Html.Html.NewElement("header") elements
 

@@ -304,7 +304,14 @@ module Content =
                 LI [A [HRef "http://www.meetup.com/zurich-fsharp-users/"] -< [Text "Zurich FSharp Users"]]            
                 LI [A [HRef "https://github.com/Nobuhisa/FSUG_JP/wiki"] -< [Text "F# User Group - Japan"]]
             ]
-            
+
+        let forumsTab =
+            UL [Class "unstyled"] -< [
+                LI [A [HRef "http://fpish.net/topics"] -< [Text "FPish"]]            
+                LI [A [HRef "http://social.msdn.microsoft.com/Forums/en-US/fsharpgeneral/threads"] -< [Text "Visual F# forum"]]            
+                LI [A [HRef "http://stackoverflow.com/questions/tagged/f%23"] -< [Text "StackOverflow"]]            
+            ]            
+
         let tabs =
             Div [Class "tabbable tabs-left"] -< [
                 UL [Class "nav nav-tabs"] -< [
@@ -312,12 +319,14 @@ module Content =
                     LI [A [HRef "#mailinglists"; HTML5.Data "toggle" "tab"] -< [Text "Mailing Lists"]]
                     LI [A [HRef "#codesamples"; HTML5.Data "toggle" "tab"] -< [Text "Code Samples"]]
                     LI [A [HRef "#user-groups"; HTML5.Data "toggle" "tab"] -< [Text "User Groups"]]
+                    LI [A [HRef "#forums"; HTML5.Data "toggle" "tab"] -< [Text "Forums"]]
                 ]
                 Div [Class "tab-content"] -< [
                     Div [Class "tab-pane active"; Id "downloads"] -< [downloadsTab]
                     Div [Class "tab-pane"; Id "mailinglists"] -< [mailingListsTab]
                     Div [Class "tab-pane"; Id "codesamples"] -< [codeSamplesTab]
                     Div [Class "tab-pane"; Id "user-groups"] -< [userGroupsTab]
+                    Div [Class "tab-pane"; Id "forums"] -< [forumsTab]
                 ]
             ]
 

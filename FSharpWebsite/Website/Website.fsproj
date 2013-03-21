@@ -38,11 +38,11 @@
     <Compile Include="Secure.fs" />
     <Compile Include="Mongo.fs" />
     <Compile Include="Utilities.fs" />
-    <Compile Include="FSharpVideos.fs" />
-    <Compile Include="FSharpSnippets.fs" />
-    <Compile Include="FSharpBooks.fs" />
-    <Compile Include="FSharpTweets.fs" />
-    <Compile Include="FSharpQuestions.fs" />
+    <Compile Include="Videos.fs" />
+    <Compile Include="Snippets.fs" />
+    <Compile Include="Books.fs" />
+    <Compile Include="Tweets.fs" />
+    <Compile Include="Questions.fs" />
     <Compile Include="Content.fs" />
     <Compile Include="Model.fs" />
     <Compile Include="Views.fs" />

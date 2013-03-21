@@ -7,7 +7,7 @@ open IntelliFactory.WebSharper.Html
 open IntelliFactory.WebSharper.JQuery
 open Mongo
 
-module FSharpTweets =
+module Tweets =
 
     module Server =
         
@@ -58,7 +58,7 @@ module FSharpTweets =
         let latestTweets () =
             async {
                 return
-                    queryFsharpTweets ()
+                    Tweets.take20()
                     |> Array.map tweetData
             }
 
@@ -66,14 +66,14 @@ module FSharpTweets =
         let tweetsAfterSkip skip =
             async {
                 return
-                    queryFsharpTweets' skip
+                    Tweets.skip skip
                     |> Array.map tweetData
             }
 
         [<RpcAttribute>]
         let newTweets latestTweetId =
             async {
-                let newTweetsOption = queryFsharpTweets'' latestTweetId
+                let newTweetsOption = Tweets.queryWhile latestTweetId
                 match newTweetsOption with
                     | None -> return None
                     | Some tweets ->

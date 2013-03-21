@@ -126,9 +126,9 @@ module Content =
                             LI [A [HRef "#snippets"; HTML5.Data "toggle" "tab"] -< [Text "Snippets"]]
                         ]
                         Div [Class "tab-content"] -< [
-                            Div [Class "tab-pane active"; Id "tweets"] -< [new FSharpTweets.FsharpTweetsViewer () :> INode<_>]
-                            Div [Class "tab-pane"; Id "questions"] -< [new FSharpQuestions.FsharpQuestionsViewer () :> INode<_>]
-                            Div [Class "tab-pane"; Id "snippets"] -< [new FSharpSnippets.FsharpSnippetsViewer () :> INode<_>]
+                            Div [Class "tab-pane active"; Id "tweets"] -< [new Tweets.FsharpTweetsViewer () :> INode<_>]
+                            Div [Class "tab-pane"; Id "questions"] -< [new Questions.Client.QuestionsViewer () :> INode<_>]
+                            Div [Class "tab-pane"; Id "snippets"] -< [new Snippets.Client.SnippetsViewer() :> INode<_>]
                         ]
                     ]                
                 ]

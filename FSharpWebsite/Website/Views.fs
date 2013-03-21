@@ -41,13 +41,13 @@ module Views =
                 Div [new Shared.Client.ForkmeViewer()]
                 Div [Class "container"] -< [
                     BooksPageContent.header
-                    Div [FSharpBooks.Server.booksDiv ()]
+                    Div [Books.Server.booksDiv ()]
                 ]
                 Shared.Server.footer
             ]
 
     let videosViews =
-        FSharpVideos.Server.divs ()
+        Videos.Server.divs ()
         |> Array.map (fun (pageId, element) ->
             
             let title = VideosPageContent.title pageId
@@ -65,10 +65,10 @@ module Views =
                         Div [element]
                         Span [
                             Id "pager"
-                            Attributes.HTML5.Data "pages-count" FSharpVideos.Server.pagesCount
+                            Attributes.HTML5.Data "pages-count" Videos.Server.pagesCount
                             Attributes.HTML5.Data "previous" (string (pageId - 1))
                             Attributes.HTML5.Data "next" (string (pageId + 1))]
-                        Div [Class "offset6 span2"] -< [new FSharpVideos.PagerViewer()]
+                        Div [Class "offset6 span2"] -< [new Videos.Client.PagerViewer()]
                     ]
                     Shared.Server.footer
                 ]

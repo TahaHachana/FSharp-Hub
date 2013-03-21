@@ -5,18 +5,18 @@ open IntelliFactory.WebSharper.Html
 open IntelliFactory.WebSharper.JQuery
 open Mongo
 
-module FSharpSnippets =
+module Snippets =
 
     module Server =
         
-        let inline snippetData (snippet : FSharpSnippet) =
+        let inline snippetData (snippet : Snippet) =
             snippet.Link, snippet.Title, snippet.Description
 
         [<RpcAttribute>]
         let latestFSharpSnippets () =
             async {
                 return
-                    Snippets.queryFsharpSnippets ()
+                    Snippets.queryAll ()
                     |> Array.map snippetData
             }
 
@@ -24,7 +24,7 @@ module FSharpSnippets =
         let snippetsAfterSkip skip =
             async {
                 return
-                    Mongo.Snippets.queryFsharpSnippets' skip
+                    Mongo.Snippets.skip skip
                     |> Array.map snippetData
             }
 
@@ -80,9 +80,9 @@ module FSharpSnippets =
 //                    loadMoreBtn.SetCss("visibility", "visible")
                 } |> Async.Start)
 
-    type FsharpSnippetsViewer () =
-        inherit Web.Control ()
+        type SnippetsViewer () =
+            
+            inherit Web.Control ()
 
-        [<JavaScriptAttribute>]
-        override this.Body =
-            Client.snippetsDiv () :> _
+            [<JavaScriptAttribute>]
+            override this.Body = snippetsDiv () :> _

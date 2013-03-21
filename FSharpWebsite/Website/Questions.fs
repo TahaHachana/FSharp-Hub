@@ -5,7 +5,7 @@ open IntelliFactory.WebSharper.Html
 open IntelliFactory.WebSharper.JQuery
 open Mongo
 
-module FSharpQuestions =
+module Questions =
 
     module Server =
         
@@ -15,7 +15,7 @@ module FSharpQuestions =
         [<RpcAttribute>]
         let latestFSharpQuestions () =
             async {
-                let questions = Questions.queryFsharpQuestions()
+                let questions = Questions.take20()
                 let latestQuestionId = questions.[0]._id.ToString()
                 let questions' = questions |> Array.map questionData
                 return latestQuestionId, questions'
@@ -25,14 +25,14 @@ module FSharpQuestions =
         let questionsAfterSkip skip =
             async {
                 return
-                    Mongo.Questions.queryFsharpQuestions' skip
+                    Mongo.Questions.skipTake20 skip
                     |> Array.map questionData
             }
 
         [<RpcAttribute>]
         let newQuestions latestQuestionId =
             async {
-                let newQuestionsOption = Questions.queryFsharpQuestions'' latestQuestionId
+                let newQuestionsOption = Questions.queryWhile latestQuestionId
                 match newQuestionsOption with
                     | None -> return None
                     | Some questions ->
@@ -128,9 +128,9 @@ module FSharpQuestions =
                     JavaScript.SetInterval checkNewQuestions 420000 |> ignore
                 } |> Async.Start)
 
-    type FsharpQuestionsViewer () =
-        inherit Web.Control ()
+        type QuestionsViewer() =
+            
+            inherit Web.Control ()
 
-        [<JavaScriptAttribute>]
-        override this.Body =
-            Client.questionsDiv () :> _
+            [<JavaScriptAttribute>]
+            override this.Body = questionsDiv() :> _

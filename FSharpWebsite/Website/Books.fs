@@ -2,7 +2,7 @@
 
 open IntelliFactory.WebSharper
 
-module FSharpBooks =
+module Books =
 
     open IntelliFactory.Html
     open IntelliFactory.WebSharper.Sitelets
@@ -11,7 +11,7 @@ module FSharpBooks =
     module Server =
 
         let fsharpBooks =
-            Books.queryFsharpBooks ()
+            Books.queryAll()
             |> Array.map (fun x ->
                 x.Url, x.Cover, x.Title, x.Authors, x.Publisher, x.ISBN, x.Pages.ToString())
             |> Utilities.Server.toChunks 3

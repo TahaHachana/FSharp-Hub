@@ -4,19 +4,19 @@ open IntelliFactory.Html
 open IntelliFactory.WebSharper
 open Mongo
 
-module FSharpVideos =
+module Videos =
      
     module Server =
 
-        let fsharpVideos =
-            Videos.queryFsharpVideos ()
+        let videos =
+            Videos.queryAll()
             |> Array.map (fun x ->
                 x.Url, x.Thumbnail, x.Title, x.Website)
             |> Utilities.Server.toChunks 4
             |> Seq.toArray
             |> Array.map (fun x -> Seq.toList x)
 
-        let pagesCount = float (Array.length fsharpVideos) / 4. |> ceil |> int |> string
+        let pagesCount = float (Array.length videos) / 4. |> ceil |> int |> string
 
         let inline makeThumbnailLi (url, thumbnail, title, website) =
             LI [Class "span3"] -< [
@@ -35,7 +35,7 @@ module FSharpVideos =
         let inline makeDiv' (lis : Element<_> list) = Div [] -< lis
 
         let divs () =
-            fsharpVideos
+            videos
             |> Array.map (fun x ->
                 List.map makeThumbnailLi x)
             |> Array.map makeVideosUl
@@ -55,7 +55,7 @@ module FSharpVideos =
         open IntelliFactory.WebSharper.JQuery
 
         [<JavaScriptAttribute>]
-        let pager () =
+        let pager() =
             UL [Attr.Class "pager"] -< [
                 LI [Id "previous"; Attr.Class "previous"] -< [A [Id "prevLink"; HRef <| ""] -< [Text "Prev"]]
                 LI [Id "next"; Attr.Class "next"] -< [A [Id "nextLink"; HRef <| ""] -< [Text "Next"]]
@@ -63,7 +63,7 @@ module FSharpVideos =
                     let jquery = JQuery.Of "#pager"
                     let previous = jquery.Attr "data-previous" |> int
                     let next = jquery.Attr "data-next" |> int
-                    let pagesCount = jquery.Attr "data-pages-count" |> int //|> fun x -> x + 1
+                    let pagesCount = jquery.Attr "data-pages-count" |> int
                     match previous with
                         | 0 -> JQuery.Of("#previous").AddClass("disabled").Ignore
                         | _ -> JQuery.Of("#prevLink").Attr("href", ("/Videos/" + string previous)).Ignore
@@ -71,9 +71,8 @@ module FSharpVideos =
                         | x when x = pagesCount -> JQuery.Of("#next").AddClass("disabled").Ignore
                         | _ -> JQuery.Of("#nextLink").Attr("href", ("/Videos/" + string next)).Ignore)
             
-    type PagerViewer () =
-        inherit Web.Control ()
+        type PagerViewer () =
+            inherit Web.Control ()
 
-        [<JavaScriptAttribute>]
-        override this.Body =
-            Client.pager () :> _
+            [<JavaScriptAttribute>]
+            override this.Body = pager() :> _

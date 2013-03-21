@@ -20,33 +20,20 @@ module Mongo =
     module Utilities =
 
         /// Creates a mongo server instance.
-        let inline createServer (connectionString: string) = MongoServer.Create connectionString
+        let createServer (connectionString: string) = MongoServer.Create connectionString
 
         /// Gets the database with the specified name.
-        let inline databaseByName (server : MongoServer) (name : string) = server.GetDatabase name
+        let databaseByName (server : MongoServer) (name : string) = server.GetDatabase name
 
         /// Gets the database collection with the specified name.
-        let inline collectionByName<'T> (db : MongoDatabase) (name : string) = db.GetCollection<'T> name
+        let collectionByName<'T> (db : MongoDatabase) (name : string) = db.GetCollection<'T> name
 
         let server = createServer Secure.mongoConnectionString
         let database = databaseByName server "fsharpwebsite"
 
     [<AutoOpenAttribute>]
-    module Types =
+    module RecordTypes =
         
-        [<CLIMutableAttribute>]
-        type FSharpTweet =
-            {
-                _id          : ObjectId 
-                TweetID      : string
-                UserID       : string
-                ProfileImage : string
-                DisplayName  : string
-                ScreenName   : string
-                CreationDate : DateTime
-                Text         : string
-            }
-
         [<CLIMutableAttribute>]
         type FSharpQuestion =
             {
@@ -59,7 +46,7 @@ module Mongo =
             }
 
         [<CLIMutableAttribute>]
-        type FSharpSnippet =
+        type Snippet =
             {
                 _id         : ObjectId
                 Link        : string
@@ -69,7 +56,7 @@ module Mongo =
             }
 
         [<CLIMutableAttribute>]
-        type FSharpVideo =
+        type Video =
             {
                 _id       : ObjectId
                 Title     : string
@@ -79,83 +66,21 @@ module Mongo =
                 Date      : DateTime
             }
 
-    [<AutoOpenAttribute>]              
-    module Tweets =
-
-        let fsharpTweetsCollection =
-            Utilities.collectionByName<FSharpTweet> Utilities.database "fsharptweets"
-
-        let queryable = fsharpTweetsCollection.FindAll().AsQueryable()
-
-        let inline queryFsharpTweets () =
-            query {
-                for x in queryable do
-                    sortByDescending x.CreationDate
-                    take 20
+        [<CLIMutableAttribute>]
+        type Tweet =
+            {
+                _id          : ObjectId 
+                TweetID      : string
+                UserID       : string
+                ProfileImage : string
+                DisplayName  : string
+                ScreenName   : string
+                CreationDate : DateTime
+                Text         : string
             }
-            |> Seq.toArray
-
-        let inline queryFsharpTweets' tweetsToSkip =
-            query {
-                for x in queryable do
-                    sortByDescending x.CreationDate
-                    skip tweetsToSkip
-                    take 20
-            }
-            |> Seq.toArray
-
-        let inline queryFsharpTweets'' latestTweetsId =
-            query {
-                for x in queryable do
-                    sortByDescending x.CreationDate
-                    takeWhile (x.TweetID <> latestTweetsId)
-            }
-            |> Seq.toArray
-            |> function
-                | [||] -> None
-                | arr  -> Some arr
-
-    [<AutoOpenAttribute>]
-    module Questions =
-
-        let fsharpQuestionsCollection =
-            Utilities.collectionByName<FSharpQuestion> Utilities.database "fsharpquestions"
-
-        let queryable = fsharpQuestionsCollection.FindAll().AsQueryable()
-
-        let inline queryFsharpQuestions () =
-            query {
-                for x in queryable do
-                    sortByDescending x.Date
-                    take 20
-            }
-            |> Seq.toArray
-
-        let inline queryFsharpQuestions' questionsToSkip =
-            query {
-                for x in queryable do
-                    sortByDescending x.Date
-                    skip questionsToSkip
-                    take 20
-            }
-            |> Seq.toArray
-
-        let inline queryFsharpQuestions'' latestQuestionId =
-            query {
-                for x in queryable do
-                    sortByDescending x.Date
-                    takeWhile (x._id.ToString() <> latestQuestionId)
-            }
-            |> Seq.toArray
-            |> function
-                | [||] -> None
-                | arr  -> Some arr
-
-    [<AutoOpenAttribute>]
-    module Books =
 
         [<CLIMutableAttribute>]
-        type FSharpBook =
+        type Book =
             {
                 _id         : ObjectId
                 Url         : string
@@ -168,53 +93,121 @@ module Mongo =
                 Cover       : string
             }
 
-        let fsharpBooksCollection =
-            Utilities.collectionByName<FSharpBook> Utilities.database "fsharpbooks"
+    [<AutoOpen>]
+    module Collections =
+    
+        let tweets    = Utilities.collectionByName<Tweet>          Utilities.database "tweets"
+        let questions = Utilities.collectionByName<FSharpQuestion> Utilities.database "questions"
+        let books     = Utilities.collectionByName<Book>           Utilities.database "books"
+        let snippets  = Utilities.collectionByName<Snippet>        Utilities.database "snippets"
+        let videos    = Utilities.collectionByName<Video>          Utilities.database "videos"
 
-        let queryable = fsharpBooksCollection.FindAll().AsQueryable()
+    [<AutoOpen>]
+    module Queryable =
+        
+        let asQueryable (collection : MongoCollection<_>) = collection.FindAll().AsQueryable()
+        
+        let tweetsQueryable    = asQueryable tweets
+        let questionsQueryable = asQueryable questions
+        let booksQueryable     = asQueryable books
+        let snippetsQueryable  = asQueryable snippets
+        let videosQueryable    = asQueryable videos
 
-        let inline queryFsharpBooks () =
+    [<AutoOpenAttribute>]              
+    module Tweets =
+
+        let take20() =
             query {
-                for x in queryable do
-                    sortByDescending x.ReleaseDate
-            }
-            |> Seq.toArray
-
-    [<AutoOpenAttribute>]
-    module Snippets =
-
-        let fsharpBooksCollection =
-            Utilities.collectionByName<FSharpSnippet> Utilities.database "fsharpsnippets"
-
-        let queryable = fsharpBooksCollection.FindAll().AsQueryable()
-
-        let inline queryFsharpSnippets () =
-            query {
-                for x in queryable do
-                    sortByDescending x.Date
-            }
-            |> Seq.toArray
-
-        let inline queryFsharpSnippets' snippetsToSkip =
-            query {
-                for x in queryable do
-                    sortByDescending x.Date
-                    skip snippetsToSkip
+                for x in tweetsQueryable do
+                    sortByDescending x.CreationDate
                     take 20
             }
             |> Seq.toArray
 
+        let skip skipCount =
+            query {
+                for x in tweetsQueryable do
+                    sortByDescending x.CreationDate
+                    skip skipCount
+                    take 20
+            }
+            |> Seq.toArray
+
+        let queryWhile latestTweetsId =
+            query {
+                for x in tweetsQueryable do
+                    sortByDescending x.CreationDate
+                    takeWhile (x.TweetID <> latestTweetsId)
+            }
+            |> Seq.toArray
+            |> function
+                | [||] -> None
+                | arr  -> Some arr
+
     [<AutoOpenAttribute>]
+    module Questions =
+
+        let take20() =
+            query {
+                for x in questionsQueryable do
+                    sortByDescending x.Date
+                    take 20
+            }
+            |> Seq.toArray
+
+        let skipTake20 skipCount =
+            query {
+                for x in questionsQueryable do
+                    sortByDescending x.Date
+                    skip skipCount
+                    take 20
+            }
+            |> Seq.toArray
+
+        let inline queryWhile latestQuestionId =
+            query {
+                for x in questionsQueryable do
+                    sortByDescending x.Date
+                    takeWhile (x._id.ToString() <> latestQuestionId)
+            }
+            |> Seq.toArray
+            |> function
+                | [||] -> None
+                | arr  -> Some arr
+
+    [<AutoOpenAttribute>]
+    module Books =
+
+        let inline queryAll() =
+            query {
+                for x in booksQueryable do
+                    sortByDescending x.ReleaseDate
+            }
+            |> Seq.toArray
+
+    module Snippets =
+
+        let queryAll() =
+            query {
+                for x in snippetsQueryable do
+                    sortByDescending x.Date
+            }
+            |> Seq.toArray
+
+        let skip skipCount =
+            query {
+                for x in snippetsQueryable do
+                    sortByDescending x.Date
+                    skip skipCount
+                    take 20
+            }
+            |> Seq.toArray
+
     module Videos =
 
-        let fsharpVideosCollection =
-            Utilities.collectionByName<FSharpVideo> Utilities.database "fsharpvideos"
-
-        let queryable = fsharpVideosCollection.FindAll().AsQueryable()
-
-        let inline queryFsharpVideos () =
+        let queryAll() =
             query {
-                for x in queryable do
+                for x in videosQueryable do
                     sortByDescending x.Date
             }
             |> Seq.toArray
@@ -229,7 +222,7 @@ module Mongo =
 //                Date    = DateTime.Parse ""
 //            }
 //
-//        fsharpVideosCollection.Insert video
+//        videos.Insert video
 
 
 

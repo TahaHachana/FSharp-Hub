@@ -103,20 +103,18 @@ module Tweets =
                 tweetP
                 Div [Attr.Class "pull-right"] -< [
                     UL [Attr.Class "tweetActions"] -< [
-                        LI [Attr.Class "tweetAction"] -< [A [HRef replyLink; Attr.Target "_blank"]    -< [Text "Reply"]]
-                        LI [Attr.Class "tweetAction"] -< [A [HRef retweetLink; Attr.Target "_blank"]  -< [Text "Retweet"]]
-                        LI [Attr.Class "tweetAction"] -< [A [HRef favoriteLink; Attr.Target "_blank"] -< [Text "Favorite"]]
+                        LI [Attr.Class "tweetAction"] -< [A [HRef replyLink; Attr.Target "_blank"; Attr.Class "tweet-action-link"]    -< [Text "Reply"]]
+                        LI [Attr.Class "tweetAction"] -< [A [HRef retweetLink; Attr.Target "_blank"; Attr.Class "tweet-action-link"]  -< [Text "Retweet"]]
+                        LI [Attr.Class "tweetAction"] -< [A [HRef favoriteLink; Attr.Target "_blank"; Attr.Class "tweet-action-link"] -< [Text "Favorite"]]
                     ]
                 ]
             ]
 
         [<JavaScriptAttribute>]
-        let incrementTweetsCount x =
-            Utilities.Client.incrementDataCount "#fsharpTweets" "data-tweets-count" x
+        let incrementTweetsCount x = Utilities.Client.incrementDataCount "#fsharpTweets" "data-tweets-count" x
 
         [<JavaScriptAttribute>]
-        let setTweetId id =
-            Utilities.Client.setAttributeValue "#fsharpTweets" "data-tweet-id" id
+        let setTweetId id = Utilities.Client.setAttributeValue "#fsharpTweets" "data-tweet-id" id
 
         [<JavaScriptAttribute>]
         let toggleActionsVisibility () =
@@ -125,6 +123,14 @@ module Tweets =
                 JQuery.Of(".tweetActions", x).Css("visibility", "visible").Ignore).Ignore
             jquery.Mouseleave(fun x _ ->
                 JQuery.Of(".tweetActions", x).Css("visibility", "hidden").Ignore).Ignore
+
+        [<JavaScript>]
+        let handleTweetActions() =
+            let jquery = JQuery.Of ".tweet-action-link"
+            jquery.Mousedown(fun element event ->
+                event.PreventDefault()
+                let href = element.GetAttribute "href"
+                Html5.Window.Self.ShowModalDialog href |> ignore).Ignore
 
         [<JavaScriptAttribute>]
         let checkNewTweets () =
@@ -178,6 +184,7 @@ module Tweets =
                         let count' = Array.length fsharpTweets
                         incrementTweetsCount count'
                         toggleActionsVisibility ()
+                        handleTweetActions()
                         x.RemoveAttribute "disabled"
                     } |> Async.Start)
                     
@@ -198,6 +205,7 @@ module Tweets =
                     setTweetId latestTweetId
                     loadMoreBtn.SetCss("visibility", "visible")
                     toggleActionsVisibility ()
+                    handleTweetActions()
                     JavaScript.SetInterval checkNewTweets 300000 |> ignore
                 } |> Async.Start)
 

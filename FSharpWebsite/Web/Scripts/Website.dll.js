@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Website,Content,Shared,Client,WebSharper,Html,Operators,Default,List,Questions,Client1,jQuery,Remoting,Arrays,Utilities,Client2,Concurrency,T,EventsPervasives,HTML5,setInterval,Snippets,Client3,Tweets,Client4,Videos,Client5;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,Content,Shared,Client,WebSharper,Html,Operators,Default,List,Questions,Client1,jQuery,Remoting,Arrays,Utilities,Client2,Concurrency,T,EventsPervasives,HTML5,setInterval,Snippets,Client3,Tweets,Client4,window,Videos,Client5;
  Runtime.Define(Global,{
   Website:{
    Content:{
@@ -477,6 +477,23 @@
       };
       return f6(x);
      },
+     handleTweetActions:function()
+     {
+      var jquery;
+      jquery=jQuery(".tweet-action-link");
+      return jquery.mousedown(function(event)
+      {
+       var href,x,f;
+       event.preventDefault();
+       href=this.getAttribute("href");
+       x=window.showModalDialog(href);
+       f=function(value)
+       {
+        value;
+       };
+       return f(x);
+      });
+     },
      incrementTweetsCount:function(x)
      {
       return Client2.incrementDataCount("#fsharpTweets","data-tweets-count",x);
@@ -494,7 +511,7 @@
       tweetP.set_Html(tweetHtml);
       return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweet")])),List.ofArray([Operators.add(Operators.add(Default.A(List.ofArray([Default.HRef(profileLink),Default.Attr().Class("twitterProfileLink"),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([Default.Img(List.ofArray([Default.Src(profileImage),Default.Alt(fullName),Default.Attr().Class("avatar"),Default.Height("48"),Default.Width("48")])),(x=List.ofArray([Default.Text(fullName)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),List.ofArray([Default.Text(" @"+screenName)])),Default.Br(Runtime.New(T,{
        $:0
-      })),(x1=List.ofArray([Default.Text(creationDate)]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),tweetP,Operators.add(Default.Div(List.ofArray([Default.Attr().Class("pull-right")])),List.ofArray([Operators.add(Default.UL(List.ofArray([Default.Attr().Class("tweetActions")])),List.ofArray([Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),(_this3=Default.Attr(),_this3.NewAttr("target","_blank"))])),List.ofArray([Default.Text("Reply")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),(_this4=Default.Attr(),_this4.NewAttr("target","_blank"))])),List.ofArray([Default.Text("Retweet")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),(_this5=Default.Attr(),_this5.NewAttr("target","_blank"))])),List.ofArray([Default.Text("Favorite")]))]))]))]))]));
+      })),(x1=List.ofArray([Default.Text(creationDate)]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),tweetP,Operators.add(Default.Div(List.ofArray([Default.Attr().Class("pull-right")])),List.ofArray([Operators.add(Default.UL(List.ofArray([Default.Attr().Class("tweetActions")])),List.ofArray([Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),(_this3=Default.Attr(),_this3.NewAttr("target","_blank")),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Reply")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),(_this4=Default.Attr(),_this4.NewAttr("target","_blank")),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Retweet")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),(_this5=Default.Attr(),_this5.NewAttr("target","_blank")),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Favorite")]))]))]))]))]));
      },
      setTweetId:function(id)
      {
@@ -567,6 +584,7 @@
           _count_=_arg11.length;
           Client4.incrementTweetsCount(_count_);
           Client4.toggleActionsVisibility();
+          Client4.handleTweetActions();
           objectArg1=x2["HtmlProvider@32"];
           (arg002=x2.Body,function(arg10)
           {
@@ -645,6 +663,7 @@
           };
          })("visibility"))("visible");
          Client4.toggleActionsVisibility();
+         Client4.handleTweetActions();
          x8=setInterval(function()
          {
           return Client4.checkNewTweets();
@@ -795,6 +814,7 @@
   Client3=Runtime.Safe(Snippets.Client);
   Tweets=Runtime.Safe(Website.Tweets);
   Client4=Runtime.Safe(Tweets.Client);
+  window=Runtime.Safe(Global.window);
   Videos=Runtime.Safe(Website.Videos);
   return Client5=Runtime.Safe(Videos.Client);
  });

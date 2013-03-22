@@ -89,6 +89,16 @@ module Mongo =
                 Cover       : string
             }
 
+        [<CLIMutableAttribute>]
+        type NewsItem =
+            {
+                _id     : ObjectId
+                Title   : string
+                Summary : string
+                Url     : string
+                Date    : DateTime
+            }
+
     [<AutoOpen>]
     module Collections =
     
@@ -97,6 +107,7 @@ module Mongo =
         let books     = collectionByName<Book>           database "books"
         let snippets  = collectionByName<Snippet>        database "snippets"
         let videos    = collectionByName<Video>          database "videos"
+        let news      = collectionByName<NewsItem>       database "news"
 
     [<AutoOpen>]
     module Queryable =
@@ -108,6 +119,7 @@ module Mongo =
         let booksQueryable     = asQueryable books
         let snippetsQueryable  = asQueryable snippets
         let videosQueryable    = asQueryable videos
+        let newsQueryable      = asQueryable news
 
     module Tweets =
 
@@ -190,6 +202,14 @@ module Mongo =
                     sortByDescending x.Date
             }
 
+    module News =
+
+        let latest10() =
+            query {
+                for x in newsQueryable do
+                    sortByDescending x.Date
+                    take 10
+            }
 
 //        let video =
 //            {

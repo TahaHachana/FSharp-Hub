@@ -134,9 +134,7 @@ module Content =
                 ]
                 Div [Class "span6"] -< [
                     H3 [Class "centered"] -< [Text "News"]
-                    Div [Text "News item 1"]
-                    Div [Text "News item 2"]
-                    Div [Text "News item 3"]
+                    Div [new News.Client.NewsViewer()]
                 ]
             ]
 

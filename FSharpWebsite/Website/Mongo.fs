@@ -6,30 +6,26 @@
 #endif
 
 open System
+open System.Globalization
 open System.Linq
 open MongoDB.Bson
 open MongoDB.Driver
 open MongoDB.Driver.Builders
-open System.Globalization
 
 module Mongo =
     
     let culture = CultureInfo.CreateSpecificCulture "en-US"
     CultureInfo.DefaultThreadCurrentCulture <- culture
 
+    [<AutoOpen>]
     module Utilities =
 
-        /// Creates a mongo server instance.
         let createServer (connectionString: string) = MongoServer.Create connectionString
-
-        /// Gets the database with the specified name.
         let databaseByName (server : MongoServer) (name : string) = server.GetDatabase name
-
-        /// Gets the database collection with the specified name.
         let collectionByName<'T> (db : MongoDatabase) (name : string) = db.GetCollection<'T> name
 
-        let server = createServer Secure.mongoConnectionString
-        let database = databaseByName server "fsharpwebsite"
+    let server = createServer Secure.connectionString
+    let database = databaseByName server "fsharpwebsite"
 
     [<AutoOpenAttribute>]
     module RecordTypes =
@@ -96,11 +92,11 @@ module Mongo =
     [<AutoOpen>]
     module Collections =
     
-        let tweets    = Utilities.collectionByName<Tweet>          Utilities.database "tweets"
-        let questions = Utilities.collectionByName<FSharpQuestion> Utilities.database "questions"
-        let books     = Utilities.collectionByName<Book>           Utilities.database "books"
-        let snippets  = Utilities.collectionByName<Snippet>        Utilities.database "snippets"
-        let videos    = Utilities.collectionByName<Video>          Utilities.database "videos"
+        let tweets    = collectionByName<Tweet>          database "tweets"
+        let questions = collectionByName<FSharpQuestion> database "questions"
+        let books     = collectionByName<Book>           database "books"
+        let snippets  = collectionByName<Snippet>        database "snippets"
+        let videos    = collectionByName<Video>          database "videos"
 
     [<AutoOpen>]
     module Queryable =
@@ -113,104 +109,87 @@ module Mongo =
         let snippetsQueryable  = asQueryable snippets
         let videosQueryable    = asQueryable videos
 
-    [<AutoOpenAttribute>]              
     module Tweets =
 
-        let take20() =
+        let latest20() =
             query {
                 for x in tweetsQueryable do
                     sortByDescending x.CreationDate
                     take 20
             }
-            |> Seq.toArray
 
-        let skip skipCount =
+        let skipLatest20 skipCount =
             query {
                 for x in tweetsQueryable do
                     sortByDescending x.CreationDate
                     skip skipCount
                     take 20
             }
-            |> Seq.toArray
 
-        let queryWhile latestTweetsId =
+        let takeWhile latestTweetsId =
             query {
                 for x in tweetsQueryable do
                     sortByDescending x.CreationDate
                     takeWhile (x.TweetID <> latestTweetsId)
             }
-            |> Seq.toArray
-            |> function
-                | [||] -> None
-                | arr  -> Some arr
 
-    [<AutoOpenAttribute>]
     module Questions =
 
-        let take20() =
+        let latest20() =
             query {
                 for x in questionsQueryable do
                     sortByDescending x.Date
                     take 20
             }
-            |> Seq.toArray
 
-        let skipTake20 skipCount =
+        let skipLatest20 skipCount =
             query {
                 for x in questionsQueryable do
                     sortByDescending x.Date
                     skip skipCount
                     take 20
             }
-            |> Seq.toArray
 
-        let inline queryWhile latestQuestionId =
+        let inline takeWhile latestQuestionId =
             query {
                 for x in questionsQueryable do
                     sortByDescending x.Date
                     takeWhile (x._id.ToString() <> latestQuestionId)
             }
-            |> Seq.toArray
-            |> function
-                | [||] -> None
-                | arr  -> Some arr
 
-    [<AutoOpenAttribute>]
     module Books =
 
-        let inline queryAll() =
+        let all() =
             query {
                 for x in booksQueryable do
                     sortByDescending x.ReleaseDate
             }
-            |> Seq.toArray
 
     module Snippets =
 
-        let queryAll() =
+        let latest20() =
             query {
                 for x in snippetsQueryable do
                     sortByDescending x.Date
+                    take 20
             }
-            |> Seq.toArray
 
-        let skip skipCount =
+        let skipLatest20 skipCount =
             query {
                 for x in snippetsQueryable do
                     sortByDescending x.Date
                     skip skipCount
                     take 20
             }
-            |> Seq.toArray
 
     module Videos =
 
-        let queryAll() =
+        let all() =
             query {
                 for x in videosQueryable do
                     sortByDescending x.Date
             }
-            |> Seq.toArray
+
 
 //        let video =
 //            {

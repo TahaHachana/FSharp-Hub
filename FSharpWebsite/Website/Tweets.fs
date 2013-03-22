@@ -58,7 +58,8 @@ module Tweets =
         let latestTweets () =
             async {
                 return
-                    Tweets.take20()
+                    Tweets.latest20()
+                    |> Seq.toArray
                     |> Array.map tweetData
             }
 
@@ -66,19 +67,21 @@ module Tweets =
         let tweetsAfterSkip skip =
             async {
                 return
-                    Tweets.skip skip
+                    Tweets.skipLatest20 skip
+                    |> Seq.toArray
                     |> Array.map tweetData
             }
 
         [<RpcAttribute>]
         let newTweets latestTweetId =
             async {
-                let newTweetsOption = Tweets.queryWhile latestTweetId
-                match newTweetsOption with
-                    | None -> return None
-                    | Some tweets ->
-                        return        
-                            tweets
+                return
+                    Tweets.takeWhile latestTweetId
+                    |> Seq.toArray
+                    |> function
+                        | [||] -> None
+                        | arr  ->
+                            arr
                             |> Array.map tweetData
                             |> Some
             }

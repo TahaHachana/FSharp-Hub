@@ -15,30 +15,33 @@ module Questions =
         [<RpcAttribute>]
         let latestFSharpQuestions () =
             async {
-                let questions = Questions.take20()
+                let questions = Questions.latest20() |> Seq.toArray
                 let latestQuestionId = questions.[0]._id.ToString()
                 let questions' = questions |> Array.map questionData
                 return latestQuestionId, questions'
             }
 
         [<RpcAttribute>]
-        let questionsAfterSkip skip =
+        let questionsAfterSkip skipCount =
             async {
                 return
-                    Mongo.Questions.skipTake20 skip
+                    Mongo.Questions.skipLatest20 skipCount
+                    |> Seq.toArray
                     |> Array.map questionData
             }
 
         [<RpcAttribute>]
         let newQuestions latestQuestionId =
             async {
-                let newQuestionsOption = Questions.queryWhile latestQuestionId
-                match newQuestionsOption with
-                    | None -> return None
-                    | Some questions ->
-                        let latestQuestionId' = questions.[0]._id.ToString()
-                        let questions' = questions |> Array.map questionData
-                        return Some (latestQuestionId', questions')
+                return
+                    Questions.takeWhile latestQuestionId
+                    |> Seq.toArray
+                    |> function
+                        | [||] -> None
+                        | arr  ->
+                            let latestQuestionId' = arr.[0]._id.ToString()
+                            let questions' = arr |> Array.map questionData
+                            Some (latestQuestionId', questions')
             }
 
     module Client =

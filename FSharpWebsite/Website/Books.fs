@@ -11,7 +11,8 @@ module Books =
     module Server =
 
         let fsharpBooks =
-            Books.queryAll()
+            Books.all()
+            |> Seq.toArray
             |> Array.map (fun x ->
                 x.Url, x.Cover, x.Title, x.Authors, x.Publisher, x.ISBN, x.Pages.ToString())
             |> Utilities.Server.toChunks 3

@@ -16,7 +16,8 @@ module Snippets =
         let latestFSharpSnippets () =
             async {
                 return
-                    Snippets.queryAll ()
+                    Snippets.latest20()
+                    |> Seq.toArray
                     |> Array.map snippetData
             }
 
@@ -24,7 +25,8 @@ module Snippets =
         let snippetsAfterSkip skip =
             async {
                 return
-                    Mongo.Snippets.skip skip
+                    Mongo.Snippets.skipLatest20 skip
+                    |> Seq.toArray
                     |> Array.map snippetData
             }
 

@@ -9,7 +9,8 @@ module Videos =
     module Server =
 
         let videos =
-            Videos.queryAll()
+            Videos.all()
+            |> Seq.toArray
             |> Array.map (fun x ->
                 x.Url, x.Thumbnail, x.Title, x.Website)
             |> Utilities.Server.toChunks 4

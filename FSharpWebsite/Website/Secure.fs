@@ -2,4 +2,4 @@ namespace Website
 
 module Secure =
 
-    let mongoConnectionString = "mongodb://readonly:readonly@ds037977.mongolab.com:37977/fsharpwebsite"
+    let connectionString = "mongodb://readonly:readonly@ds037977.mongolab.com:37977/fsharpwebsite"

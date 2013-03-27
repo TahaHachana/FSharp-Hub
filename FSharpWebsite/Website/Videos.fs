@@ -47,9 +47,6 @@ module Videos =
             |> Array.mapi (fun idx x -> idx + 1, x)
             |> Array.map (fun (page, x) -> page, makeDiv' x)
       
-//        let inline divById id = divs () |> Array.find (fun (x, content) -> x = id) |> snd
-
-
     module Client =
         
         open IntelliFactory.WebSharper.Html
@@ -67,10 +64,10 @@ module Videos =
                     let pagesCount = jquery.Attr "data-pages-count" |> int
                     match previous with
                         | 0 -> JQuery.Of("#previous").AddClass("disabled").Ignore
-                        | _ -> JQuery.Of("#prevLink").Attr("href", ("/Videos/" + string previous)).Ignore
+                        | _ -> JQuery.Of("#prevLink").Attr("href", ("/videos/" + string previous)).Ignore
                     match next with
                         | x when x = pagesCount -> JQuery.Of("#next").AddClass("disabled").Ignore
-                        | _ -> JQuery.Of("#nextLink").Attr("href", ("/Videos/" + string next)).Ignore)
+                        | _ -> JQuery.Of("#nextLink").Attr("href", ("/videos/" + string next)).Ignore)
             
         type PagerViewer () =
             inherit Web.Control ()

@@ -1,29 +1,29 @@
 ﻿namespace Website
 
-open IntelliFactory.Html
-open Content
-open Model
-open ExtSharper
-
 module Views =
+
+    open IntelliFactory.Html
+    open Content
+    open Model
+    open ExtSharper
 
     let mainTemplate = Skin.MakeDefaultTemplate "~/Main.html" Skin.LoadFrequency.Once 
     let withMainTemplate = Skin.WithTemplate<Action> mainTemplate
 
-    let homeView =
-        withMainTemplate HomeContent.title HomeContent.metaDescription <| fun ctx ->
+    let home =
+        withMainTemplate Home.title Home.metaDescription <| fun ctx ->
             [
-                HomeContent.navigation
-                Div [new Shared.Client.ForkmeViewer()]
-                HomeContent.heroUnit
+                Home.navigation
+                Div [new Forkme.Viewer()]
+                Home.heroUnit
                 Div [Class "container"] -< [
-                    HomeContent.row1
-                    HomeContent.row2
+                    Home.row1
+                    Home.row2
                 ]
-                Shared.Server.footer
+                Shared.footer
             ]
 
-    let custom404View =
+    let custom404 =
         withMainTemplate "Error - Page Not Found" "" <| fun ctx ->
             [
                 Div [Class "container"] -< [
@@ -34,34 +34,33 @@ module Views =
                 ]
             ]
 
-    let booksView =
-        withMainTemplate BooksPageContent.title BooksPageContent.metaDescription <| fun ctx ->
+    let books =
+        withMainTemplate Books.title Books.metaDescription <| fun ctx ->
             [
-                BooksPageContent.navigation
-                Div [new Shared.Client.ForkmeViewer()]
+                Books.navigation
+                Div [new Forkme.Viewer()]
                 Div [Class "container"] -< [
-                    BooksPageContent.header
+                    Books.header
                     Div [Books.Server.booksDiv ()]
                 ]
-                Shared.Server.footer
+                Shared.footer
             ]
 
-    let videosViews =
+    let videos =
         Videos.Server.divs ()
         |> Array.map (fun (pageId, element) ->
-            
-            let title = VideosPageContent.title pageId
+            let title = Videos.title pageId
             let navigation =
                 match pageId with
-                    | 1 -> VideosPageContent.navigation
-                    | _ -> Shared.Server.navigation
+                    | 1 -> Videos.navigation
+                    | _ -> Shared.navigation
 
-            let view = withMainTemplate title VideosPageContent.metaDescription <| fun ctx ->
+            let view = withMainTemplate title Videos.metaDescription <| fun ctx ->
                 [
                     navigation
-                    Div [new Shared.Client.ForkmeViewer()]
+                    Div [new Forkme.Viewer()]
                     Div [Class "container"] -< [
-                        VideosPageContent.header
+                        Videos.header
                         Div [element]
                         Span [
                             Id "pager"
@@ -70,24 +69,24 @@ module Views =
                             Attributes.HTML5.Data "next" (string (pageId + 1))]
                         Div [Class "offset6 span2"] -< [new Videos.Client.PagerViewer()]
                     ]
-                    Shared.Server.footer
+                    Shared.footer
                 ]
             pageId, view)
 
     let videosView pageId =
-        videosViews
+        videos
         |> Array.find (fun (id, _) -> id = pageId)
         |> snd
 
-    let resourcesView =
-        withMainTemplate ResourcesPageContent.title ResourcesPageContent.metaDescription <| fun ctx ->
+    let resources =
+        withMainTemplate Resources.title Resources.metaDescription <| fun ctx ->
             [
-                ResourcesPageContent.navigation
-                Div [new Shared.Client.ForkmeViewer()]
+                Resources.navigation
+                Div [new Forkme.Viewer()]
                 Div [Class "container"] -< [
-                    ResourcesPageContent.header
-                    ResourcesPageContent.tabs
+                    Resources.header
+                    Resources.tabs
                 ]
-                Shared.Server.footer
+                Shared.footer
             ]
 

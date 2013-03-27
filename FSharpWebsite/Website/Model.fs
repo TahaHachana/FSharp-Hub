@@ -8,10 +8,10 @@ module Model =
 
     type Action =
         | Home
-        | Books
-        | Custom404
-        | Resources
-        | Videos of PageId
+        | [<CompiledName("books")>] Books
+        | [<CompiledName("custom404")>] Custom404
+        | [<CompiledName("resources")>] Resources
+        | [<CompiledName("videos")>] Videos of PageId
 
     type Page =
         {

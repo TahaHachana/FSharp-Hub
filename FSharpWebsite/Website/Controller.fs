@@ -1,18 +1,17 @@
 ﻿namespace Website
 
-open IntelliFactory.WebSharper.Sitelets
-open Model
-open Views
-
 module Controller =
+
+    open IntelliFactory.WebSharper.Sitelets
+    open Model
 
     let controller =
 
         let handle = function
-            | Home          -> homeView
-            | Books         -> booksView
-            | Custom404     -> custom404View
-            | Videos pageId -> videosView pageId
-            | Resources     -> resourcesView
+            | Home          -> Views.home
+            | Books         -> Views.books
+            | Custom404     -> Views.custom404
+            | Videos pageId -> Views.videosView pageId
+            | Resources     -> Views.resources
 
         { Handle = handle }

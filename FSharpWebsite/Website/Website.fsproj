@@ -38,6 +38,7 @@
     <Compile Include="Secure.fs" />
     <Compile Include="Mongo.fs" />
     <Compile Include="Utilities.fs" />
+    <Compile Include="Forkme.fs" />
     <Compile Include="Videos.fs" />
     <Compile Include="Snippets.fs" />
     <Compile Include="Books.fs" />
@@ -58,12 +59,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MongoDB.Bson">
-      <HintPath>..\..\packages\mongocsharpdriver.1.6\lib\net35\MongoDB.Bson.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\mongocsharpdriver.1.8.0\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Driver">
-      <HintPath>..\..\packages\mongocsharpdriver.1.6\lib\net35\MongoDB.Driver.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\mongocsharpdriver.1.8.0\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core" />

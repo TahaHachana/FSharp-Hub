@@ -111,15 +111,30 @@ module Views =
     let admin =
         withMainTemplate "Admin Page" "" <| fun ctx ->
             [
+                Shared.navigation
                 Div [Class "container"] -< [
-                    Shared.navigation
                     Shared.loginInfo ctx
                     Div [Id "admin"] -< [
                         Div [Class "row"] -< [
-                            Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef "#"] -< [Text "Books"]]
+                            Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef <| ctx.Link BooksAdmin] -< [Text "Books"]]
                             Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef "#"] -< [Text "Videos"]]
                             Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef "#"] -< [Text "News"]]
                         ]
                     ]
                 ]
             ]
+
+    let booksAdmin =
+        withMainTemplate "Admin Page" "" <| fun ctx ->
+            [
+                Shared.navigation
+                Div [Id "books-admin"; Class "container"] -< [
+                    Shared.loginInfo ctx
+                    Div [Style "margin-top: 50px;"] -< [
+                        Div [Class "row"] -< [Button [Class "btn btn-primary btn-large"; Id "add-book"] -< [Text "Add New Book"]]
+                        Div [Class "row"] -< [Div [Style "margin-top: 20px;"; Class "span8"] -< [new BooksAdmin.Client.Control()]]
+                    ]                  
+                ]
+            ]
+
+

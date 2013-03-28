@@ -15,6 +15,7 @@ module Model =
         | [<CompiledName("login")>] Login of Action option
         | [<CompiledName("logout")>] Logout
         | [<CompiledName("admin")>] Admin
+        | BooksAdmin
 
     type Page =
         {

@@ -5,11 +5,11 @@ module Controller =
     open IntelliFactory.WebSharper.Sitelets
     open Model
 
-    let protect() =
+    let protect view =
         let user = UserSession.GetLoggedInUser()
         match user with
             | None    -> Content.Redirect <| Login None
-            | _       -> Views.admin
+            | _       -> view
 
     let logout() =
         UserSession.Logout ()
@@ -23,9 +23,10 @@ module Controller =
             | Custom404     -> Views.custom404
             | Videos pageId -> Views.videosView pageId
             | Resources     -> Views.resources
-            | Admin         -> protect()
+            | Admin         -> protect Views.admin
             | Login action  -> Views.login action
             | Logout        -> logout()
+            | BooksAdmin    -> protect Views.booksAdmin
             
 
         { Handle = handle }

@@ -10,6 +10,7 @@ module Site =
         Router.Table
             [
                 Home, "/"
+                BooksAdmin, "/admin/books"
             ]
         <|>
         Router.Infer()

@@ -46,6 +46,7 @@
     <Compile Include="Tweets.fs" />
     <Compile Include="Questions.fs" />
     <Compile Include="News.fs" />
+    <Compile Include="BooksAdmin.fs" />
     <Compile Include="Model.fs" />
     <Compile Include="Content.fs" />
     <Compile Include="Views.fs" />

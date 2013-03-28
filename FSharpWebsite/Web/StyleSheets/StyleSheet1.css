@@ -108,3 +108,11 @@
 #hero {
     background-color: white;
 }
+
+#login, #admin {
+    margin-top: 40px;
+}
+
+.home-btn {
+    width: 150px;
+}

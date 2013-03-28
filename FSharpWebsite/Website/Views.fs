@@ -90,3 +90,36 @@ module Views =
                 Shared.footer
             ]
 
+    let login (redirectAction: option<Action>) =
+        withMainTemplate "Login" "" <| fun ctx ->
+            let redirectLink =
+                match redirectAction with
+                | Some action -> action
+                | None        -> Action.Admin
+                |> ctx.Link
+            [
+                Div [Class "container"] -< [
+                    Shared.navigation
+                    Shared.loginInfo ctx
+                    Div [Id "login"] -< [
+                        H1 [Text "Login"]
+                        Div [new Login.Client.Control(redirectLink)]
+                    ]
+                ]
+            ]
+
+    let admin =
+        withMainTemplate "Admin Page" "" <| fun ctx ->
+            [
+                Div [Class "container"] -< [
+                    Shared.navigation
+                    Shared.loginInfo ctx
+                    Div [Id "admin"] -< [
+                        Div [Class "row"] -< [
+                            Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef "#"] -< [Text "Books"]]
+                            Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef "#"] -< [Text "Videos"]]
+                            Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef "#"] -< [Text "News"]]
+                        ]
+                    ]
+                ]
+            ]

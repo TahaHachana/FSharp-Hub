@@ -38,6 +38,7 @@
     <Compile Include="Secure.fs" />
     <Compile Include="Mongo.fs" />
     <Compile Include="Utilities.fs" />
+    <Compile Include="Login.fs" />
     <Compile Include="Forkme.fs" />
     <Compile Include="Videos.fs" />
     <Compile Include="Snippets.fs" />
@@ -45,8 +46,8 @@
     <Compile Include="Tweets.fs" />
     <Compile Include="Questions.fs" />
     <Compile Include="News.fs" />
-    <Compile Include="Content.fs" />
     <Compile Include="Model.fs" />
+    <Compile Include="Content.fs" />
     <Compile Include="Views.fs" />
     <Compile Include="Controller.fs" />
     <Compile Include="Site.fs" />

@@ -9,6 +9,8 @@ module Content =
 
     module Shared =
         
+        open Model
+
         let navigation : Content.HtmlElement = navigation None
 
         let footer : Content.HtmlElement =
@@ -18,6 +20,18 @@ module Content =
                     A [HRef "http://www.websharper.com/"; Target "_blank"] -< [Text "WebSharper"]
                 ]
             ]
+
+        let ( => ) anchor href = A [HRef href] -< [Text anchor]
+    
+        let randomizeUrl url = url + "?d=" + System.Uri.EscapeUriString (System.DateTime.Now.ToString())
+
+        let loginInfo (ctx: Context<Action>) =
+            let user = UserSession.GetLoggedInUser ()
+            let link =
+                match user with
+                    | Some username -> "Log Out (" + username + ")" => (randomizeUrl <| ctx.Link Action.Logout)
+                    | None -> "Login" => (ctx.Link <| Action.Login None)
+            Div [Class "pull-right"] -< [link]
 
     module Home =
     

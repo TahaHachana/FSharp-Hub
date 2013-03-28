@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Website,BooksAdmin,Client,WebSharper,Html,Operators,Default,List,Remoting,Arrays,Concurrency,Forkme,Login,Client1,Formlet,Controls,Enhance,Data,Formlet1,window,alert,News,Client2,Questions,Client3,jQuery,Utilities,Client4,T,EventsPervasives,HTML5,setInterval,Snippets,Client5,Tweets,Client6,Videos,Client7;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,BooksAdmin,Client,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Html,Operators,Default,List,Arrays,Forkme,Login,Client1,window,News,Client2,Questions,Client3,jQuery,Utilities,Client4,T,EventsPervasives,HTML5,setInterval,Snippets,Client5,Tweets,Client6,Videos,Client7;
  Runtime.Define(Global,{
   Website:{
    BooksAdmin:{
@@ -11,10 +11,123 @@
        return Client.main();
       }
      }),
-     main:function()
+     addFormlet:Runtime.Field(function()
+     {
+      var _urlInput_40_1,x,f,_titleInput_43_1,x1,f1,_authorInput_46_1,x2,x3,x4,f2,f3,f4,_publisherInput_51_1,x5,f5,_isbnInput_54_1,x6,f6,_pagesCountInput_57_1,x7,f7,_releaseDateInput_60_1,x8,f8,_coverInput_63_1,x9,f9,formlet1,xa,xb,xc,fa,fb;
+      _urlInput_40_1=(x=Controls.Input(""),(f=function(formlet)
+      {
+       return Enhance.WithTextLabel("URL",formlet);
+      },f(x)));
+      _titleInput_43_1=(x1=Controls.Input(""),(f1=function(formlet)
+      {
+       return Enhance.WithTextLabel("Title",formlet);
+      },f1(x1)));
+      _authorInput_46_1=(x2=(x3=(x4=Controls.Input(""),(f2=function(formlet)
+      {
+       return Enhance.WithTextLabel("Author",formlet);
+      },f2(x4))),(f3=function(formlet)
+      {
+       return Enhance.Many(formlet);
+      },f3(x3))),(f4=function(formlet)
+      {
+       return Enhance.WithFormContainer(formlet);
+      },f4(x2)));
+      _publisherInput_51_1=(x5=Controls.Input(""),(f5=function(formlet)
+      {
+       return Enhance.WithTextLabel("Publisher",formlet);
+      },f5(x5)));
+      _isbnInput_54_1=(x6=Controls.Input(""),(f6=function(formlet)
+      {
+       return Enhance.WithTextLabel("ISBN",formlet);
+      },f6(x6)));
+      _pagesCountInput_57_1=(x7=Controls.Input(""),(f7=function(formlet)
+      {
+       return Enhance.WithTextLabel("Pages",formlet);
+      },f7(x7)));
+      _releaseDateInput_60_1=(x8=Controls.Input(""),(f8=function(formlet)
+      {
+       return Enhance.WithTextLabel("Release Date",formlet);
+      },f8(x8)));
+      _coverInput_63_1=(x9=Controls.Input(""),(f9=function(formlet)
+      {
+       return Enhance.WithTextLabel("Cover URL",formlet);
+      },f9(x9)));
+      formlet1=(xa=(xb=Data.$(Data.$(Data.$(Data.$(Data.$(Data.$(Data.$(Data.$((xc=function(url)
+      {
+       return function(title)
+       {
+        return function(authors)
+        {
+         return function(publisher)
+         {
+          return function(isbn)
+          {
+           return function(pages)
+           {
+            return function(date)
+            {
+             return function(cover)
+             {
+              return[url,title,authors,publisher,isbn,pages,date,cover];
+             };
+            };
+           };
+          };
+         };
+        };
+       };
+      },Formlet1.Return(xc)),_urlInput_40_1),_titleInput_43_1),_authorInput_46_1),_publisherInput_51_1),_isbnInput_54_1),_pagesCountInput_57_1),_releaseDateInput_60_1),_coverInput_63_1),(fa=function(formlet)
+      {
+       return Enhance.WithSubmitAndResetButtons(formlet);
+      },fa(xb))),(fb=function(formlet)
+      {
+       return Enhance.WithFormContainer(formlet);
+      },fb(xa)));
+      return Formlet1.Run(Runtime.Tupled(function(tupledArg)
+      {
+       var url,title,authors,publisher,isbn,pages,date,cover,xd,fc,fe;
+       url=tupledArg[0];
+       title=tupledArg[1];
+       authors=tupledArg[2];
+       publisher=tupledArg[3];
+       isbn=tupledArg[4];
+       pages=tupledArg[5];
+       date=tupledArg[6];
+       cover=tupledArg[7];
+       xd=(fc=function()
+       {
+        var xe,fd;
+        xe=Remoting.Async("Website:1",[url,title,authors,publisher,isbn,pages,date,cover]);
+        fd=function(_arg1)
+        {
+         if(_arg1)
+          {
+           alert("New book added successfully.");
+           return Concurrency.Return(null);
+          }
+         else
+          {
+           alert("The query failed.");
+           return Concurrency.Return(null);
+          }
+        };
+        return Concurrency.Bind(xe,fd);
+       },Concurrency.Delay(fc));
+       fe=function(arg00)
+       {
+        var t;
+        t={
+         $:0
+        };
+        return Concurrency.Start(arg00);
+       };
+       return fe(xd);
+      }),formlet1);
+     }),
+     booksTable:Runtime.Field(function()
      {
       var x,f,f1;
-      x=Operators.add(Default.Table(List.ofArray([Default.Attr().Class("table")])),List.ofArray([Default.TR(List.ofArray([Default.TH(List.ofArray([Default.Text("Title")])),Default.TH(List.ofArray([Default.Text("Publisher")]))]))]));
+      x=Operators.add(Default.Table(List.ofArray([Default.Attr().Class("table table-striped")])),List.ofArray([Default.TR(List.ofArray([Default.TH(List.ofArray([Default.Text("Title")])),Default.TH(List.ofArray([Default.Text("Publisher")]))]))]));
       f=(f1=function(elt)
       {
        var x1,f2,f6;
@@ -62,6 +175,10 @@
       });
       f(x);
       return x;
+     }),
+     main:function()
+     {
+      return Operators.add(Default.Div(List.ofArray([Default.Attr().Class("row")])),List.ofArray([Operators.add(Default.Div(List.ofArray([Default.Attr().Class("span6")])),List.ofArray([Default.H2(List.ofArray([Default.Text("Add new book")])),Default.Div(List.ofArray([Client.addFormlet()]))])),Operators.add(Default.Div(List.ofArray([Default.Attr().Class("span6")])),List.ofArray([Default.H2(List.ofArray([Default.Text("Books in database")])),Client.booksTable()]))]));
      },
      tr:function(title,publisher)
      {
@@ -122,7 +239,7 @@
        x5=(f4=function()
        {
         var x6,f5;
-        x6=Remoting.Async("Website:10",[loginInfo]);
+        x6=Remoting.Async("Website:11",[loginInfo]);
         f5=function(_arg1)
         {
          if(_arg1)
@@ -174,7 +291,7 @@
        x1=(f2=function()
        {
         var x2,f3;
-        x2=Remoting.Async("Website:1",[]);
+        x2=Remoting.Async("Website:2",[]);
         f3=function(_arg1)
         {
          var x3,f4,f5,action;
@@ -235,7 +352,7 @@
        var jquery,latestQuestionId,x1,f1;
        jquery=jQuery("#fsharpQuestions");
        latestQuestionId=jquery.attr("data-question-id");
-       x1=Remoting.Async("Website:4",[latestQuestionId]);
+       x1=Remoting.Async("Website:5",[latestQuestionId]);
        f1=function(_arg1)
        {
         var questions,id,x2,x3,f2,f3,mapping,f4,action,count,msg;
@@ -327,7 +444,7 @@
          {
           return value<<0;
          },f2(x4)));
-         x5=Remoting.Async("Website:3",[count]);
+         x5=Remoting.Async("Website:4",[count]);
          f3=function(_arg11)
          {
           var x6,f4,mapping,f5,action,_count_,objectArg1,arg002;
@@ -384,7 +501,7 @@
        x2=(f1=function()
        {
         var x3,f2;
-        x3=Remoting.Async("Website:2",[]);
+        x3=Remoting.Async("Website:3",[]);
         f2=Runtime.Tupled(function(_arg21)
         {
          var id,fsharpQuestions,x4,f3,mapping,f4,action,objectArg,arg00,x6,f5;
@@ -498,7 +615,7 @@
          {
           return value<<0;
          },f2(x4)));
-         x5=Remoting.Async("Website:9",[count]);
+         x5=Remoting.Async("Website:10",[count]);
          f3=function(_arg11)
          {
           var x6,f4,mapping,f5,action,_count_,objectArg1,arg002;
@@ -553,7 +670,7 @@
        x2=(f1=function()
        {
         var x3,f2;
-        x3=Remoting.Async("Website:8",[]);
+        x3=Remoting.Async("Website:9",[]);
         f2=function(_arg21)
         {
          var x4,f3,mapping,f4,action;
@@ -609,7 +726,7 @@
        var jquery,latestTweetId,x1,f1;
        jquery=jQuery("#fsharpTweets");
        latestTweetId=jquery.attr("data-tweet-id");
-       x1=Remoting.Async("Website:7",[latestTweetId]);
+       x1=Remoting.Async("Website:8",[latestTweetId]);
        f1=function(_arg1)
        {
         var tweets,latestTweetId1,x2,f2,x3,x4,f3,f4,mapping,f5,action,count,msg;
@@ -755,7 +872,7 @@
          {
           return value<<0;
          },f2(x4)));
-         x5=Remoting.Async("Website:6",[count]);
+         x5=Remoting.Async("Website:7",[count]);
          f3=function(_arg11)
          {
           var x6,f4,mapping,f5,action,_count_,objectArg1,arg002;
@@ -815,7 +932,7 @@
        x2=(f1=function()
        {
         var x3,f2;
-        x3=Remoting.Async("Website:5",[]);
+        x3=Remoting.Async("Website:6",[]);
         f2=function(_arg2)
         {
          var latestTweetId,x4,f3,x5,f4,mapping,f5,action,objectArg,arg00,x8,f6;
@@ -993,23 +1110,23 @@
   BooksAdmin=Runtime.Safe(Website.BooksAdmin);
   Client=Runtime.Safe(BooksAdmin.Client);
   WebSharper=Runtime.Safe(Global.IntelliFactory.WebSharper);
-  Html=Runtime.Safe(WebSharper.Html);
-  Operators=Runtime.Safe(Html.Operators);
-  Default=Runtime.Safe(Html.Default);
-  List=Runtime.Safe(WebSharper.List);
-  Remoting=Runtime.Safe(WebSharper.Remoting);
-  Arrays=Runtime.Safe(WebSharper.Arrays);
-  Concurrency=Runtime.Safe(WebSharper.Concurrency);
-  Forkme=Runtime.Safe(Website.Forkme);
-  Login=Runtime.Safe(Website.Login);
-  Client1=Runtime.Safe(Login.Client);
   Formlet=Runtime.Safe(WebSharper.Formlet);
   Controls=Runtime.Safe(Formlet.Controls);
   Enhance=Runtime.Safe(Formlet.Enhance);
   Data=Runtime.Safe(Formlet.Data);
   Formlet1=Runtime.Safe(Formlet.Formlet);
-  window=Runtime.Safe(Global.window);
+  Remoting=Runtime.Safe(WebSharper.Remoting);
   alert=Runtime.Safe(Global.alert);
+  Concurrency=Runtime.Safe(WebSharper.Concurrency);
+  Html=Runtime.Safe(WebSharper.Html);
+  Operators=Runtime.Safe(Html.Operators);
+  Default=Runtime.Safe(Html.Default);
+  List=Runtime.Safe(WebSharper.List);
+  Arrays=Runtime.Safe(WebSharper.Arrays);
+  Forkme=Runtime.Safe(Website.Forkme);
+  Login=Runtime.Safe(Website.Login);
+  Client1=Runtime.Safe(Login.Client);
+  window=Runtime.Safe(Global.window);
   News=Runtime.Safe(Website.News);
   Client2=Runtime.Safe(News.Client);
   Questions=Runtime.Safe(Website.Questions);
@@ -1030,5 +1147,7 @@
  });
  Runtime.OnLoad(function()
  {
+  Client.booksTable();
+  Client.addFormlet();
  });
 }());

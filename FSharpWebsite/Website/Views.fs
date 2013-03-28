@@ -131,8 +131,9 @@ module Views =
                 Div [Id "books-admin"; Class "container"] -< [
                     Shared.loginInfo ctx
                     Div [Style "margin-top: 50px;"] -< [
-                        Div [Class "row"] -< [Button [Class "btn btn-primary btn-large"; Id "add-book"] -< [Text "Add New Book"]]
-                        Div [Class "row"] -< [Div [Style "margin-top: 20px;"; Class "span8"] -< [new BooksAdmin.Client.Control()]]
+                        new BooksAdmin.Client.Control()
+//                        Div [Class "row"] -< [Button [Class "btn btn-primary btn-large"; Id "add-book"] -< [Text "Add New Book"]]
+//                        Div [Class "row"] -< [Div [Style "margin-top: 20px;"; Class "span8"] -< [new BooksAdmin.Client.Control()]]
                     ]                  
                 ]
             ]

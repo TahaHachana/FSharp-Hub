@@ -20,11 +20,12 @@ module Mongo =
     [<AutoOpen>]
     module Utilities =
 
-        let createServer (connectionString: string) = MongoServer.Create connectionString
+        let mongoClient (connectionString: string) = MongoClient connectionString
         let databaseByName (server : MongoServer) (name : string) = server.GetDatabase name
         let collectionByName<'T> (db : MongoDatabase) (name : string) = db.GetCollection<'T> name
 
-    let server = createServer Secure.connectionString
+    let client = mongoClient Secure.connectionString
+    let server = client.GetServer()
     let database = databaseByName server "fsharpwebsite"
 
     [<AutoOpenAttribute>]
@@ -88,6 +89,19 @@ module Mongo =
                 ReleaseDate : DateTime
                 Cover       : string
             }
+
+            static member Newup url title authors publisher isbn pages releaseDate cover =
+                {
+                    _id         = ObjectId.GenerateNewId()
+                    Url         = url
+                    Title       = title
+                    Authors     = authors
+                    Publisher   = publisher
+                    ISBN        = isbn
+                    Pages       = pages
+                    ReleaseDate = releaseDate
+                    Cover       = cover
+                }
 
         [<CLIMutableAttribute>]
         type NewsItem =
@@ -176,6 +190,10 @@ module Mongo =
                 for x in booksQueryable do
                     sortByDescending x.ReleaseDate
             }
+
+        let insert book =
+            let result = books.Insert book
+            result.Ok
 
     module Snippets =
 

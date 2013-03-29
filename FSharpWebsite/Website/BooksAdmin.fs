@@ -24,10 +24,13 @@ module BooksAdmin =
             async {
                 let authors' = Array.ofList authors
                 let pages' = int pages
-                let date' = DateTime.Parse date
-                let book = Book.Newup url title authors' publisher isbn pages' date' cover
-                let isOk = Books.insert book
-                return isOk
+                let isDate, datetime = DateTime.TryParse date
+                match isDate with
+                    | false -> return false
+                    | true  ->
+                        let book = Book.Make url title authors' publisher isbn pages' datetime cover
+                        let isOk = Books.insert book
+                        return isOk
             }
 
     module Client =
@@ -80,7 +83,7 @@ module BooksAdmin =
                     let! isOk = Server.addBook url title authors publisher isbn pages date cover
                     match isOk with
                         | false -> JavaScript.Alert "The query failed."
-                        | true  -> JavaScript.Alert "New book added successfully."
+                        | true  -> JavaScript.Alert "New book inserted successfully."
                 }
                 |> Async.Start) formlet
 
@@ -98,8 +101,7 @@ module BooksAdmin =
                     TH [Text "Title"]
                     TH [Text "Publisher"]
                 ]
-            ]
-            |>! OnAfterRender(fun elt ->
+            ] |>! OnAfterRender(fun elt ->
                 async {
                     let! booksData = Server.books()
                     booksData

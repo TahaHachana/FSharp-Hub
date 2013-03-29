@@ -27,6 +27,7 @@ module Controller =
             | Login action  -> Views.login action
             | Logout        -> logout()
             | BooksAdmin    -> protect Views.booksAdmin
-            
+            | VideosAdmin   -> protect Views.videosAdmin
+            | NewsAdmin     -> protect Views.newsAdmin
 
         { Handle = handle }

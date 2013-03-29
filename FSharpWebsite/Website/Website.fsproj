@@ -47,8 +47,10 @@
     <Compile Include="Questions.fs" />
     <Compile Include="News.fs" />
     <Compile Include="BooksAdmin.fs" />
-    <Compile Include="Model.fs" />
+    <Compile Include="VideosAdmin.fs" />
+    <Compile Include="NewsAdmin.fs" />
     <Compile Include="Content.fs" />
+    <Compile Include="Model.fs" />
     <Compile Include="Views.fs" />
     <Compile Include="Controller.fs" />
     <Compile Include="Site.fs" />

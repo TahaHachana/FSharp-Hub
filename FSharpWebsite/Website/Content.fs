@@ -9,8 +9,6 @@ module Content =
 
     module Shared =
         
-        open Model
-
         let navigation : Content.HtmlElement = navigation None
 
         let footer : Content.HtmlElement =
@@ -25,12 +23,12 @@ module Content =
     
         let randomizeUrl url = url + "?d=" + System.Uri.EscapeUriString (System.DateTime.Now.ToString())
 
-        let loginInfo (ctx: Context<Action>) =
+        let loginInfo logoutAction loginAction (ctx: Context<_>) =
             let user = UserSession.GetLoggedInUser ()
             let link =
                 match user with
-                    | Some username -> "Log Out (" + username + ")" => (randomizeUrl <| ctx.Link Action.Logout)
-                    | None -> "Login" => (ctx.Link <| Action.Login None)
+                    | Some username -> "Log Out (" + username + ")" => (randomizeUrl <| ctx.Link logoutAction)
+                    | None -> "Login" => (ctx.Link <| loginAction None)
             Div [Class "pull-right"] -< [link]
 
     module Home =
@@ -68,7 +66,7 @@ module Content =
             ]
 
         let row2 : Content.HtmlElement =
-            Div [Class "row-fluid"; Style "margin-botton: 30px;"] -< [
+            Div [Class "row-fluid"; Style "margin-top: 50px;"] -< [
                 Div [Class "span6"] -< [
                     Div [Class "tabbable"] -< [
                         UL [Class "nav nav-tabs"] -< [
@@ -81,10 +79,10 @@ module Content =
                             Div [Class "tab-pane"; Id "questions"] -< [new Questions.Client.QuestionsViewer () :> INode<_>]
                             Div [Class "tab-pane"; Id "snippets"] -< [new Snippets.Client.SnippetsViewer() :> INode<_>]
                         ]
-                    ]                
+                    ]
                 ]
                 Div [Class "span6"] -< [
-                    H3 [Class "centered"] -< [Text "News"]
+                    H3 [Class "centered"] -< [Text "Latest News"]
                     Div [new News.Client.NewsViewer()]
                 ]
             ]

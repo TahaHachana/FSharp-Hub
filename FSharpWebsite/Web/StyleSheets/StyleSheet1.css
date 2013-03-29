@@ -109,8 +109,8 @@
     background-color: white;
 }
 
-#login, #admin, #books-admin {
-    margin-top: 40px;
+#login, #admin, #books-admin, #videos-admin, #news-admin {
+    margin-top: 50px;
 }
 
 .home-btn {

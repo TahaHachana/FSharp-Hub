@@ -34,17 +34,14 @@ module Login =
             let userName =
                 Controls.Input ""
                 |> Enhance.WithTextLabel "Username"
-
             let password =
                 Controls.Password ""
                 |> Enhance.WithTextLabel "Password"
-
             let formlet =
                 Formlet.Yield (fun n pw -> {Name=n; Password=pw})
                 <*> userName <*> password
                 |> Enhance.WithSubmitButton
                 |> Enhance.WithFormContainer
-            
             Formlet.Run (fun loginInfo ->
                 async {
                     let! loggedIn = Server.login loginInfo
@@ -52,7 +49,6 @@ module Login =
                             | false -> JavaScript.Alert "Login failed"
                             | true -> Html5.Window.Self.Location.Href <- redirectUrl
                 } |> Async.Start) formlet
-
 
         type Control(redirectUrl) =
         

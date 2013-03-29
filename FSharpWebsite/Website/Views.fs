@@ -9,15 +9,16 @@ module Views =
 
     let mainTemplate = Skin.MakeDefaultTemplate "~/Main.html" Skin.LoadFrequency.Once 
     let withMainTemplate = Skin.WithTemplate<Action> mainTemplate
+    let loginInfo' = Shared.loginInfo Logout Login
 
     let home =
         withMainTemplate Home.title Home.metaDescription <| fun ctx ->
             [
                 Home.navigation
                 Div [new Forkme.Viewer()]
-                Home.heroUnit
+//                Home.heroUnit
                 Div [Class "container"] -< [
-                    Home.row1
+//                    Home.row1
                     Home.row2
                 ]
                 Shared.footer
@@ -54,7 +55,6 @@ module Views =
                 match pageId with
                     | 1 -> Videos.navigation
                     | _ -> Shared.navigation
-
             let view = withMainTemplate title Videos.metaDescription <| fun ctx ->
                 [
                     navigation
@@ -67,7 +67,7 @@ module Views =
                             Attributes.HTML5.Data "pages-count" Videos.Server.pagesCount
                             Attributes.HTML5.Data "previous" (string (pageId - 1))
                             Attributes.HTML5.Data "next" (string (pageId + 1))]
-                        Div [Class "offset6 span2"] -< [new Videos.Client.PagerViewer()]
+                        Div [Class "offset5 span2"] -< [new Videos.Client.PagerViewer()]
                     ]
                     Shared.footer
                 ]
@@ -100,7 +100,7 @@ module Views =
             [
                 Div [Class "container"] -< [
                     Shared.navigation
-                    Shared.loginInfo ctx
+//                    loginInfo' ctx
                     Div [Id "login"] -< [
                         H1 [Text "Login"]
                         Div [new Login.Client.Control(redirectLink)]
@@ -113,29 +113,49 @@ module Views =
             [
                 Shared.navigation
                 Div [Class "container"] -< [
-                    Shared.loginInfo ctx
+                    loginInfo' ctx
                     Div [Id "admin"] -< [
                         Div [Class "row"] -< [
                             Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef <| ctx.Link BooksAdmin] -< [Text "Books"]]
-                            Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef "#"] -< [Text "Videos"]]
-                            Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef "#"] -< [Text "News"]]
+                            Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef <| ctx.Link VideosAdmin] -< [Text "Videos"]]
+                            Div [Class "span4"] -< [A [Class "btn btn-large home-btn"; HRef <| ctx.Link NewsAdmin] -< [Text "News"]]
                         ]
                     ]
                 ]
             ]
 
     let booksAdmin =
-        withMainTemplate "Admin Page" "" <| fun ctx ->
+        withMainTemplate "" "" <| fun ctx ->
             [
                 Shared.navigation
-                Div [Id "books-admin"; Class "container"] -< [
-                    Shared.loginInfo ctx
-                    Div [Style "margin-top: 50px;"] -< [
-                        new BooksAdmin.Client.Control()
-//                        Div [Class "row"] -< [Button [Class "btn btn-primary btn-large"; Id "add-book"] -< [Text "Add New Book"]]
-//                        Div [Class "row"] -< [Div [Style "margin-top: 20px;"; Class "span8"] -< [new BooksAdmin.Client.Control()]]
+                Div [Class "container"] -< [
+                    loginInfo' ctx
+                    Div [Id "books-admin"] -< [new BooksAdmin.Client.Control()]                  
+                ]
+            ]
+
+    let videosAdmin =
+        withMainTemplate "" "" <| fun ctx ->
+            [
+                Shared.navigation
+                Div [Class "container"] -< [
+                    loginInfo' ctx
+                    Div [Id "videos-admin"] -< [
+                        H2 [Text "Add new video"]
+                        Div [new VideosAdmin.Client.Control()]
                     ]                  
                 ]
             ]
 
-
+    let newsAdmin =
+        withMainTemplate "" "" <| fun ctx ->
+            [
+                Shared.navigation
+                Div [Class "container"] -< [
+                    loginInfo' ctx
+                    Div [Id "news-admin"] -< [
+                        H2 [Text "Add news item "]
+                        Div [new NewsAdmin.Client.Control()]
+                    ]                  
+                ]
+            ]

@@ -63,6 +63,16 @@ module Mongo =
                 Date      : DateTime
             }
 
+            static member Make title url thumbnail website date =
+                {
+                    _id       = ObjectId.GenerateNewId()
+                    Title     = title
+                    Url       = url
+                    Thumbnail = thumbnail
+                    Website   = website
+                    Date      = date
+                }
+
         [<CLIMutableAttribute>]
         type Tweet =
             {
@@ -90,7 +100,7 @@ module Mongo =
                 Cover       : string
             }
 
-            static member Newup url title authors publisher isbn pages releaseDate cover =
+            static member Make url title authors publisher isbn pages releaseDate cover =
                 {
                     _id         = ObjectId.GenerateNewId()
                     Url         = url
@@ -112,6 +122,15 @@ module Mongo =
                 Url     : string
                 Date    : DateTime
             }
+
+            static member Make title summary url date =
+                {
+                    _id     = ObjectId.GenerateNewId()
+                    Title   = title
+                    Summary = summary
+                    Url     = url
+                    Date    = date
+                }
 
     [<AutoOpen>]
     module Collections =
@@ -220,6 +239,10 @@ module Mongo =
                     sortByDescending x.Date
             }
 
+        let insert video =
+            let result = videos.Insert video
+            result.Ok
+
     module News =
 
         let latest10() =
@@ -229,18 +252,6 @@ module Mongo =
                     take 10
             }
 
-//        let video =
-//            {
-//                _id = ObjectId.GenerateNewId ()
-//                Title       = ""
-//                Url         = ""
-//                Thumbnail   = ""
-//                Website     = ""
-//                Date    = DateTime.Parse ""
-//            }
-//
-//        videos.Insert video
-
-
-
-
+        let insert newsItem =
+            let result = news.Insert newsItem
+            result.Ok

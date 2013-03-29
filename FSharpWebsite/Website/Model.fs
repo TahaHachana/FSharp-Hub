@@ -16,6 +16,8 @@ module Model =
         | [<CompiledName("logout")>] Logout
         | [<CompiledName("admin")>] Admin
         | BooksAdmin
+        | VideosAdmin
+        | NewsAdmin
 
     type Page =
         {

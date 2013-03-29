@@ -9,8 +9,11 @@ module Site =
     let router : Router<Action> =
         Router.Table
             [
-                Home, "/"
-                BooksAdmin, "/admin/books"
+                Home       , "/"
+                BooksAdmin , "/admin/books"
+                VideosAdmin, "/admin/videos"
+                NewsAdmin  , "/admin/news"
+                Login None , "/login"
             ]
         <|>
         Router.Infer()
@@ -24,7 +27,7 @@ module Site =
 type Website() =
     interface IWebsite<Action> with
         member this.Sitelet = Site.Main
-        member this.Actions = [Home]
+        member this.Actions = []
 
 [<assembly: WebsiteAttribute(typeof<Website>)>]
 do ()

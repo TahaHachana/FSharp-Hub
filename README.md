@@ -1,16 +1,12 @@
-FSharpWebsite
-===============
+FSharp-Hub
+==========
 
 About
 -----
 
-A Web site about F# powered by [WebSharper](http://www.websharper.com/ "WebSharper").
-Prototype: http://fsharpwebsite.apphb.com/
+A Web site about F# powered by the [WebSharper](http://www.websharper.com/ "WebSharper") framework.
+Check it out online: http://fsharpwebsite.apphb.com/
 
-Contribution
-------------
-
-Get in touch with me if you want a collaborator status.
 
 MIT License
 -----------

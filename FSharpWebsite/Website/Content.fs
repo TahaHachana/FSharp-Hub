@@ -13,9 +13,9 @@ module Content =
 
         let footer : Content.HtmlElement =
             Div [Id "footer"] -< [
-                HTML5.Footer [Class "footer container"] -< [
+                HTML5.Footer [Class "container"] -< [
                     Text "Powered by "
-                    A [HRef "http://www.websharper.com/"; Target "_blank"] -< [Text "WebSharper"]
+                    A [HRef "http://www.websharper.com/"] -< [Text "WebSharper"]
                 ]
             ]
 

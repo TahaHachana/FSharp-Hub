@@ -14,6 +14,7 @@ module Site =
                 VideosAdmin, "/admin/videos"
                 NewsAdmin  , "/admin/news"
                 Login None , "/login"
+                Custom404  , "/custom404"
             ]
         <|>
         Router.Infer()

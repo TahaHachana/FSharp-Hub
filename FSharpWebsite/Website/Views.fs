@@ -16,12 +16,12 @@ module Views =
             [
                 Home.navigation
                 Div [new Forkme.Viewer()]
-//                Home.heroUnit
+                Home.heroUnit
                 Div [Class "container"] -< [
-//                    Home.row1
+                    Home.row1
                     Home.row2
                 ]
-                Shared.footer
+//                Shared.footer
             ]
 
     let custom404 =
@@ -44,7 +44,7 @@ module Views =
                     Books.header
                     Div [Books.Server.booksDiv ()]
                 ]
-                Shared.footer
+//                Shared.footer
             ]
 
     let videos =
@@ -69,7 +69,7 @@ module Views =
                             Attributes.HTML5.Data "next" (string (pageId + 1))]
                         Div [Class "offset5 span2"] -< [new Videos.Client.PagerViewer()]
                     ]
-                    Shared.footer
+//                    Shared.footer
                 ]
             pageId, view)
 
@@ -87,7 +87,7 @@ module Views =
                     Resources.header
                     Resources.tabs
                 ]
-                Shared.footer
+//                Shared.footer
             ]
 
     let login (redirectAction: option<Action>) =

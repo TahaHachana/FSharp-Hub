@@ -5,7 +5,7 @@ About
 -----
 
 A Web site about F# powered by the [WebSharper](http://www.websharper.com/ "WebSharper") framework.
-Check it out online: http://fsharpwebsite.apphb.com/
+Check it out online: http://fsharp-hub.apphb.com/
 
 
 MIT License

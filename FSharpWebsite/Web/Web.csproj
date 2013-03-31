@@ -55,6 +55,7 @@
     <Content Include="Images\Books\RealWorldFunctionalProgramming.jpg" />
     <Content Include="Images\Books\WebCloudMobileFSharp.gif" />
     <Content Include="robots.txt" />
+    <Content Include="Scripts\ga.js" />
     <Content Include="Scripts\IntelliFactory.Formlet.dll.min.js" />
     <Content Include="Scripts\IntelliFactory.Reactive.dll.min.js" />
     <Content Include="Scripts\IntelliFactory.WebSharper.Collections.dll.js" />

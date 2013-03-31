@@ -16,7 +16,7 @@
      section=(_this=HTML5.Tags(),(x=Runtime.New(T,{
       $:0
      }),_this.NewTag("section",x)));
-     section.set_Html("<div class=\"addthis_toolbox addthis_default_style \">\r\n            <a class=\"addthis_button_facebook_like\" fb:like:layout=\"button_count\"></a>\r\n            <a class=\"addthis_button_tweet\"></a>\r\n            <a class=\"addthis_button_pinterest_pinit\"></a>\r\n            <a class=\"addthis_counter addthis_pill_style\"></a>\r\n            </div>\r\n            <script type=\"text/javascript\" src=\"http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50af450141ce9366\"></script>");
+     section.set_Html("<div class=\"addthis_toolbox addthis_default_style \">\r\n               <a class=\"addthis_button_facebook_like\" fb:like:layout=\"button_count\"></a>\r\n               <a class=\"addthis_button_tweet\"></a>\r\n               <a class=\"addthis_button_pinterest_pinit\"></a>\r\n               <a class=\"addthis_counter addthis_pill_style\"></a>\r\n               </div>\r\n               <script type=\"text/javascript\" src=\"http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50af450141ce9366\"></script>");
      return section;
     }
    },

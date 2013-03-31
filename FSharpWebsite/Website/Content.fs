@@ -31,11 +31,13 @@ module Content =
                     | None -> "Login" => (ctx.Link <| loginAction None)
             Div [Class "pull-right"] -< [link]
 
+        let ga : Content.HtmlElement = Script [Src "/Scripts/ga.js"]
+
     module Home =
     
         let title = "FSharp Programming Language"
 
-        let metaDescription = ""
+        let metaDescription = "Latest news, tweets and questions about the F# programming language."
 
         let navigation : Content.HtmlElement = navigation <| Some "Home"
 

@@ -22,6 +22,7 @@ module Views =
                     Home.row2
                 ]
 //                Shared.footer
+                Shared.ga
             ]
 
     let custom404 =
@@ -45,6 +46,7 @@ module Views =
                     Div [Books.Server.booksDiv ()]
                 ]
 //                Shared.footer
+                Shared.ga
             ]
 
     let videos =
@@ -70,6 +72,7 @@ module Views =
                         Div [Class "offset5 span2"] -< [new Videos.Client.PagerViewer()]
                     ]
 //                    Shared.footer
+                    Shared.ga
                 ]
             pageId, view)
 
@@ -88,6 +91,7 @@ module Views =
                     Resources.tabs
                 ]
 //                Shared.footer
+                Shared.ga
             ]
 
     let login (redirectAction: option<Action>) =

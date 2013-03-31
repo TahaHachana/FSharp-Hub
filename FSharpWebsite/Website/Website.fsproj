@@ -39,6 +39,7 @@
     <Compile Include="Mongo.fs" />
     <Compile Include="Utilities.fs" />
     <Compile Include="Login.fs" />
+    <Compile Include="AddThis.fs" />
     <Compile Include="Forkme.fs" />
     <Compile Include="Videos.fs" />
     <Compile Include="Snippets.fs" />

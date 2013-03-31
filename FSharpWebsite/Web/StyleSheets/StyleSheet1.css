@@ -37,7 +37,8 @@
 
 .tweet,
 .question,
-.snippet
+.snippet,
+.news-item
 {
     margin: 12px 12px 25px 12px;
     border-bottom: 1px solid lightgrey;

@@ -7,7 +7,7 @@ module Forkme =
 
     [<JavaScript>]
     let ribbon() =
-        A [HRef "https://github.com/TahaHachana/FSharpWebsite"] -< [
+        A [HRef "https://github.com/TahaHachana/FSharp-Hub"] -< [
             Img [
                 Src "https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"
                 Alt "Fork me on GitHub"

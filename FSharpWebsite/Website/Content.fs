@@ -5,22 +5,22 @@ module Content =
     open IntelliFactory.WebSharper
     open IntelliFactory.Html
     open IntelliFactory.WebSharper.Sitelets
+    open IntelliFactory.WebSharper.Sitelets.Content
     open Utilities.Server
 
     module Shared =
         
-        let navigation : Content.HtmlElement = navigation None
-
-        let footer : Content.HtmlElement =
-            Div [Id "footer"] -< [
-                HTML5.Footer [Class "container"] -< [
-                    Text "Powered by "
-                    A [HRef "http://www.websharper.com/"] -< [Text "WebSharper"]
-                ]
-            ]
+        let navigation : HtmlElement = navigation None
 
         let ( => ) anchor href = A [HRef href] -< [Text anchor]
-    
+
+        let footer : HtmlElement =
+            HTML5.Footer [Id "footer"] -< [
+                Div [Class "container"; Style "padding-top: 20px;"] -< [
+                    P [Text "Powered by "] -< [A ["WebSharper" => "http://www.websharper.com/"]]
+                ]            
+            ]
+
         let randomizeUrl url = url + "?d=" + System.Uri.EscapeUriString (System.DateTime.Now.ToString())
 
         let loginInfo logoutAction loginAction (ctx: Context<_>) =
@@ -31,7 +31,7 @@ module Content =
                     | None -> "Login" => (ctx.Link <| loginAction None)
             Div [Class "pull-right"] -< [link]
 
-        let ga : Content.HtmlElement = Script [Src "/Scripts/ga.js"]
+        let ga : HtmlElement = Script [Src "/Scripts/ga.js"]
 
     module Home =
     
@@ -39,9 +39,9 @@ module Content =
 
         let metaDescription = "Latest news, tweets and questions about the F# programming language."
 
-        let navigation : Content.HtmlElement = navigation <| Some "Home"
+        let navigation : HtmlElement = navigation <| Some "Home"
 
-        let definition : Content.HtmlElement =
+        let definition : HtmlElement =
                 P [Id "definition"] -< [
                     Strong [Text "FSharp"]
                     Text " is an advanced, multi-paradigm, strongly typed open source programming language.
@@ -51,7 +51,7 @@ module Content =
                         use to build desktop, Web and mobile applications and to perform cloud computations."
                 ]
 
-        let heroUnit : Content.HtmlElement =
+        let heroUnit : HtmlElement =
             Div [Id "hero"; Class "hero-unit"] -< [
                 Div [Class "container text-center"] -< [
                     H1 [Text "FSharp Programming Language"]
@@ -59,16 +59,16 @@ module Content =
                 ]
             ]
 
-        let row1 : Content.HtmlElement =
+        let row1 : HtmlElement =
             Div [Class "row-fluid"; Style "margin-bottom: 30px;"] -< [
                 Div [Class "span4 offset4"] -< [
-                    A [Style "width: 120px;"; Class "btn btn-primary btn-large pull-left"; HRef "http://www.tryfsharp.org/"] -< [Text "Try F#"] 
-                    A [Style "width: 120px;"; Class "btn btn-success btn-large pull-right"; HRef "/resources"] -< [Text "Download F#"] 
+                    A [Class "btn btn-primary btn-large pull-left home-btn"; HRef "http://www.tryfsharp.org/"; Rel "nofollow"] -< [Text "Try F#"] 
+                    A [Class "btn btn-success btn-large pull-right home-btn"; HRef "/resources"] -< [Text "Download F#"] 
                 ]
                 Div [Class "span4"] -< [new AddThis.Control()]
             ]
 
-        let row2 : Content.HtmlElement =
+        let row2() : HtmlElement =
             Div [Class "row-fluid"; Style "margin-top: 50px;"] -< [
                 Div [Class "span6"] -< [
                     Div [Class "tabbable"] -< [
@@ -78,9 +78,9 @@ module Content =
                             LI [A [HRef "#snippets"; HTML5.Data "toggle" "tab"] -< [Text "Snippets"]]
                         ]
                         Div [Class "tab-content"] -< [
-                            Div [Class "tab-pane active"; Id "tweets"] -< [new Tweets.FsharpTweetsViewer () :> INode<_>]
-                            Div [Class "tab-pane"; Id "questions"] -< [new Questions.Client.QuestionsViewer () :> INode<_>]
-                            Div [Class "tab-pane"; Id "snippets"] -< [new Snippets.Client.SnippetsViewer() :> INode<_>]
+                            Div [Class "tab-pane active"; Id "tweets"] -< [new Tweets.Client.Control()]
+                            Div [Class "tab-pane"; Id "questions"] -< [new Questions.Client.QuestionsViewer()]
+                            Div [Class "tab-pane"; Id "snippets"] -< [new Snippets.Client.SnippetsViewer()]
                         ]
                     ]
                 ]
@@ -95,9 +95,9 @@ module Content =
         let title = ""
         let metaDescription = ""
 
-        let navigation : Content.HtmlElement = navigation <| Some "Books"
+        let navigation : HtmlElement = navigation <| Some "Books"
 
-        let header : Content.HtmlElement =
+        let header : HtmlElement =
             header
                 "FSharp Books"
                 "Learn F# and explore advanced topics by reading books by experts
@@ -108,9 +108,9 @@ module Content =
         let title pageId = sprintf "FSharp Videos - Page %d" pageId
         let metaDescription = ""
 
-        let navigation : Content.HtmlElement = navigation <| Some "Videos"
+        let navigation : HtmlElement = navigation <| Some "Videos"
 
-        let header : Content.HtmlElement =
+        let header : HtmlElement =
             header
                 "FSharp Videos"
                 "F# videos"
@@ -120,14 +120,14 @@ module Content =
         let title = "FSharp Resources"
         let metaDescription = ""
 
-        let navigation : Content.HtmlElement = navigation <| Some "Resources"
+        let navigation : HtmlElement = navigation <| Some "Resources"
 
-        let header : Content.HtmlElement =
+        let header : HtmlElement =
             header
                 "FSharp Resources"
                 "F# Resources"
 
-        let downloadsTab : Content.HtmlElement =
+        let downloadsTab : HtmlElement =
             Div [
                 H2 [Text "IDEs"]
                 UL [Class "unstyled"] -< [

@@ -9,73 +9,115 @@ open Mongo
 
 module Tweets =
 
-    module Server =
+    module private Server =
         
-        let atRegex     = Utilities.Server.compileRegex "^@[^\ :]+"
-        let atRegex'    = Utilities.Server.compileRegex "@"
-        let hashRegex   = Utilities.Server.compileRegex "^#[^\ ]+"
-        let urlRegex    = Utilities.Server.compileRegex "^https?://.+"
-        let colonRegex  = Utilities.Server.compileRegex "([^\ ]):\ "
-        let colonRegex' = Utilities.Server.compileRegex " :"
-        let hashRegex'  = Utilities.Server.compileRegex "#"
+        open Utilities.Server
 
-        let inline spaceBeforeColon str =
-            colonRegex.Replace(str, (fun (x : Match) -> x.Groups.[1].Value + " : "))
-        let inline spaceBeforeColon' str = colonRegex'.Replace(str, ":")
+        let hashTagRegex = compileRegex "^([\p{P}-[#]]*)#(.+?)(\p{P}*$)"
+        let atRegex = compileRegex "^([\p{P}-[@]]*)@(.+?)(\p{P}*$)"
+        let urlRegex = compileRegex "^(\p{P}*)(https?://.+?)(\p{P}*$)"
 
-        let inline replaceAt x =
-            let x' = atRegex'.Replace(x, "") 
-            String.concat "" ["<a href=\"https://twitter.com/"; x'; "\" target=\"_blank\">"; x; "</a>"]
+        let formatHashTags str =
+            hashTagRegex.Replace(str, (fun (matchObj : Match) ->
+                let groups = matchObj.Groups
+                let g1 = groups.[1].Value
+                let hashTag = groups.[2].Value
+                let g3 = groups.[3].Value
+                String.concat "" [g1; "<a href=\"https://twitter.com/search/?q=%23"; hashTag; "&src=hash\">#"; hashTag; "</a>"; g3]))
 
-        let inline replaceHash x =
-            let x' = hashRegex'.Replace(x, "")
-            String.concat "" ["<a href=\"https://twitter.com/search/?q=%23"; x'; "&src=hash\" target=\"_blank\">"; x; "</a>"]
+        let formatAts str =
+            atRegex.Replace(str, (fun (matchObj : Match) ->
+                let groups = matchObj.Groups
+                let g1 = groups.[1].Value
+                let at = groups.[2].Value
+                let g3 = groups.[3].Value
+                String.concat "" [g1; "<a href=\"https://twitter.com/"; at; "\">@"; at; "</a>"; g3]))
+
+        let formatUrls str =
+            urlRegex.Replace(str, (fun (matchObj : Match) ->
+                let groups = matchObj.Groups
+                let g1 = groups.[1].Value
+                let url = groups.[2].Value
+                let g3 = groups.[3].Value
+                String.concat "" [g1; "<a href=\""; url; "\">"; url; "</a>"; g3]))
+
+
+//        let atRegex     = Utilities.Server.compileRegex "^@[^\ :]+"
+//        let atRegex'    = Utilities.Server.compileRegex "@"
+//        let hashRegex   = Utilities.Server.compileRegex "^#.+"
+//        let urlRegex    = Utilities.Server.compileRegex "^https?://.+"
+//        let colonRegex  = Utilities.Server.compileRegex "([^\ ]):\ "
+//        let colonRegex' = Utilities.Server.compileRegex " :"
+//        let hashRegex'  = Utilities.Server.compileRegex "^#([^\p{P}]+)(.*)"
+//
+//        let spaceBeforeColon str = colonRegex.Replace(str, (fun (x : Match) -> x.Groups.[1].Value + " : "))
+//        let spaceBeforeColon' str = colonRegex'.Replace(str, ":")
+
+//        let replaceAt x =
+//            let x' = atRegex'.Replace(x, "") 
+//            String.concat "" ["<a href=\"https://twitter.com/"; x'; "\" target=\"_blank\">"; x; "</a>"]
+//
+//        let replaceHash x =
+//            hashRegex.Replace(x, (fun (matchObj : Match) ->
+//                let hashTag = matchObj.Groups.[1].Value
+//                let rest = matchObj.Groups.[2].Value
+//                String.concat "" ["<a href=\"https://twitter.com/search/?q=%23"; hashTag; "&src=hash\">#"; hashTag; "</a>"; rest]))
+//        
+//        let replaceUrl x = String.concat "" ["<a href=\""; x; "\" target=\"_blank\">"; x; "</a>"]
+
+//        let formatString (regex : Regex) (replacementFunc : string -> string) str = regex.Replace(str, replacementFunc str)
         
-        let inline replaceUrl x =
-            String.concat "" ["<a href=\""; x; "\" target=\"_blank\">"; x; "</a>"]
+//        let formatString' =
+//            formatString atRegex replaceAt
+//            >> formatString hashRegex replaceHash
+//            >> formatString urlRegex replaceUrl
+//        
+//        let linkifyText (text : string) =
+//            text
+//            |> spaceBeforeColon
+//            |> fun x -> x.Split([|' '|], StringSplitOptions.RemoveEmptyEntries)
+//            |> Array.map formatString'
+//            |> String.concat " "
+//            |> spaceBeforeColon'
 
-        let inline formatString (regex : Regex) (replacementFunc : string -> string) str =
-            regex.Replace(str, replacementFunc str)
-        
-        let formatString' =
-            formatString atRegex replaceAt
-            >> formatString hashRegex replaceHash
-            >> formatString urlRegex replaceUrl
-        
-        let inline linkifyText (text : string) =
-            text
-            |> spaceBeforeColon
-            |> fun x -> x.Split([|' '|], StringSplitOptions.RemoveEmptyEntries)
-            |> Array.map formatString'
-            |> String.concat " "
-            |> spaceBeforeColon'
+        let format tweet =
+            tweet
+            |> formatAts
+            |> formatHashTags
+            |> formatUrls
 
-        let inline tweetData x =
-            let text' = linkifyText x.Text
+        let tweetData x =
+            let text' =
+                x.Text
+                |> fun x -> x.Split([|' '|], StringSplitOptions.RemoveEmptyEntries)
+                |> Array.map format
+                |> String.concat " "
             x.ScreenName, x.TweetID, x.ProfileImage, x.DisplayName, text', x.CreationDate.ToString()
 
-        [<RpcAttribute>]
+        [<Rpc>]
         let latestTweets () =
             async {
-                return
+                let array =
                     Tweets.latest20()
                     |> Seq.toArray
                     |> Array.map tweetData
+                return array
             }
 
-        [<RpcAttribute>]
+        [<Rpc>]
         let tweetsAfterSkip skip =
             async {
-                return
+                let array =
                     Tweets.skipLatest20 skip
                     |> Seq.toArray
                     |> Array.map tweetData
+                return array
             }
 
-        [<RpcAttribute>]
+        [<Rpc>]
         let newTweets latestTweetId =
             async {
-                return
+                let arrayOption =
                     Tweets.takeWhile latestTweetId
                     |> Seq.toArray
                     |> function
@@ -84,11 +126,12 @@ module Tweets =
                             arr
                             |> Array.map tweetData
                             |> Some
+                return arrayOption
             }
 
     module Client =
 
-        [<JavaScriptAttribute>]
+        [<JavaScript>]
         let makeTweetLi screenName tweetId profileImage fullName tweetHtml creationDate =
             let profileLink = "https://twitter.com/" + screenName
             let replyLink = "https://twitter.com/intent/tweet?in_reply_to=" + tweetId
@@ -120,7 +163,7 @@ module Tweets =
         let setTweetId id = Utilities.Client.setAttributeValue "#fsharpTweets" "data-tweet-id" id
 
         [<JavaScriptAttribute>]
-        let toggleActionsVisibility () =
+        let toggleActionsVisibility() =
             let jquery = JQuery.Of ".tweet"
             jquery.Mouseenter(fun x _ ->
                 JQuery.Of(".tweetActions", x).Css("visibility", "visible").Ignore).Ignore
@@ -136,7 +179,7 @@ module Tweets =
                 Html5.Window.Self.ShowModalDialog href |> ignore).Ignore
 
         [<JavaScriptAttribute>]
-        let checkNewTweets () =
+        let checkNewTweets() =
             async {
                 let jquery = JQuery.Of "#fsharpTweets"
                 let latestTweetId = jquery.Attr "data-tweet-id"
@@ -167,7 +210,7 @@ module Tweets =
             } |> Async.Start
 
         [<JavaScriptAttribute>]
-        let tweetsDiv () =
+        let tweetsDiv() =
             let tweetsList = UL [Id "tweetsList"]
 
             let loadMoreBtn =
@@ -191,8 +234,6 @@ module Tweets =
                         x.RemoveAttribute "disabled"
                     } |> Async.Start)
                     
-                    
-//            Div [Id "tweetsDiv"] -< [tweetsList; loadMoreBtn]
             Div [Id "fsharpTweets"; HTML5.Attr.Data "tweets-count" "0"; HTML5.Attr.Data "tweet-id" ""] -< [tweetsList; loadMoreBtn]
             |>! OnAfterRender(fun _ ->
                 async {
@@ -212,9 +253,9 @@ module Tweets =
                     JavaScript.SetInterval checkNewTweets 300000 |> ignore
                 } |> Async.Start)
 
-    type FsharpTweetsViewer () =
-        inherit Web.Control ()
+        type Control() =
+            
+            inherit Web.Control()
 
-        [<JavaScriptAttribute>]
-        override this.Body =
-            Client.tweetsDiv () :> _
+            [<JavaScript>]
+            override this.Body = tweetsDiv() :> _

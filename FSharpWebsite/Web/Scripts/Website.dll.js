@@ -752,6 +752,12 @@
    },
    Tweets:{
     Client:{
+     Control:Runtime.Class({
+      get_Body:function()
+      {
+       return Client6.tweetsDiv();
+      }
+     }),
      checkNewTweets:function()
      {
       var x,f,f6;
@@ -1044,13 +1050,7 @@
       f7(x7);
       return x7;
      }
-    },
-    FsharpTweetsViewer:Runtime.Class({
-     get_Body:function()
-     {
-      return Client6.tweetsDiv();
-     }
-    })
+    }
    },
    Utilities:{
     Client:{

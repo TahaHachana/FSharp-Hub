@@ -9,7 +9,7 @@ module Utilities =
 
         open IntelliFactory.Html
 
-        let inline compileRegex pattern = Regex(pattern, RegexOptions.Compiled)
+        let compileRegex pattern = Regex(pattern, RegexOptions.Compiled)
 
         /// Returns a sequence that yields chunks of length n. Each chunk is returned as a list.
         let rec toChunks count (source: seq<'T>) =           

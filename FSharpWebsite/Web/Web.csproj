@@ -67,7 +67,6 @@
     <Content Include="Scripts\IntelliFactory.WebSharper.Formlet.dll.min.js" />
     <Content Include="Scripts\IntelliFactory.WebSharper.Html.dll.js" />
     <Content Include="Scripts\IntelliFactory.WebSharper.Html.dll.min.js" />
-    <Content Include="Scripts\TweetsWidget.js" />
     <Content Include="Scripts\Website.dll.js" />
     <Content Include="Scripts\Website.dll.min.js" />
     <Content Include="Content\**\*.*" />

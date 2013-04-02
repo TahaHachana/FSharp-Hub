@@ -76,6 +76,9 @@
 .cover
 {
     height: 220px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .videoThumb

@@ -27,14 +27,14 @@ module Books =
                     | 1 -> "Author: "  + str
                     | _ -> "Authors: " + str
             LI [Class "span4"] -< [
-                Div [Class "thumbnail"] -< [
-                    Img [Class "cover"; Src cover; Alt title; Height "220"]
+                Div [Class "thumbnail"; Style "border: none;"] -< [
+                    A[HRef url] -< [Img [Class "cover"; Src cover; Alt title; Height "220"]]
                     H4 [Text title]
                     P [Text authors']
                     P [Text <| "Publisher: " + publisher]
                     P [Text <| "ISBN: " + isbn]
                     P [Text <| "Pages: " + pages]
-                    A [HRef url; Class "btn btn-block"] -< [Text "Book Website"]
+//                    A [HRef url; Class "btn btn-block"] -< [Text "Book Website"]
                 ]
             ]
 

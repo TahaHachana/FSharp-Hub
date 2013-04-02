@@ -92,8 +92,8 @@ module Content =
 
     module Books =
 
-        let title = ""
-        let metaDescription = ""
+        let title = "FSharp Books - F#"
+        let metaDescription = "Books about FSharp published by Apress, O'Reilly and Manning."
 
         let navigation : HtmlElement = navigation <| Some "Books"
 
@@ -106,26 +106,26 @@ module Content =
     module Videos =
 
         let title pageId = sprintf "FSharp Videos - Page %d" pageId
-        let metaDescription = ""
+        let metaDescription = "Videos about F# available on YouTube, Vimeo, SkillsMatter ..."
 
         let navigation : HtmlElement = navigation <| Some "Videos"
 
         let header : HtmlElement =
             header
                 "FSharp Videos"
-                "F# videos"
+                "Watch F# presentations, tutorials, podcasts and short videos."
 
     module Resources =
 
         let title = "FSharp Resources"
-        let metaDescription = ""
+        let metaDescription = "F# downloads, user groups, mailing lists, code samples and forums."
 
         let navigation : HtmlElement = navigation <| Some "Resources"
 
         let header : HtmlElement =
             header
                 "FSharp Resources"
-                "F# Resources"
+                "Download F# IDEs and connect with the community through forums, mailing lists and user groups."
 
         let downloadsTab : HtmlElement =
             Div [
@@ -138,7 +138,7 @@ module Content =
                             -< [Text "Visual Studio 2012"]
                     ]
                     LI [
-                        A [HRef "http://www.microsoft.com/web/gallery/install.aspx?appid=FSharpVWD11"; Target "_blank"]
+                        A [HRef "http://www.microsoft.com/web/gallery/install.aspx?appid=FSharpVWD11"]
                             -< [Text "F# tools for Visual Studio Express 2012 for Web"]
                     ]
                 ]
@@ -147,22 +147,22 @@ module Content =
                 H3 [Text "F# 3.0"]
                 UL [Class "unstyled"] -< [
                     LI [
-                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html"; Target "_blank"]
+                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html"]
                             -< [Text "HTML"]
                     ]                
                     LI [
-                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.pdf"; Target "_blank"]
+                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.pdf"]
                             -< [Text "PDF"]
                     ]                
                 ]
                 H3 [Text "F# 2.0"]
                 UL [Class "unstyled"] -< [
                     LI [
-                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec-2.0-final.html"; Target "_blank"]
+                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec-2.0-final.html"]
                             -< [Text "HTML"]
                     ]                
                     LI [
-                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec-2.0-final.pdf"; Target "_blank"]
+                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec-2.0-final.pdf"]
                             -< [Text "PDF"]
                     ]                
                 ]
@@ -171,15 +171,15 @@ module Content =
         let mailingListsTab =
             UL [Class "unstyled"] -< [
                 LI [
-                    A [HRef "http://groups.google.com/group/fsharp-opensource"; Target "_blank"]
+                    A [HRef "http://groups.google.com/group/fsharp-opensource"]
                         -< [Text "FSharp Open Source Community"]
                 ]            
                 LI [
-                    A [HRef "http://groups.google.com/group/fsharpMake"; Target "_blank"]
+                    A [HRef "http://groups.google.com/group/fsharpMake"]
                         -< [Text "FAKE - F# Make"]
                 ]            
                 LI [
-                    A [HRef "http://groups.google.com/group/websharper"; Target "_blank"]
+                    A [HRef "http://groups.google.com/group/websharper"]
                         -< [Text "WebSharper"]
                 ]            
             ]
@@ -187,11 +187,11 @@ module Content =
         let codeSamplesTab =
             UL [Class "unstyled"] -< [
                 LI [
-                    A [HRef "http://fsharp3sample.codeplex.com/"; Target "_blank"]
+                    A [HRef "http://fsharp3sample.codeplex.com/"]
                         -< [Text "F# 3.0 Sample Pack"]
                 ]            
                 LI [
-                    A [HRef "http://code.msdn.microsoft.com/site/search?f%5B0%5D.Type=ProgrammingLanguage&f%5B0%5D.Value=F%23&f%5B0%5D.Text=F%23"; Target "_blank"]
+                    A [HRef "http://code.msdn.microsoft.com/site/search?f%5B0%5D.Type=ProgrammingLanguage&f%5B0%5D.Value=F%23&f%5B0%5D.Text=F%23"]
                         -< [Text "MSDN Developer Code Samples"]
                 ]            
             ]

@@ -9,7 +9,7 @@ module Questions =
 
     module Server =
         
-        let inline questionData (question : FSharpQuestion) = question.Link, question.Title, question.Date.ToString(), question.Website, question.Summary
+        let questionData (question : FSharpQuestion) = question.Link, question.Title, question.Date.ToString(), question.Website, question.Summary
 
         [<Rpc>]
         let latestFSharpQuestions () =
@@ -76,12 +76,9 @@ module Questions =
                         |> Array.map (fun (link, title, date, website, summary) ->
                             makeQuestionLi link title date website summary)
                         |> Array.iter (Utilities.Client.prependElement "#questionsList")
-
                         let count = Array.length questions
                         incrementQuestionsCount count
-
                         setQuestionId id
-
                         let msg =
                             match count with
                                 | 1 -> "1 new question"

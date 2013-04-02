@@ -17,25 +17,23 @@ module Videos =
             |> Seq.toArray
             |> Array.map (fun x -> Seq.toList x)
 
-        let pagesCount = float (Array.length videos) / 4. |> ceil |> int |> string
+        let pagesCount = float (Array.length videos) / 4. |> int |> string //|> ceil |> int |> string
 
-        let inline makeThumbnailLi (url, thumbnail, title, website) =
+        let makeThumbnailLi (url, thumbnail, title, website) =
             LI [Class "span3"] -< [
-                Div [Class "thumbnail"] -< [
-                    Img [Class "videoThumb"; Src thumbnail; Alt title; Height "120"]
+                Div [Class "thumbnail"; Style "border: none;"] -< [
+                    A [HRef url] -< [Img [Class "videoThumb"; Src thumbnail; Alt title; Height "120"]]
                     H4 [Text title]
-                    A [HRef url; Class "btn btn-block"; Target "_blank"] -< [Text <| "Watch on " + website]
                 ]
             ]
 
-        let inline makeVideosUl (lis : Element<_> list) =
-            UL [Class "thumbnails"] -< lis
+        let makeVideosUl (lis : Element<_> list) = UL [Class "thumbnails"] -< lis
 
-        let inline makeDiv (ul : Element<_>) = Div [Class "row-fluid"] -< [ul]
+        let makeDiv (ul : Element<_>) = Div [Class "row-fluid"] -< [ul]
 
-        let inline makeDiv' (lis : Element<_> list) = Div [] -< lis
+        let makeDiv' (lis : Element<_> list) = Div [] -< lis
 
-        let divs () =
+        let divs() =
             videos
             |> Array.map (fun x ->
                 List.map makeThumbnailLi x)
@@ -69,8 +67,9 @@ module Videos =
                         | x when x = pagesCount -> JQuery.Of("#next").AddClass("disabled").Ignore
                         | _ -> JQuery.Of("#nextLink").Attr("href", ("/videos/" + string next)).Ignore)
             
-        type PagerViewer () =
-            inherit Web.Control ()
+        type PagerViewer() =
+
+            inherit Web.Control()
 
             [<JavaScriptAttribute>]
             override this.Body = pager() :> _

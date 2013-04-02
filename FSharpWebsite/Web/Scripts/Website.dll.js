@@ -372,7 +372,7 @@
    },
    Questions:{
     Client:{
-     QuestionsViewer:Runtime.Class({
+     Control:Runtime.Class({
       get_Body:function()
       {
        return Client3.questionsDiv();
@@ -448,10 +448,10 @@
      },
      makeQuestionLi:function(link,title,date,website,summary)
      {
-      var _this,x,_this1,x1,x2,_this2;
-      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("question")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),Default.Br(Runtime.New(T,{
+      var x,_this,x1,x2,_this1;
+      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("question")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link)])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this=Default.Tags(),_this.NewTag("strong",x)))])),Default.Br(Runtime.New(T,{
        $:0
-      })),(x1=List.ofArray([(x2=date+", "+website,Default.Text(x2))]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),Default.P(List.ofArray([Default.Text(summary)]))]));
+      })),(x1=List.ofArray([(x2=date+", "+website,Default.Text(x2))]),(_this1=Default.Tags(),_this1.NewTag("small",x1))),Default.P(List.ofArray([Default.Text(summary)]))]));
      },
      questionsDiv:function()
      {
@@ -609,7 +609,7 @@
    },
    Snippets:{
     Client:{
-     SnippetsViewer:Runtime.Class({
+     Control:Runtime.Class({
       get_Body:function()
       {
        return Client5.snippetsDiv();
@@ -621,8 +621,8 @@
      },
      makeSnippetLi:function(link,title,description)
      {
-      var _this,x,_this1;
-      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("snippet")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),Default.P(List.ofArray([Default.Text(description)]))]));
+      var x,_this;
+      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("snippet")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link)])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this=Default.Tags(),_this.NewTag("strong",x)))])),Default.P(List.ofArray([Default.Text(description)]))]));
      },
      snippetsDiv:function()
      {
@@ -857,7 +857,7 @@
      },
      makeTweetLi:function(screenName,tweetId,profileImage,fullName,tweetHtml,creationDate)
      {
-      var profileLink,replyLink,retweetLink,favoriteLink,tweetP,_this,x,_this1,x1,_this2,_this3,_this4,_this5;
+      var profileLink,replyLink,retweetLink,favoriteLink,tweetP,_this,x,_this1,x1,_this2,_this3;
       profileLink="https://twitter.com/"+screenName;
       replyLink="https://twitter.com/intent/tweet?in_reply_to="+tweetId;
       retweetLink="https://twitter.com/intent/retweet?tweet_id="+tweetId;
@@ -866,9 +866,9 @@
        $:0
       }));
       tweetP.set_Html(tweetHtml);
-      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweet")])),List.ofArray([Operators.add(Operators.add(Default.A(List.ofArray([Default.HRef(profileLink),Default.Attr().Class("twitterProfileLink"),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([Default.Img(List.ofArray([Default.Src(profileImage),Default.Alt(fullName),Default.Attr().Class("avatar"),Default.Height("48"),Default.Width("48")])),(x=List.ofArray([Default.Text(fullName)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),List.ofArray([Default.Text(" @"+screenName)])),Default.Br(Runtime.New(T,{
+      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweet"),(_this=Default.Attr(),_this.NewAttr("style","clear: both;"))])),List.ofArray([Default.Div(List.ofArray([Operators.add(Operators.add(Default.A(List.ofArray([Default.HRef(profileLink),Default.Attr().Class("twitterProfileLink")])),List.ofArray([Default.Img(List.ofArray([Default.Src(profileImage),Default.Alt(fullName),Default.Attr().Class("avatar"),Default.Height("48"),Default.Width("48")])),(x=List.ofArray([Default.Text(fullName)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),List.ofArray([Default.Text(" @"+screenName)])),Default.Br(Runtime.New(T,{
        $:0
-      })),(x1=List.ofArray([Default.Text(creationDate)]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),tweetP,Operators.add(Default.Div(List.ofArray([Default.Attr().Class("pull-right")])),List.ofArray([Operators.add(Default.UL(List.ofArray([Default.Attr().Class("tweetActions")])),List.ofArray([Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),(_this3=Default.Attr(),_this3.NewAttr("target","_blank")),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Reply")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),(_this4=Default.Attr(),_this4.NewAttr("target","_blank")),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Retweet")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),(_this5=Default.Attr(),_this5.NewAttr("target","_blank")),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Favorite")]))]))]))]))]));
+      })),(x1=List.ofArray([Default.Text(creationDate)]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),tweetP,Operators.add(Default.UL(List.ofArray([Default.Attr().Class("tweetActions"),(_this3=Default.Attr(),_this3.NewAttr("style","visibility: hidden;"))])),List.ofArray([Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Reply")]))])),Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweetAction")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Retweet")]))])),Default.LI(List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Favorite")]))]))]))]))]));
      },
      setTweetId:function(id)
      {

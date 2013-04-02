@@ -44,10 +44,6 @@
     border-bottom: 1px solid lightgrey;
 }
 
-.tweet {
-    min-height: 120px;
-}
-
 .loadMore
 {
     visibility: hidden;

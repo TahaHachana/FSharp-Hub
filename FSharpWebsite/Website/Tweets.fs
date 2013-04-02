@@ -41,50 +41,7 @@ module Tweets =
                 let g3 = groups.[3].Value
                 String.concat "" [g1; "<a href=\""; url; "\">"; url; "</a>"; g3]))
 
-
-//        let atRegex     = Utilities.Server.compileRegex "^@[^\ :]+"
-//        let atRegex'    = Utilities.Server.compileRegex "@"
-//        let hashRegex   = Utilities.Server.compileRegex "^#.+"
-//        let urlRegex    = Utilities.Server.compileRegex "^https?://.+"
-//        let colonRegex  = Utilities.Server.compileRegex "([^\ ]):\ "
-//        let colonRegex' = Utilities.Server.compileRegex " :"
-//        let hashRegex'  = Utilities.Server.compileRegex "^#([^\p{P}]+)(.*)"
-//
-//        let spaceBeforeColon str = colonRegex.Replace(str, (fun (x : Match) -> x.Groups.[1].Value + " : "))
-//        let spaceBeforeColon' str = colonRegex'.Replace(str, ":")
-
-//        let replaceAt x =
-//            let x' = atRegex'.Replace(x, "") 
-//            String.concat "" ["<a href=\"https://twitter.com/"; x'; "\" target=\"_blank\">"; x; "</a>"]
-//
-//        let replaceHash x =
-//            hashRegex.Replace(x, (fun (matchObj : Match) ->
-//                let hashTag = matchObj.Groups.[1].Value
-//                let rest = matchObj.Groups.[2].Value
-//                String.concat "" ["<a href=\"https://twitter.com/search/?q=%23"; hashTag; "&src=hash\">#"; hashTag; "</a>"; rest]))
-//        
-//        let replaceUrl x = String.concat "" ["<a href=\""; x; "\" target=\"_blank\">"; x; "</a>"]
-
-//        let formatString (regex : Regex) (replacementFunc : string -> string) str = regex.Replace(str, replacementFunc str)
-        
-//        let formatString' =
-//            formatString atRegex replaceAt
-//            >> formatString hashRegex replaceHash
-//            >> formatString urlRegex replaceUrl
-//        
-//        let linkifyText (text : string) =
-//            text
-//            |> spaceBeforeColon
-//            |> fun x -> x.Split([|' '|], StringSplitOptions.RemoveEmptyEntries)
-//            |> Array.map formatString'
-//            |> String.concat " "
-//            |> spaceBeforeColon'
-
-        let format tweet =
-            tweet
-            |> formatAts
-            |> formatHashTags
-            |> formatUrls
+        let format = formatAts >> formatHashTags >> formatUrls
 
         let tweetData x =
             let text' =
@@ -131,6 +88,8 @@ module Tweets =
 
     module Client =
 
+        open Utilities.Client
+
         [<JavaScript>]
         let makeTweetLi screenName tweetId profileImage fullName tweetHtml creationDate =
             let profileLink = "https://twitter.com/" + screenName
@@ -139,28 +98,28 @@ module Tweets =
             let favoriteLink = "https://twitter.com/intent/retweet?tweet_id=" + tweetId
             let tweetP = P []
             tweetP.Html <- tweetHtml
-            LI [Attr.Class "tweet"] -< [
-                A [HRef profileLink; Attr.Class "twitterProfileLink"; Attr.Target "_blank"] -< [
-                    Img [Src profileImage; Alt fullName; Attr.Class "avatar"; Height "48"; Width "48"]
-                    Strong [Text fullName]
-                ] -< [Text (" @" + screenName)]
-                Br []
-                Small [Text creationDate]
-                tweetP
-                Div [Attr.Class "pull-right"] -< [
-                    UL [Attr.Class "tweetActions"] -< [
-                        LI [Attr.Class "tweetAction"] -< [A [HRef replyLink; Attr.Target "_blank"; Attr.Class "tweet-action-link"]    -< [Text "Reply"]]
-                        LI [Attr.Class "tweetAction"] -< [A [HRef retweetLink; Attr.Target "_blank"; Attr.Class "tweet-action-link"]  -< [Text "Retweet"]]
-                        LI [Attr.Class "tweetAction"] -< [A [HRef favoriteLink; Attr.Target "_blank"; Attr.Class "tweet-action-link"] -< [Text "Favorite"]]
+            LI [Attr.Class "tweet"; Attr.Style "clear: both;"] -< [
+                Div [
+                    A [HRef profileLink; Attr.Class "twitterProfileLink"] -< [
+                        Img [Src profileImage; Alt fullName; Attr.Class "avatar"; Height "48"; Width "48"]
+                        Strong [Text fullName]
+                    ] -< [Text (" @" + screenName)]
+                    Br []
+                    Small [Text creationDate]
+                    tweetP
+                    UL [Attr.Class "tweetActions"; Attr.Style "visibility: hidden;"] -< [
+                        LI [Attr.Class "tweetAction"] -< [A [HRef replyLink; Attr.Class "tweet-action-link"] -< [Text "Reply"]]
+                        LI [Attr.Class "tweetAction"] -< [A [HRef retweetLink; Attr.Class "tweet-action-link"] -< [Text "Retweet"]]
+                        LI [A [HRef favoriteLink; Attr.Class "tweet-action-link"] -< [Text "Favorite"]]
                     ]
                 ]
             ]
 
         [<JavaScriptAttribute>]
-        let incrementTweetsCount x = Utilities.Client.incrementDataCount "#fsharpTweets" "data-tweets-count" x
+        let incrementTweetsCount x = incrementDataCount "#fsharpTweets" "data-tweets-count" x
 
         [<JavaScriptAttribute>]
-        let setTweetId id = Utilities.Client.setAttributeValue "#fsharpTweets" "data-tweet-id" id
+        let setTweetId id = setAttributeValue "#fsharpTweets" "data-tweet-id" id
 
         [<JavaScriptAttribute>]
         let toggleActionsVisibility() =

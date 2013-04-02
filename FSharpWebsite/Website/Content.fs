@@ -79,8 +79,8 @@ module Content =
                         ]
                         Div [Class "tab-content"] -< [
                             Div [Class "tab-pane active"; Id "tweets"] -< [new Tweets.Client.Control()]
-                            Div [Class "tab-pane"; Id "questions"] -< [new Questions.Client.QuestionsViewer()]
-                            Div [Class "tab-pane"; Id "snippets"] -< [new Snippets.Client.SnippetsViewer()]
+                            Div [Class "tab-pane"; Id "questions"] -< [new Questions.Client.Control()]
+                            Div [Class "tab-pane"; Id "snippets"] -< [new Snippets.Client.Control()]
                         ]
                     ]
                 ]

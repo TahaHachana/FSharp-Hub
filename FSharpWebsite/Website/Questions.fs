@@ -9,10 +9,9 @@ module Questions =
 
     module Server =
         
-        let inline questionData (question : FSharpQuestion) =
-            question.Link, question.Title, question.Date.ToString(), question.Website, question.Summary
+        let inline questionData (question : FSharpQuestion) = question.Link, question.Title, question.Date.ToString(), question.Website, question.Summary
 
-        [<RpcAttribute>]
+        [<Rpc>]
         let latestFSharpQuestions () =
             async {
                 let questions = Questions.latest20() |> Seq.toArray
@@ -25,7 +24,7 @@ module Questions =
         let questionsAfterSkip skipCount =
             async {
                 return
-                    Mongo.Questions.skipLatest20 skipCount
+                    Questions.skipLatest20 skipCount
                     |> Seq.toArray
                     |> Array.map questionData
             }
@@ -46,24 +45,22 @@ module Questions =
 
     module Client =
         
+        open Utilities.Client
+
         [<JavaScriptAttribute>]
         let makeQuestionLi link title date website summary =
             LI [Attr.Class "question"] -< [
-                A [HRef link; Attr.Target "_blank"] -< [
-                    Strong [Text title]
-                ]
+                A [HRef link] -< [Strong [Text title]]
                 Br []
                 Small [Text <| date + ", " + website]
                 P [Text summary]
             ]
 
         [<JavaScriptAttribute>]
-        let incrementQuestionsCount x =
-            Utilities.Client.incrementDataCount "#fsharpQuestions" "data-questions-count" x
+        let incrementQuestionsCount x = incrementDataCount "#fsharpQuestions" "data-questions-count" x
 
         [<JavaScriptAttribute>]
-        let setQuestionId id =
-            Utilities.Client.setAttributeValue "#fsharpQuestions" "data-question-id" id
+        let setQuestionId id = setAttributeValue "#fsharpQuestions" "data-question-id" id
 
         [<JavaScriptAttribute>]
         let checkNewQuestions () =
@@ -93,7 +90,7 @@ module Questions =
             } |> Async.Start
 
         [<JavaScriptAttribute>]
-        let questionsDiv () =
+        let questionsDiv() =
 
             let questionsList = UL [Id "questionsList"]
 
@@ -116,7 +113,6 @@ module Questions =
                         x.RemoveAttribute("disabled")
                     } |> Async.Start)
 
-//            Div [Id "questionsDiv"] -< [questionsList; loadMoreBtn]
             Div [Id "fsharpQuestions"; HTML5.Attr.Data "questions-count" "0"; HTML5.Attr.Data "question-id" ""] -< [questionsList; loadMoreBtn]
             |>! OnAfterRender(fun _ ->
                 async {
@@ -131,9 +127,9 @@ module Questions =
                     JavaScript.SetInterval checkNewQuestions 420000 |> ignore
                 } |> Async.Start)
 
-        type QuestionsViewer() =
+        type Control() =
             
-            inherit Web.Control ()
+            inherit Web.Control()
 
             [<JavaScriptAttribute>]
             override this.Body = questionsDiv() :> _

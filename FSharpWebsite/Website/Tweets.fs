@@ -209,7 +209,7 @@ module Tweets =
                     loadMoreBtn.SetCss("visibility", "visible")
                     toggleActionsVisibility ()
                     handleTweetActions()
-                    JavaScript.SetInterval checkNewTweets 300000 |> ignore
+//                    JavaScript.SetInterval checkNewTweets 300000 |> ignore
                 } |> Async.Start)
 
         type Control() =

@@ -63,7 +63,7 @@ module Questions =
         let setQuestionId id = setAttributeValue "#fsharpQuestions" "data-question-id" id
 
         [<JavaScriptAttribute>]
-        let checkNewQuestions () =
+        let checkNewQuestions() =
             async {
                 let jquery = JQuery.Of "#fsharpQuestions"
                 let latestQuestionId = jquery.Attr "data-question-id"
@@ -121,7 +121,7 @@ module Questions =
                     incrementQuestionsCount 20
                     setQuestionId id
                     loadMoreBtn.SetCss("visibility", "visible")
-                    JavaScript.SetInterval checkNewQuestions 420000 |> ignore
+//                    JavaScript.SetInterval checkNewQuestions 420000 |> ignore
                 } |> Async.Start)
 
         type Control() =

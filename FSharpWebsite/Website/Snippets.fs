@@ -48,7 +48,7 @@ module Snippets =
         let incrementSnippetsCount x = incrementDataCount "#fsharpSnippets" "data-snippets-count" x
 
         [<JavaScript>]
-        let snippetsDiv () =
+        let snippetsDiv() =
 
             let snippetsList = UL [Id "snippetsList"]
 
@@ -71,7 +71,10 @@ module Snippets =
                         x.RemoveAttribute("disabled")
                     } |> Async.Start)
 
-            Div [Id "fsharpSnippets"; HTML5.Attr.Data "snippets-count" "0"] -< [snippetsList]
+            Div [Id "fsharpSnippets"; HTML5.Attr.Data "snippets-count" "0"] -< [
+                snippetsList
+                loadMoreBtn
+            ]
             |>! OnAfterRender(fun _ ->
                 async {
                     let! fsharpSnippets = Server.latestFSharpSnippets ()
@@ -80,6 +83,7 @@ module Snippets =
                         makeSnippetLi link title description)
                     |> Array.iter (fun x -> snippetsList.Append x)
                     incrementSnippetsCount 20
+                    loadMoreBtn.SetCss("visibility", "visible")
                 } |> Async.Start)
 
         type Control() =

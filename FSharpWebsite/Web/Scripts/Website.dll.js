@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Website,AddThis,WebSharper,Html,Default,HTML5,List,T,BooksAdmin,Client,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Operators,Arrays,Forkme,Login,Client1,window,NewsAdmin,Client2,Questions,Client3,jQuery,Utilities,Client4,EventsPervasives,setInterval,Snippets,Client5,Tweets,Client6,Videos,Client7,VideosAdmin,Client8;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,AddThis,WebSharper,Html,Default,HTML5,List,T,BooksAdmin,Client,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Operators,Arrays,Forkme,Login,Client1,window,NewsAdmin,Client2,Questions,Client3,jQuery,Utilities,Client4,EventsPervasives,Snippets,Client5,Tweets,Client6,Videos,Client7,VideosAdmin,Client8;
  Runtime.Define(Global,{
   Website:{
    AddThis:{
@@ -531,14 +531,14 @@
       x7=Operators.add(Default.Div(List.ofArray([Default.Id("fsharpQuestions"),(_this=HTML5.Attr(),(arg003="data-"+"questions-count",_this.NewAttr(arg003,"0"))),(_this1=HTML5.Attr(),(arg004="data-"+"question-id",_this1.NewAttr(arg004,"")))])),List.ofArray([questionsList,loadMoreBtn]));
       f7=(f8=function()
       {
-       var x2,f1,f6;
+       var x2,f1,f5;
        x2=(f1=function()
        {
         var x3,f2;
         x3=Remoting.Async("Website:4",[]);
         f2=Runtime.Tupled(function(_arg21)
         {
-         var id,fsharpQuestions,x4,f3,mapping,f4,action,objectArg,arg00,x6,f5;
+         var id,fsharpQuestions,x4,f3,mapping,f4,action,objectArg,arg00;
          id=_arg21[0];
          fsharpQuestions=_arg21[1];
          x4=(f3=(mapping=Runtime.Tupled(function(tupledArg)
@@ -572,20 +572,11 @@
            return objectArg.SetCss(arg00,arg10,arg20);
           };
          })("visibility"))("visible");
-         x6=setInterval(function()
-         {
-          return Client3.checkNewQuestions();
-         },420000);
-         f5=function(value)
-         {
-          value;
-         };
-         f5(x6);
          return Concurrency.Return(null);
         });
         return Concurrency.Bind(x3,f2);
        },Concurrency.Delay(f1));
-       f6=function(arg00)
+       f5=function(arg00)
        {
         var t;
         t={
@@ -593,7 +584,7 @@
         };
         return Concurrency.Start(arg00);
        };
-       return f6(x2);
+       return f5(x2);
       },function(w)
       {
        return Operators.OnAfterRender(f8,w);
@@ -697,7 +688,7 @@
       {
        return EventsPervasives.Events().OnClick(x1,arg10);
       }),(f(x),x)));
-      x7=Operators.add(Default.Div(List.ofArray([Default.Id("fsharpSnippets"),(_this=HTML5.Attr(),(arg003="data-"+"snippets-count",_this.NewAttr(arg003,"0")))])),List.ofArray([snippetsList]));
+      x7=Operators.add(Default.Div(List.ofArray([Default.Id("fsharpSnippets"),(_this=HTML5.Attr(),(arg003="data-"+"snippets-count",_this.NewAttr(arg003,"0")))])),List.ofArray([snippetsList,loadMoreBtn]));
       f7=(f8=function()
       {
        var x2,f1,f5;
@@ -707,7 +698,7 @@
         x3=Remoting.Async("Website:10",[]);
         f2=function(_arg21)
         {
-         var x4,f3,mapping,f4,action;
+         var x4,f3,mapping,f4,action,objectArg,arg00;
          x4=(f3=(mapping=Runtime.Tupled(function(tupledArg)
          {
           var link,title,description;
@@ -728,6 +719,14 @@
          });
          f4(x4);
          Client5.incrementSnippetsCount(20);
+         objectArg=loadMoreBtn["HtmlProvider@32"];
+         ((arg00=loadMoreBtn.Body,function(arg10)
+         {
+          return function(arg20)
+          {
+           return objectArg.SetCss(arg00,arg10,arg20);
+          };
+         })("visibility"))("visible");
          return Concurrency.Return(null);
         };
         return Concurrency.Bind(x3,f2);
@@ -968,14 +967,14 @@
       x7=Operators.add(Default.Div(List.ofArray([Default.Id("fsharpTweets"),(_this=HTML5.Attr(),(arg003="data-"+"tweets-count",_this.NewAttr(arg003,"0"))),(_this1=HTML5.Attr(),(arg004="data-"+"tweet-id",_this1.NewAttr(arg004,"")))])),List.ofArray([tweetsList,loadMoreBtn]));
       f7=(f8=function()
       {
-       var x2,f1,f9;
+       var x2,f1,f6;
        x2=(f1=function()
        {
         var x3,f2;
         x3=Remoting.Async("Website:7",[]);
         f2=function(_arg2)
         {
-         var latestTweetId,x4,f3,x5,f4,mapping,f5,action,objectArg,arg00,x8,f6;
+         var latestTweetId,x4,f3,x5,f4,mapping,f5,action,objectArg,arg00;
          latestTweetId=(x4=_arg2[0],(f3=Runtime.Tupled(function(tupledArg)
          {
           var _arg21,id,_arg3,_arg4,_arg5,_arg6;
@@ -1021,20 +1020,11 @@
          })("visibility"))("visible");
          Client6.toggleActionsVisibility();
          Client6.handleTweetActions();
-         x8=setInterval(function()
-         {
-          return Client6.checkNewTweets();
-         },300000);
-         f6=function(value)
-         {
-          value;
-         };
-         f6(x8);
          return Concurrency.Return(null);
         };
         return Concurrency.Bind(x3,f2);
        },Concurrency.Delay(f1));
-       f9=function(arg00)
+       f6=function(arg00)
        {
         var t;
         t={
@@ -1042,7 +1032,7 @@
         };
         return Concurrency.Start(arg00);
        };
-       return f9(x2);
+       return f6(x2);
       },function(w)
       {
        return Operators.OnAfterRender(f8,w);
@@ -1265,7 +1255,6 @@
   Utilities=Runtime.Safe(Website.Utilities);
   Client4=Runtime.Safe(Utilities.Client);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
-  setInterval=Runtime.Safe(Global.setInterval);
   Snippets=Runtime.Safe(Website.Snippets);
   Client5=Runtime.Safe(Snippets.Client);
   Tweets=Runtime.Safe(Website.Tweets);

@@ -240,7 +240,7 @@ module Content =
 
         let title = "FSharp Ecosystem"
         
-        let metaDescription = "Companies offering F# products and services."
+        let metaDescription = "Third party F# products and services."
         
         let navigation : HtmlElement = navigation <| Some "Ecosystem"
         

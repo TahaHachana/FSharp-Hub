@@ -279,3 +279,12 @@ module Content =
                     LI [Text "..."]
                 ]
             ]
+
+        let aleacubase : HtmlElement =
+            Div [
+                A [HRef "https://www.quantalea.net/"] -< [H2 [Text "Alea.cuBase"]]
+                P [
+                    Strong [Text "Alea.cuBase"]
+                    Text " is a framework for building CUDA accelerated GPU applications on the .NET framework. Alea.cuBase features seamless integration with .NET, a solid framework, dynamic code generation and C/C++ performance."
+                ]
+            ]

@@ -118,6 +118,8 @@ module Views =
                         Ecosystem.websharper
                         HR []
                         Ecosystem.fcore
+                        HR []
+                        Ecosystem.aleacubase
                     ]
                 ]
                 Shared.footer

@@ -49,6 +49,7 @@ module Utilities =
                             li' "/"          "Home"
                             li' "/books"     "Books"
                             li' "/videos/1"  "Videos"
+                            li' "/ecosystem" "Ecosystem"
                             li' "/resources" "Resources"
                         ]
                     ]

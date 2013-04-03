@@ -235,3 +235,30 @@ module Content =
                     Div [Class "tab-pane"; Id "forums"]           -< [forumsTab]
                 ]
             ]
+
+    module Ecosystem =
+
+        let title = "FSharp Ecosystem"
+        
+        let metaDescription = "Companies offering F# products and services."
+        
+        let navigation : HtmlElement = navigation <| Some "Ecosystem"
+        
+        let header : HtmlElement = header "FSharp Ecosystem" "Third party F# tools, frameworks and consultancy services."
+
+        let websharper : HtmlElement =
+            Div [
+                A [HRef "http://www.websharper.com/"] -< [H2 [Text "WebSharper"]]
+                P [
+                    Strong [Text "WebSharper"]
+                    Text " is a HTML5 centric Web and mobile development framework that allows you to build an entire Web/mobile application using only the F# programming language. The client-side code is compiled to optimized JavaScript and the server-side backend runs on .NET. Among its powerful features we can mention:"
+                ]
+                UL [
+                    LI [Text "F# to JavaScript compiler"]
+                    LI [Text "Access to JavaScript libraries and TypeScript interoperability"]
+                    LI [Text "Strongly-typed URLs"]
+                    LI [Text "Seamless client-server AJAX communication"]
+                    LI [Text "The FSharp library running on JavaScript"]
+                    LI [Text "..."]
+                ]
+            ]

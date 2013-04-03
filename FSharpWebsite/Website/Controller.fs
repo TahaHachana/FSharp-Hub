@@ -29,5 +29,6 @@ module Controller =
             | BooksAdmin    -> protect Views.booksAdmin
             | VideosAdmin   -> protect Views.videosAdmin
             | NewsAdmin     -> protect Views.newsAdmin
+            | Ecosystem     -> Views.ecosystem
 
         { Handle = handle }

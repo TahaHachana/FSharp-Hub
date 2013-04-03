@@ -18,6 +18,7 @@ module Model =
         | [<CompiledName("admin")>] Admin
         | VideosAdmin
         | NewsAdmin
+        | [<CompiledName("ecosystem")>] Ecosystem
 
     type Page =
         {

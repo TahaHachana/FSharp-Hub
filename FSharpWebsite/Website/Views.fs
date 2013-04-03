@@ -107,6 +107,21 @@ module Views =
                 Shared.ga
             ]
 
+    let ecosystem =
+        withMainTemplate Ecosystem.title Ecosystem.metaDescription <| fun ctx ->
+            [
+                Div [Id "wrap"] -< [
+                    Ecosystem.navigation
+                    Div [new Forkme.Viewer()]
+                    Div [Class "container"] -< [
+                        Ecosystem.header
+                        Ecosystem.websharper
+                    ]
+                ]
+                Shared.footer
+                Shared.ga
+            ]
+
     let login (redirectAction: option<Action>) =
         withMainTemplate "Login" "" <| fun ctx ->
             let redirectLink =

@@ -116,6 +116,8 @@ module Views =
                     Div [Class "container"] -< [
                         Ecosystem.header
                         Ecosystem.websharper
+                        HR []
+                        Ecosystem.fcore
                     ]
                 ]
                 Shared.footer

@@ -262,3 +262,20 @@ module Content =
                     LI [Text "..."]
                 ]
             ]
+
+        let fcore : HtmlElement =
+            Div [
+                A [HRef "http://www.statfactory.co.uk/"] -< [H2 [Text "FCore"]]
+                P [
+                    Strong [Text "FCore"]
+                    Text " is a F# numerics library by StatFactory. FCore allows you to develop numerical code in F# and get C++ performance on CPU and GPU. From the features of FCore we can highlight:"
+                ]
+                UL [
+                    LI [Text "Intuitive F# API"]
+                    LI [Text "Random Generators"]
+                    LI [Text "Vector Functions"]
+                    LI [Text "Descriptive Stats"]
+                    LI [Text "Unlimited Memory"]
+                    LI [Text "..."]
+                ]
+            ]

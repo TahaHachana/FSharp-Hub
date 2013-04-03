@@ -70,6 +70,7 @@
     <Content Include="Scripts\Website.dll.js" />
     <Content Include="Scripts\Website.dll.min.js" />
     <Content Include="Content\**\*.*" />
+    <Content Include="Sitemap.xml" />
     <Content Include="StyleSheets\bootstrap.css" />
     <Content Include="StyleSheets\StyleSheet1.css" />
     <Content Include="Themes\**\*.*" />

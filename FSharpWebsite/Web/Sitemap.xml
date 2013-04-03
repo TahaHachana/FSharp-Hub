@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <url>
+      <loc>http://fsharp-hub.apphb.com/</loc>
+   </url>
+   <url>
+      <loc>http://fsharp-hub.apphb.com/books</loc>
+   </url>
+   <url>
+      <loc>http://fsharp-hub.apphb.com/videos/1</loc>
+   </url>
+   <url>
+      <loc>http://fsharp-hub.apphb.com/videos/2</loc>
+   </url>
+   <url>
+      <loc>http://fsharp-hub.apphb.com/videos/3</loc>
+   </url>
+   <url>
+      <loc>http://fsharp-hub.apphb.com/videos/4</loc>
+   </url>
+   <url>
+      <loc>http://fsharp-hub.apphb.com/videos/5</loc>
+   </url>
+   <url>
+      <loc>http://fsharp-hub.apphb.com/videos/6</loc>
+   </url>
+   <url>
+      <loc>http://fsharp-hub.apphb.com/ecosystem</loc>
+   </url>
+   <url>
+      <loc>http://fsharp-hub.apphb.com/resources</loc>
+   </url>
+</urlset> 

@@ -17,29 +17,27 @@ module Tweets =
         let atRegex = compileRegex "^([\p{P}-[@]]*)@(.+?)(\p{P}*$)"
         let urlRegex = compileRegex "^(\p{P}*)(https?://.+?)(\p{P}*$)"
 
+        let matchGroups (matchObj : Match) =
+            let groups = matchObj.Groups
+            let g1 = groups.[1].Value
+            let g2 = groups.[2].Value
+            let g3 = groups.[3].Value
+            g1, g2, g3
+
         let formatHashTags str =
             hashTagRegex.Replace(str, (fun (matchObj : Match) ->
-                let groups = matchObj.Groups
-                let g1 = groups.[1].Value
-                let hashTag = groups.[2].Value
-                let g3 = groups.[3].Value
-                String.concat "" [g1; "<a href=\"https://twitter.com/search/?q=%23"; hashTag; "&src=hash\">#"; hashTag; "</a>"; g3]))
+                let g1, g2, g3 = matchGroups matchObj
+                String.concat "" [g1; "<a href=\"https://twitter.com/search/?q=%23"; g2; "&src=hash\">#"; g2; "</a>"; g3]))
 
         let formatAts str =
             atRegex.Replace(str, (fun (matchObj : Match) ->
-                let groups = matchObj.Groups
-                let g1 = groups.[1].Value
-                let at = groups.[2].Value
-                let g3 = groups.[3].Value
-                String.concat "" [g1; "<a href=\"https://twitter.com/"; at; "\">@"; at; "</a>"; g3]))
+                let g1, g2, g3 = matchGroups matchObj
+                String.concat "" [g1; "<a href=\"https://twitter.com/"; g2; "\">@"; g2; "</a>"; g3]))
 
         let formatUrls str =
             urlRegex.Replace(str, (fun (matchObj : Match) ->
-                let groups = matchObj.Groups
-                let g1 = groups.[1].Value
-                let url = groups.[2].Value
-                let g3 = groups.[3].Value
-                String.concat "" [g1; "<a href=\""; url; "\">"; url; "</a>"; g3]))
+                let g1, g2, g3 = matchGroups matchObj
+                String.concat "" [g1; "<a href=\""; g2; "\">"; g2; "</a>"; g3]))
 
         let format = formatAts >> formatHashTags >> formatUrls
 

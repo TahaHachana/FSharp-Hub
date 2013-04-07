@@ -14,7 +14,8 @@ module Tweets =
         open Utilities.Server
 
         let hashTagRegex = compileRegex "^([\p{P}-[#]]*)#(.+?)(\p{P}*$)"
-        let atRegex = compileRegex "^([\p{P}-[@]]*)@(.+?)(\p{P}*$)"
+//        let atRegex = compileRegex "^([\p{P}-[@]]*)@(.+?)(\p{P}*$)"
+        let atRegex = compileRegex "^([\p{P}-[@]]*)@([a-zA-Z0-9_]+)(.*)"
         let urlRegex = compileRegex "^(\p{P}*)(https?://.+?)(\p{P}*$)"
 
         let matchGroups (matchObj : Match) =
@@ -93,7 +94,7 @@ module Tweets =
             let profileLink = "https://twitter.com/" + screenName
             let replyLink = "https://twitter.com/intent/tweet?in_reply_to=" + tweetId
             let retweetLink = "https://twitter.com/intent/retweet?tweet_id=" + tweetId
-            let favoriteLink = "https://twitter.com/intent/retweet?tweet_id=" + tweetId
+            let favoriteLink = "https://twitter.com/intent/favorite?tweet_id=" + tweetId
             let tweetP = P []
             tweetP.Html <- tweetHtml
             LI [Attr.Class "tweet"; Attr.Style "clear: both;"] -< [
@@ -105,10 +106,10 @@ module Tweets =
                     Br []
                     Small [Text creationDate]
                     tweetP
-                    UL [Attr.Class "tweetActions"; Attr.Style "visibility: hidden;"] -< [
-                        LI [Attr.Class "tweetAction"] -< [A [HRef replyLink; Attr.Class "tweet-action-link"] -< [Text "Reply"]]
-                        LI [Attr.Class "tweetAction"] -< [A [HRef retweetLink; Attr.Class "tweet-action-link"] -< [Text "Retweet"]]
-                        LI [A [HRef favoriteLink; Attr.Class "tweet-action-link"] -< [Text "Favorite"]]
+                    Div [Attr.Class "tweetActions"; Attr.Style "visibility: hidden;"] -< [
+                        A [HRef replyLink; Attr.Class "tweet-action-link"; Attr.Style "margin-right: 5px;"] -< [Text "Reply"]
+                        A [HRef retweetLink; Attr.Class "tweet-action-link"; Attr.Style "margin-right: 5px;"] -< [Text "Retweet"]
+                        A [HRef favoriteLink; Attr.Class "tweet-action-link"] -< [Text "Favorite"]
                     ]
                 ]
             ]

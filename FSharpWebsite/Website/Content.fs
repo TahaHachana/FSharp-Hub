@@ -60,7 +60,7 @@ module Content =
             ]
 
         let row1 : HtmlElement =
-            Div [Class "row-fluid"; Style "margin-bottom: 30px;"] -< [
+            Div [Class "row"; Style "margin-bottom: 30px;"] -< [
                 Div [Class "span4 offset4"] -< [
                     A [Class "btn btn-primary btn-large pull-left home-btn"; HRef "http://www.tryfsharp.org/"; Rel "nofollow"] -< [Text "Try F#"] 
                     A [Class "btn btn-success btn-large pull-right home-btn"; HRef "/resources"] -< [Text "Download F#"] 
@@ -248,7 +248,7 @@ module Content =
 
         let websharper : HtmlElement =
             Div [
-                A [HRef "http://www.websharper.com/"] -< [H2 [Text "WebSharper"]]
+                H2 [A [HRef "http://www.websharper.com/"] -< [Text "WebSharper"]]
                 P [
                     Strong [Text "WebSharper"]
                     Text " is a HTML5 centric Web and mobile development framework that allows you to build an entire Web/mobile application using only the F# programming language. The client-side code is compiled to optimized JavaScript and the server-side backend runs on .NET. Among its powerful features we can mention:"
@@ -265,7 +265,7 @@ module Content =
 
         let fcore : HtmlElement =
             Div [
-                A [HRef "http://www.statfactory.co.uk/"] -< [H2 [Text "FCore"]]
+                H2 [A [HRef "http://www.statfactory.co.uk/"] -< [Text "FCore"]]
                 P [
                     Strong [Text "FCore"]
                     Text " is a F# numerics library by StatFactory. FCore allows you to develop numerical code in F# and get C++ performance on CPU and GPU. From the features of FCore we can highlight:"
@@ -282,9 +282,18 @@ module Content =
 
         let aleacubase : HtmlElement =
             Div [
-                A [HRef "https://www.quantalea.net/"] -< [H2 [Text "Alea.cuBase"]]
+                H2 [A [HRef "https://www.quantalea.net/"] -< [Text "Alea.cuBase"]]
                 P [
                     Strong [Text "Alea.cuBase"]
                     Text " is a framework for building CUDA accelerated GPU applications on the .NET framework. Alea.cuBase features seamless integration with .NET, a solid framework, dynamic code generation and C/C++ performance."
+                ]
+            ]
+
+        let supervision : HtmlElement =
+            Div [
+                H2 [A [HRef "http://www.stati-cal.com/projects/supervision/"] -< [Text "Supervision"]]
+                P [
+                    Strong [Text "Supervision"]
+                    Text " transforms C/AL object text files into interactive HTML pages. Supervision by StatiCal is a useful static analysis tool for Microsoft Dynamics NAV developers."
                 ]
             ]

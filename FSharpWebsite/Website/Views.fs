@@ -120,6 +120,8 @@ module Views =
                         Ecosystem.fcore
                         HR []
                         Ecosystem.aleacubase
+                        HR []
+                        Ecosystem.supervision
                     ]
                 ]
                 Shared.footer

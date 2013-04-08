@@ -55,6 +55,7 @@
     <Content Include="Images\Books\RealWorldFunctionalProgramming.jpg" />
     <Content Include="Images\Books\WebCloudMobileFSharp.gif" />
     <Content Include="robots.txt" />
+    <Content Include="Scripts\affix.min.js" />
     <Content Include="Scripts\ga.js" />
     <Content Include="Scripts\IntelliFactory.Formlet.dll.min.js" />
     <Content Include="Scripts\IntelliFactory.Reactive.dll.min.js" />
@@ -67,6 +68,7 @@
     <Content Include="Scripts\IntelliFactory.WebSharper.Formlet.dll.min.js" />
     <Content Include="Scripts\IntelliFactory.WebSharper.Html.dll.js" />
     <Content Include="Scripts\IntelliFactory.WebSharper.Html.dll.min.js" />
+    <Content Include="Scripts\scrollspy.min.js" />
     <Content Include="Scripts\Website.dll.js" />
     <Content Include="Scripts\Website.dll.min.js" />
     <Content Include="Content\**\*.*" />

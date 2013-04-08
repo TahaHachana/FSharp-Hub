@@ -247,7 +247,7 @@ module Content =
         let header : HtmlElement = header "FSharp Ecosystem" "Third party F# tools, frameworks and consultancy services."
 
         let websharper : HtmlElement =
-            Div [
+            Div [Id "websharper"; Class "product"] -< [
                 H2 [A [HRef "http://www.websharper.com/"] -< [Text "WebSharper"]]
                 P [
                     Strong [Text "WebSharper"]
@@ -261,10 +261,23 @@ module Content =
                     LI [Text "The FSharp library running on JavaScript"]
                     LI [Text "..."]
                 ]
+                P [
+                    Text "WebSharper is also open source, the code is available on "
+                    A [HRef "https://bitbucket.org/IntelliFactory/websharper/src"] -< [Text "Bitbucket"]
+                    Text " and "
+                    A [HRef "https://github.com/intellifactory/websharper"] -< [Text "GitHub"]
+                    Text ". You can start developing WebSharper applications by "
+                    A [HRef "http://www.websharper.com/downloads"] -< [Text "downloading the latest release"]
+                    Text " or by using one of the following open source templates:"
+                ]
+                UL [
+                    LI [A [HRef "https://github.com/TahaHachana/WebSharperMVC"] -< [Text "WebSharper MVC template"]]
+                    LI [A [HRef "https://github.com/intellifactory/websharper-bootstrap-site"] -< [Text "WebSharper Bootstrap site"]]
+                ]
             ]
 
         let fcore : HtmlElement =
-            Div [
+            Div [Id "fcore"; Class "product"] -< [
                 H2 [A [HRef "http://www.statfactory.co.uk/"] -< [Text "FCore"]]
                 P [
                     Strong [Text "FCore"]
@@ -278,22 +291,37 @@ module Content =
                     LI [Text "Unlimited Memory"]
                     LI [Text "..."]
                 ]
+                P [Text "StatFactory offers a fully functional evaluation version of FCore with online and local documentation. They also offer custom development in order to meet special requirements and offer new functionality."]
             ]
 
         let aleacubase : HtmlElement =
-            Div [
+            Div [Id "aleacubase"; Class "product"] -< [
                 H2 [A [HRef "https://www.quantalea.net/"] -< [Text "Alea.cuBase"]]
                 P [
                     Strong [Text "Alea.cuBase"]
                     Text " is a framework for building CUDA accelerated GPU applications on the .NET framework. Alea.cuBase features seamless integration with .NET, a solid framework, dynamic code generation and C/C++ performance."
                 ]
+                P [
+                    Text "You can try Alea.cuBase for 30 days and learn about its features from the documentation and the samples available on "
+                    A [HRef "https://github.com/quantalea/Alea.cuSamples"] -< [Text "GitHub"]
+                    Text "."
+                ]
             ]
 
         let supervision : HtmlElement =
-            Div [
+            Div [Id "supervision"; Class "product"] -< [
                 H2 [A [HRef "http://www.stati-cal.com/projects/supervision/"] -< [Text "Supervision"]]
                 P [
                     Strong [Text "Supervision"]
                     Text " transforms C/AL object text files into interactive HTML pages. Supervision by StatiCal is a useful static analysis tool for Microsoft Dynamics NAV developers."
+                ]
+            ]
+
+        let prism : HtmlElement =
+            Div [Id "prism"; Class "product"] -< [
+                H2 [A [HRef "http://www.stati-cal.com/projects/prism/"] -< [Text "Prism"]]
+                P [
+                    Strong [Text "Prism"]
+                    Text " is an interactive C/AL code viewer for Microsoft Dynamics NAV developers."
                 ]
             ]

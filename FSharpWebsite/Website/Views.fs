@@ -113,19 +113,36 @@ module Views =
                 Div [Id "wrap"] -< [
                     Ecosystem.navigation
                     Div [new Forkme.Viewer()]
-                    Div [Class "container"] -< [
+                    Div [Class "container"; HTML5.Data "target" ".nav-div"] -< [
                         Ecosystem.header
-                        Ecosystem.websharper
-                        HR []
-                        Ecosystem.fcore
-                        HR []
-                        Ecosystem.aleacubase
-                        HR []
-                        Ecosystem.supervision
+                        Div [Class "row"] -< [
+                            Div [Class "span3 nav-div"] -< [
+                                UL [Class "nav nav-list affix span2"; Id "test"] -< [
+                                    LI [Class "active"] -< [A [HRef "#websharper"; Class "affix-a affix-a-first"] -< [Text "WebSharper"; Span [Style "float: right;"] -< [Text "›"]]]
+                                    LI [A [HRef "#fcore"; Class "affix-a"] -< [Text "FCore"; Span [Style "float: right;"] -< [Text "›"]]]
+                                    LI [A [HRef "#aleacubase"; Class "affix-a"] -< [Text "Alea.cuBase"; Span [Style "float: right;"] -< [Text "›"]]]
+                                    LI [A [HRef "#supervision"; Class "affix-a"] -< [Text "Supervision"; Span [Style "float: right;"] -< [Text "›"]]]
+                                    LI [A [HRef "#prism"; Class "affix-a affix-a-last"] -< [Text "Prism"; Span [Style "float: right;"] -< [Text "›"]]]
+                                ]
+                            ]
+                            Div [Class "span9"] -< [
+                                Ecosystem.websharper
+                                HR []
+                                Ecosystem.fcore
+                                HR []
+                                Ecosystem.aleacubase
+                                HR []
+                                Ecosystem.supervision
+                                HR []
+                                Ecosystem.prism
+                            ]
+                        ]
                     ]
                 ]
                 Shared.footer
                 Shared.ga
+                Script [Src "/Scripts/affix.min.js"]
+                Script [Src "/Scripts/scrollspy.min.js"]
             ]
 
     let login (redirectAction: option<Action>) =

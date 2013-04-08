@@ -113,6 +113,26 @@
     width: 120px;
 }
 
+.affix-a {
+    border: 1px solid lightgrey;
+    padding: 12px !important;
+    margin-bottom: -1px;
+}
+
+.affix-a-first {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.affix-a-last {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.product {
+    padding-top: 30px;
+    margin-bottom: 50px;
+}
 
 /* See http://twitter.github.com/bootstrap/examples/sticky-footer-navbar.html */
 

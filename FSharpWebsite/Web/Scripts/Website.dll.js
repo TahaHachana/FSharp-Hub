@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Website,AddThis,WebSharper,Html,Default,HTML5,List,T,BooksAdmin,Client,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Operators,Arrays,Forkme,Login,Client1,window,NewsAdmin,Client2,Questions,Client3,jQuery,Utilities,Client4,EventsPervasives,Snippets,Client5,Tweets,Client6,Videos,Client7,VideosAdmin,Client8;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,AddThis,WebSharper,Html,Default,HTML5,List,T,BooksAdmin,Client,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Operators,Arrays,Feedback,Client1,EventsPervasives,jQuery,Forkme,Login,Client2,window,NewsAdmin,Client3,Questions,Client4,Utilities,Client5,Snippets,Client6,Tweets,Client7,Videos,Client8,VideosAdmin,Client9;
  Runtime.Define(Global,{
   Website:{
    AddThis:{
@@ -203,6 +203,96 @@
      }
     }
    },
+   Feedback:{
+    Client:{
+     btn:Runtime.Field(function()
+     {
+      var x,_this,f,x1;
+      x=Operators.add(Default.Button(List.ofArray([(_this=Default.Attr(),_this.NewAttr("type","button")),Default.Attr().Class("btn btn-primary"),Default.Id("submit-btn")])),List.ofArray([Default.Text("Submit")]));
+      f=(x1=function()
+      {
+       return function()
+       {
+        return Client1.sendFeedback();
+       };
+      },function(arg10)
+      {
+       return EventsPervasives.Events().OnClick(x1,arg10);
+      });
+      f(x);
+      return x;
+     }),
+     form:Runtime.Field(function()
+     {
+      var _this;
+      return Operators.add(Default.Form(List.ofArray([(_this=Default.Attr(),_this.NewAttr("style","width: 300px"))])),List.ofArray([Client1.textarea(),Default.Br(Runtime.New(T,{
+       $:0
+      })),Client1.btn()]));
+     }),
+     main:function()
+     {
+      var _this,x,_this1,f,x1,_this2;
+      return Operators.add(Default.Div(List.ofArray([(_this=Default.Attr(),_this.NewAttr("style","position: fixed; bottom: 5px; right: 50px; background-color: white;"))])),List.ofArray([(x=Operators.add(Default.Div(List.ofArray([(_this1=Default.Attr(),_this1.NewAttr("style","font-weight: bold; background-color: black; color: white; padding: 10px; cursor: pointer;"))])),List.ofArray([Default.Text("Feedback")])),(f=(x1=function()
+      {
+       return function()
+       {
+        jQuery("#form").toggle();
+        return jQuery("#message").focus();
+       };
+      },function(arg10)
+      {
+       return EventsPervasives.Events().OnClick(x1,arg10);
+      }),(f(x),x))),Operators.add(Default.Div(List.ofArray([Default.Id("form"),(_this2=Default.Attr(),_this2.NewAttr("style","display: none; margin: 10px;"))])),List.ofArray([Client1.form()]))]));
+     },
+     sendFeedback:function()
+     {
+      var x,f,f4;
+      x=(f=function()
+      {
+       var message,x1,f1;
+       jQuery("#submit-btn").attr("disabled","disabled");
+       message=Client1.textarea().get_Value();
+       x1=Remoting.Async("Website:13",[message]);
+       f1=function(_arg1)
+       {
+        var a,b,f2,f3;
+        a=_arg1?(Client1.textarea().set_Value(""),(jQuery("#form").toggle(),(alert("Your feedback was sent."),Concurrency.Return(null)))):(alert("Failed to send your feedback. Please try again."),Concurrency.Return(null));
+        b=(f2=function()
+        {
+         jQuery("#submit-btn").removeAttr("disabled");
+         return Concurrency.Return(null);
+        },Concurrency.Delay(f2));
+        f3=function()
+        {
+         return b;
+        };
+        return Concurrency.Bind(a,f3);
+       };
+       return Concurrency.Bind(x1,f1);
+      },Concurrency.Delay(f));
+      f4=function(arg00)
+      {
+       var t;
+       t={
+        $:0
+       };
+       return Concurrency.Start(arg00);
+      };
+      return f4(x);
+     },
+     textarea:Runtime.Field(function()
+     {
+      var _this,_this1;
+      return Default.TextArea(List.ofArray([(_this=Default.Attr(),_this.NewAttr("rows","5")),(_this1=Default.Attr(),_this1.NewAttr("style","width: 280px")),Default.Id("message")]));
+     })
+    },
+    Control:Runtime.Class({
+     get_Body:function()
+     {
+      return Client1.main();
+     }
+    })
+   },
    Forkme:{
     Viewer:Runtime.Class({
      get_Body:function()
@@ -220,7 +310,7 @@
      Control:Runtime.Class({
       get_Body:function()
       {
-       return Client1.loginForm(this.redirectUrl);
+       return Client2.loginForm(this.redirectUrl);
       }
      }),
      loginForm:function(redirectUrl)
@@ -290,7 +380,7 @@
      Control:Runtime.Class({
       get_Body:function()
       {
-       return Client2.main();
+       return Client3.main();
       }
      }),
      main:function()
@@ -375,7 +465,7 @@
      Control:Runtime.Class({
       get_Body:function()
       {
-       return Client3.questionsDiv();
+       return Client4.questionsDiv();
       }
      }),
      checkNewQuestions:function()
@@ -405,24 +495,24 @@
            date=tupledArg[2];
            website=tupledArg[3];
            summary=tupledArg[4];
-           return Client3.makeQuestionLi(link,title,date,website,summary);
+           return Client4.makeQuestionLi(link,title,date,website,summary);
           }),function(array)
           {
            return Arrays.map(mapping,array);
           }),f3(x3)));
           f4=(action=function(element)
           {
-           return Client4.prependElement("#questionsList",element);
+           return Client5.prependElement("#questionsList",element);
           },function(array)
           {
            return Arrays.iter(action,array);
           });
           f4(x2);
           count=questions.length;
-          Client3.incrementQuestionsCount(count);
-          Client3.setQuestionId(id);
+          Client4.incrementQuestionsCount(count);
+          Client4.setQuestionId(id);
           msg=count===1?"1 new question":Global.String(count)+" new questions";
-          Client4.displayInfoAlert(msg);
+          Client5.displayInfoAlert(msg);
           return Concurrency.Return(null);
          }
         else
@@ -444,7 +534,7 @@
      },
      incrementQuestionsCount:function(x)
      {
-      return Client4.incrementDataCount("#fsharpQuestions","data-questions-count",x);
+      return Client5.incrementDataCount("#fsharpQuestions","data-questions-count",x);
      },
      makeQuestionLi:function(link,title,date,website,summary)
      {
@@ -490,7 +580,7 @@
            date=tupledArg[2];
            website=tupledArg[3];
            summary=tupledArg[4];
-           return Client3.makeQuestionLi(link,title,date,website,summary);
+           return Client4.makeQuestionLi(link,title,date,website,summary);
           }),function(array)
           {
            return Arrays.map(mapping,array);
@@ -504,7 +594,7 @@
           });
           f5(x6);
           _count_=_arg11.length;
-          Client3.incrementQuestionsCount(_count_);
+          Client4.incrementQuestionsCount(_count_);
           objectArg1=x2["HtmlProvider@32"];
           (arg002=x2.Body,function(arg10)
           {
@@ -549,7 +639,7 @@
           date=tupledArg[2];
           website=tupledArg[3];
           summary=tupledArg[4];
-          return Client3.makeQuestionLi(link,title,date,website,summary);
+          return Client4.makeQuestionLi(link,title,date,website,summary);
          }),function(array)
          {
           return Arrays.map(mapping,array);
@@ -562,8 +652,8 @@
           return Arrays.iter(action,array);
          });
          f4(x4);
-         Client3.incrementQuestionsCount(20);
-         Client3.setQuestionId(id);
+         Client4.incrementQuestionsCount(20);
+         Client4.setQuestionId(id);
          objectArg=loadMoreBtn["HtmlProvider@32"];
          ((arg00=loadMoreBtn.Body,function(arg10)
          {
@@ -594,7 +684,7 @@
      },
      setQuestionId:function(id)
      {
-      return Client4.setAttributeValue("#fsharpQuestions","data-question-id",id);
+      return Client5.setAttributeValue("#fsharpQuestions","data-question-id",id);
      }
     }
    },
@@ -603,12 +693,12 @@
      Control:Runtime.Class({
       get_Body:function()
       {
-       return Client5.snippetsDiv();
+       return Client6.snippetsDiv();
       }
      }),
      incrementSnippetsCount:function(x)
      {
-      return Client4.incrementDataCount("#fsharpSnippets","data-snippets-count",x);
+      return Client5.incrementDataCount("#fsharpSnippets","data-snippets-count",x);
      },
      makeSnippetLi:function(link,title,description)
      {
@@ -650,7 +740,7 @@
            link=tupledArg[0];
            title=tupledArg[1];
            description=tupledArg[2];
-           return Client5.makeSnippetLi(link,title,description);
+           return Client6.makeSnippetLi(link,title,description);
           }),function(array)
           {
            return Arrays.map(mapping,array);
@@ -664,7 +754,7 @@
           });
           f5(x6);
           _count_=_arg11.length;
-          Client5.incrementSnippetsCount(_count_);
+          Client6.incrementSnippetsCount(_count_);
           objectArg1=x2["HtmlProvider@32"];
           (arg002=x2.Body,function(arg10)
           {
@@ -705,7 +795,7 @@
           link=tupledArg[0];
           title=tupledArg[1];
           description=tupledArg[2];
-          return Client5.makeSnippetLi(link,title,description);
+          return Client6.makeSnippetLi(link,title,description);
          }),function(array)
          {
           return Arrays.map(mapping,array);
@@ -718,7 +808,7 @@
           return Arrays.iter(action,array);
          });
          f4(x4);
-         Client5.incrementSnippetsCount(20);
+         Client6.incrementSnippetsCount(20);
          objectArg=loadMoreBtn["HtmlProvider@32"];
          ((arg00=loadMoreBtn.Body,function(arg10)
          {
@@ -754,7 +844,7 @@
      Control:Runtime.Class({
       get_Body:function()
       {
-       return Client6.tweetsDiv();
+       return Client7.tweetsDiv();
       }
      }),
      checkNewTweets:function()
@@ -795,25 +885,25 @@
            displayName=tupledArg[3];
            text=tupledArg[4];
            creationDate=tupledArg[5];
-           return Client6.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
+           return Client7.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
           }),function(array)
           {
            return Arrays.map(mapping,array);
           }),f4(x4)));
           f5=(action=function(element)
           {
-           return Client4.prependElement("#tweetsList",element);
+           return Client5.prependElement("#tweetsList",element);
           },function(array)
           {
            return Arrays.iter(action,array);
           });
           f5(x3);
           count=tweets.length;
-          Client6.incrementTweetsCount(count);
-          Client6.setTweetId(latestTweetId1);
-          Client6.toggleActionsVisibility();
+          Client7.incrementTweetsCount(count);
+          Client7.setTweetId(latestTweetId1);
+          Client7.toggleActionsVisibility();
           msg=count===1?"1 new tweet":Global.String(count)+" new tweets";
-          Client4.displayInfoAlert(msg);
+          Client5.displayInfoAlert(msg);
           return Concurrency.Return(null);
          }
         else
@@ -852,7 +942,7 @@
      },
      incrementTweetsCount:function(x)
      {
-      return Client4.incrementDataCount("#fsharpTweets","data-tweets-count",x);
+      return Client5.incrementDataCount("#fsharpTweets","data-tweets-count",x);
      },
      makeTweetLi:function(screenName,tweetId,profileImage,fullName,tweetHtml,creationDate)
      {
@@ -871,7 +961,7 @@
      },
      setTweetId:function(id)
      {
-      return Client4.setAttributeValue("#fsharpTweets","data-tweet-id",id);
+      return Client5.setAttributeValue("#fsharpTweets","data-tweet-id",id);
      },
      toggleActionsVisibility:function()
      {
@@ -924,7 +1014,7 @@
            displayName=tupledArg[3];
            text=tupledArg[4];
            creationDate=tupledArg[5];
-           return Client6.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
+           return Client7.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
           }),function(array)
           {
            return Arrays.map(mapping,array);
@@ -938,9 +1028,9 @@
           });
           f5(x6);
           _count_=_arg11.length;
-          Client6.incrementTweetsCount(_count_);
-          Client6.toggleActionsVisibility();
-          Client6.handleTweetActions();
+          Client7.incrementTweetsCount(_count_);
+          Client7.toggleActionsVisibility();
+          Client7.handleTweetActions();
           objectArg1=x2["HtmlProvider@32"];
           (arg002=x2.Body,function(arg10)
           {
@@ -995,7 +1085,7 @@
           displayName=tupledArg[3];
           text=tupledArg[4];
           creationDate=tupledArg[5];
-          return Client6.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
+          return Client7.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
          }),function(array)
          {
           return Arrays.map(mapping,array);
@@ -1008,8 +1098,8 @@
           return Arrays.iter(action,array);
          });
          f5(x5);
-         Client6.incrementTweetsCount(20);
-         Client6.setTweetId(latestTweetId);
+         Client7.incrementTweetsCount(20);
+         Client7.setTweetId(latestTweetId);
          objectArg=loadMoreBtn["HtmlProvider@32"];
          ((arg00=loadMoreBtn.Body,function(arg10)
          {
@@ -1018,8 +1108,8 @@
            return objectArg.SetCss(arg00,arg10,arg20);
           };
          })("visibility"))("visible");
-         Client6.toggleActionsVisibility();
-         Client6.handleTweetActions();
+         Client7.toggleActionsVisibility();
+         Client7.handleTweetActions();
          return Concurrency.Return(null);
         };
         return Concurrency.Bind(x3,f2);
@@ -1078,7 +1168,7 @@
      PagerViewer:Runtime.Class({
       get_Body:function()
       {
-       return Client7.pager();
+       return Client8.pager();
       }
      }),
      pager:function()
@@ -1131,7 +1221,7 @@
      Control:Runtime.Class({
       get_Body:function()
       {
-       return Client8.main();
+       return Client9.main();
       }
      }),
      main:function()
@@ -1243,29 +1333,34 @@
   Concurrency=Runtime.Safe(WebSharper.Concurrency);
   Operators=Runtime.Safe(Html.Operators);
   Arrays=Runtime.Safe(WebSharper.Arrays);
+  Feedback=Runtime.Safe(Website.Feedback);
+  Client1=Runtime.Safe(Feedback.Client);
+  EventsPervasives=Runtime.Safe(Html.EventsPervasives);
+  jQuery=Runtime.Safe(Global.jQuery);
   Forkme=Runtime.Safe(Website.Forkme);
   Login=Runtime.Safe(Website.Login);
-  Client1=Runtime.Safe(Login.Client);
+  Client2=Runtime.Safe(Login.Client);
   window=Runtime.Safe(Global.window);
   NewsAdmin=Runtime.Safe(Website.NewsAdmin);
-  Client2=Runtime.Safe(NewsAdmin.Client);
+  Client3=Runtime.Safe(NewsAdmin.Client);
   Questions=Runtime.Safe(Website.Questions);
-  Client3=Runtime.Safe(Questions.Client);
-  jQuery=Runtime.Safe(Global.jQuery);
+  Client4=Runtime.Safe(Questions.Client);
   Utilities=Runtime.Safe(Website.Utilities);
-  Client4=Runtime.Safe(Utilities.Client);
-  EventsPervasives=Runtime.Safe(Html.EventsPervasives);
+  Client5=Runtime.Safe(Utilities.Client);
   Snippets=Runtime.Safe(Website.Snippets);
-  Client5=Runtime.Safe(Snippets.Client);
+  Client6=Runtime.Safe(Snippets.Client);
   Tweets=Runtime.Safe(Website.Tweets);
-  Client6=Runtime.Safe(Tweets.Client);
+  Client7=Runtime.Safe(Tweets.Client);
   Videos=Runtime.Safe(Website.Videos);
-  Client7=Runtime.Safe(Videos.Client);
+  Client8=Runtime.Safe(Videos.Client);
   VideosAdmin=Runtime.Safe(Website.VideosAdmin);
-  return Client8=Runtime.Safe(VideosAdmin.Client);
+  return Client9=Runtime.Safe(VideosAdmin.Client);
  });
  Runtime.OnLoad(function()
  {
+  Client1.textarea();
+  Client1.form();
+  Client1.btn();
   Client.booksTable();
   Client.addFormlet();
  });

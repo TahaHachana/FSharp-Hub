@@ -38,6 +38,7 @@
     <Compile Include="Secure.fs" />
     <Compile Include="Mongo.fs" />
     <Compile Include="Utilities.fs" />
+    <Compile Include="Feedback.fs" />
     <Compile Include="Login.fs" />
     <Compile Include="AddThis.fs" />
     <Compile Include="Forkme.fs" />
@@ -71,6 +72,10 @@
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core" />
+    <Reference Include="RestSharp">
+      <HintPath>..\..\packages\RestSharp.104.1\lib\net4\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.ServiceModel" />

@@ -21,8 +21,9 @@ module Views =
                     Div [new Forkme.Viewer()]
                     Home.heroUnit
                     Div [Class "container"] -< [
-                        Home.row1
-                        Home.row2()
+                        Home.row1 :> INode<_>
+                        Home.row2() :> _
+                        new Feedback.Control() :> _
                     ]
                 ]
                 Shared.footer

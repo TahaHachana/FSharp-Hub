@@ -62,29 +62,29 @@ module Questions =
         [<JavaScriptAttribute>]
         let setQuestionId id = setAttributeValue "#fsharpQuestions" "data-question-id" id
 
-        [<JavaScriptAttribute>]
-        let checkNewQuestions() =
-            async {
-                let jquery = JQuery.Of "#fsharpQuestions"
-                let latestQuestionId = jquery.Attr "data-question-id"
-                let! questionsOption = Server.newQuestions latestQuestionId
-                match questionsOption with
-                    | None -> ()
-                    | Some (id, questions) ->
-                        questions
-                        |> Array.rev
-                        |> Array.map (fun (link, title, date, website, summary) ->
-                            makeQuestionLi link title date website summary)
-                        |> Array.iter (Utilities.Client.prependElement "#questionsList")
-                        let count = Array.length questions
-                        incrementQuestionsCount count
-                        setQuestionId id
-                        let msg =
-                            match count with
-                                | 1 -> "1 new question"
-                                | _ -> string count + " new questions"
-                        Utilities.Client.displayInfoAlert msg
-            } |> Async.Start
+//        [<JavaScriptAttribute>]
+//        let checkNewQuestions() =
+//            async {
+//                let jquery = JQuery.Of "#fsharpQuestions"
+//                let latestQuestionId = jquery.Attr "data-question-id"
+//                let! questionsOption = Server.newQuestions latestQuestionId
+//                match questionsOption with
+//                    | None -> ()
+//                    | Some (id, questions) ->
+//                        questions
+//                        |> Array.rev
+//                        |> Array.map (fun (link, title, date, website, summary) ->
+//                            makeQuestionLi link title date website summary)
+//                        |> Array.iter (Utilities.Client.prependElement "#questionsList")
+//                        let count = Array.length questions
+//                        incrementQuestionsCount count
+//                        setQuestionId id
+//                        let msg =
+//                            match count with
+//                                | 1 -> "1 new question"
+//                                | _ -> string count + " new questions"
+//                        Utilities.Client.displayInfoAlert msg
+//            } |> Async.Start
 
         [<JavaScriptAttribute>]
         let questionsDiv() =

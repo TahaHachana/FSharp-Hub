@@ -136,36 +136,36 @@ module Tweets =
                 let href = element.GetAttribute "href"
                 Html5.Window.Self.ShowModalDialog href |> ignore).Ignore
 
-        [<JavaScriptAttribute>]
-        let checkNewTweets() =
-            async {
-                let jquery = JQuery.Of "#fsharpTweets"
-                let latestTweetId = jquery.Attr "data-tweet-id"
-                let! tweetsOption = Server.newTweets latestTweetId
-                match tweetsOption with
-                    | None -> ()
-                    | Some tweets ->
-                        let latestTweetId =
-                            tweets.[0]
-                            |> (fun (_, id, _, _, _, _) -> id)
-
-                        tweets
-                        |> Array.rev
-                        |> Array.map (fun (screenName, tweetId, profileImage, displayName, text, creationDate) ->
-                            makeTweetLi screenName tweetId profileImage displayName text creationDate)
-                        |> Array.iter (Utilities.Client.prependElement "#tweetsList")
-                        
-                        let count = Array.length tweets
-                        incrementTweetsCount count
-                        setTweetId latestTweetId
-                        toggleActionsVisibility ()
-                        
-                        let msg =
-                            match count with
-                                | 1 -> "1 new tweet"
-                                | _ -> string count + " new tweets"
-                        Utilities.Client.displayInfoAlert msg
-            } |> Async.Start
+//        [<JavaScriptAttribute>]
+//        let checkNewTweets() =
+//            async {
+//                let jquery = JQuery.Of "#fsharpTweets"
+//                let latestTweetId = jquery.Attr "data-tweet-id"
+//                let! tweetsOption = Server.newTweets latestTweetId
+//                match tweetsOption with
+//                    | None -> ()
+//                    | Some tweets ->
+//                        let latestTweetId =
+//                            tweets.[0]
+//                            |> (fun (_, id, _, _, _, _) -> id)
+//
+//                        tweets
+//                        |> Array.rev
+//                        |> Array.map (fun (screenName, tweetId, profileImage, displayName, text, creationDate) ->
+//                            makeTweetLi screenName tweetId profileImage displayName text creationDate)
+//                        |> Array.iter (Utilities.Client.prependElement "#tweetsList")
+//                        
+//                        let count = Array.length tweets
+//                        incrementTweetsCount count
+//                        setTweetId latestTweetId
+//                        toggleActionsVisibility ()
+//                        
+//                        let msg =
+//                            match count with
+//                                | 1 -> "1 new tweet"
+//                                | _ -> string count + " new tweets"
+//                        Utilities.Client.displayInfoAlert msg
+//            } |> Async.Start
 
         [<JavaScriptAttribute>]
         let tweetsDiv() =

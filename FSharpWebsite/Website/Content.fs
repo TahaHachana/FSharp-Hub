@@ -218,6 +218,13 @@ module Content =
                 LI [A [HRef "http://stackoverflow.com/questions/tagged/f%23"] -< [Text "StackOverflow"]]            
             ]            
 
+        let socialTab =
+            Div [
+                Text "The F# community is mainly active on Twitter. Stay up-to-date by adding a search for the #fsharp hashtag in your Twitter client. There is also a "
+                A [HRef "https://plus.google.com/u/0/communities/103033063915546239179/"] -< [Text "Google+ community"]
+                Text " that you can add to your circles."
+            ]
+
         let tabs =
             Div [Class "tabbable tabs-left"] -< [
                 UL [Class "nav nav-tabs"] -< [
@@ -226,6 +233,7 @@ module Content =
                     LI [A [HRef "#codesamples"; HTML5.Data "toggle" "tab"] -< [Text "Code Samples"]]
                     LI [A [HRef "#user-groups"; HTML5.Data "toggle" "tab"] -< [Text "User Groups"]]
                     LI [A [HRef "#forums"; HTML5.Data "toggle" "tab"] -< [Text "Forums"]]
+                    LI [A [HRef "#social"; HTML5.Data "toggle" "tab"] -< [Text "Social"]]
                 ]
                 Div [Class "tab-content"] -< [
                     Div [Class "tab-pane active"; Id "downloads"] -< [downloadsTab]
@@ -233,6 +241,7 @@ module Content =
                     Div [Class "tab-pane"; Id "codesamples"]      -< [codeSamplesTab]
                     Div [Class "tab-pane"; Id "user-groups"]      -< [userGroupsTab]
                     Div [Class "tab-pane"; Id "forums"]           -< [forumsTab]
+                    Div [Class "tab-pane"; Id "social"]           -< [socialTab]
                 ]
             ]
 

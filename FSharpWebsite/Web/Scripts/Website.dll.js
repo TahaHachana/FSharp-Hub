@@ -468,70 +468,6 @@
        return Client4.questionsDiv();
       }
      }),
-     checkNewQuestions:function()
-     {
-      var x,f,f5;
-      x=(f=function()
-      {
-       var jquery,latestQuestionId,x1,f1;
-       jquery=jQuery("#fsharpQuestions");
-       latestQuestionId=jquery.attr("data-question-id");
-       x1=Remoting.Async("Website:6",[latestQuestionId]);
-       f1=function(_arg1)
-       {
-        var questions,id,x2,x3,f2,f3,mapping,f4,action,count,msg;
-        if(_arg1.$==1)
-         {
-          questions=_arg1.$0[1];
-          id=_arg1.$0[0];
-          x2=(x3=(f2=function(array)
-          {
-           return array.slice(0,array.length).reverse();
-          },f2(questions)),(f3=(mapping=Runtime.Tupled(function(tupledArg)
-          {
-           var link,title,date,website,summary;
-           link=tupledArg[0];
-           title=tupledArg[1];
-           date=tupledArg[2];
-           website=tupledArg[3];
-           summary=tupledArg[4];
-           return Client4.makeQuestionLi(link,title,date,website,summary);
-          }),function(array)
-          {
-           return Arrays.map(mapping,array);
-          }),f3(x3)));
-          f4=(action=function(element)
-          {
-           return Client5.prependElement("#questionsList",element);
-          },function(array)
-          {
-           return Arrays.iter(action,array);
-          });
-          f4(x2);
-          count=questions.length;
-          Client4.incrementQuestionsCount(count);
-          Client4.setQuestionId(id);
-          msg=count===1?"1 new question":Global.String(count)+" new questions";
-          Client5.displayInfoAlert(msg);
-          return Concurrency.Return(null);
-         }
-        else
-         {
-          return Concurrency.Return(null);
-         }
-       };
-       return Concurrency.Bind(x1,f1);
-      },Concurrency.Delay(f));
-      f5=function(arg00)
-      {
-       var t;
-       t={
-        $:0
-       };
-       return Concurrency.Start(arg00);
-      };
-      return f5(x);
-     },
      incrementQuestionsCount:function(x)
      {
       return Client5.incrementDataCount("#fsharpQuestions","data-questions-count",x);
@@ -847,82 +783,6 @@
        return Client7.tweetsDiv();
       }
      }),
-     checkNewTweets:function()
-     {
-      var x,f,f6;
-      x=(f=function()
-      {
-       var jquery,latestTweetId,x1,f1;
-       jquery=jQuery("#fsharpTweets");
-       latestTweetId=jquery.attr("data-tweet-id");
-       x1=Remoting.Async("Website:9",[latestTweetId]);
-       f1=function(_arg1)
-       {
-        var tweets,latestTweetId1,x2,f2,x3,x4,f3,f4,mapping,f5,action,count,msg;
-        if(_arg1.$==1)
-         {
-          tweets=_arg1.$0;
-          latestTweetId1=(x2=tweets[0],(f2=Runtime.Tupled(function(tupledArg)
-          {
-           var _arg11,id,_arg2,_arg3,_arg4,_arg5;
-           _arg11=tupledArg[0];
-           id=tupledArg[1];
-           _arg2=tupledArg[2];
-           _arg3=tupledArg[3];
-           _arg4=tupledArg[4];
-           _arg5=tupledArg[5];
-           return id;
-          }),f2(x2)));
-          x3=(x4=(f3=function(array)
-          {
-           return array.slice(0,array.length).reverse();
-          },f3(tweets)),(f4=(mapping=Runtime.Tupled(function(tupledArg)
-          {
-           var screenName,tweetId,profileImage,displayName,text,creationDate;
-           screenName=tupledArg[0];
-           tweetId=tupledArg[1];
-           profileImage=tupledArg[2];
-           displayName=tupledArg[3];
-           text=tupledArg[4];
-           creationDate=tupledArg[5];
-           return Client7.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
-          }),function(array)
-          {
-           return Arrays.map(mapping,array);
-          }),f4(x4)));
-          f5=(action=function(element)
-          {
-           return Client5.prependElement("#tweetsList",element);
-          },function(array)
-          {
-           return Arrays.iter(action,array);
-          });
-          f5(x3);
-          count=tweets.length;
-          Client7.incrementTweetsCount(count);
-          Client7.setTweetId(latestTweetId1);
-          Client7.toggleActionsVisibility();
-          msg=count===1?"1 new tweet":Global.String(count)+" new tweets";
-          Client5.displayInfoAlert(msg);
-          return Concurrency.Return(null);
-         }
-        else
-         {
-          return Concurrency.Return(null);
-         }
-       };
-       return Concurrency.Bind(x1,f1);
-      },Concurrency.Delay(f));
-      f6=function(arg00)
-      {
-       var t;
-       t={
-        $:0
-       };
-       return Concurrency.Start(arg00);
-      };
-      return f6(x);
-     },
      handleTweetActions:function()
      {
       var jquery;
@@ -1134,12 +994,6 @@
    },
    Utilities:{
     Client:{
-     displayInfoAlert:function(msg)
-     {
-      jQuery("#alertText").text(msg);
-      jQuery("#alertDiv").show(600);
-      return jQuery("#alertDiv").fadeOut(7000);
-     },
      incrementDataCount:function(selector,dataAttribute,n)
      {
       var jquery,count,x,x1,f,f1;

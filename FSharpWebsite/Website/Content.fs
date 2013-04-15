@@ -186,14 +186,8 @@ module Content =
 
         let codeSamplesTab =
             UL [Class "unstyled"] -< [
-                LI [
-                    A [HRef "http://fsharp3sample.codeplex.com/"]
-                        -< [Text "F# 3.0 Sample Pack"]
-                ]            
-                LI [
-                    A [HRef "http://code.msdn.microsoft.com/site/search?f%5B0%5D.Type=ProgrammingLanguage&f%5B0%5D.Value=F%23&f%5B0%5D.Text=F%23"]
-                        -< [Text "MSDN Developer Code Samples"]
-                ]            
+                LI [A [HRef "http://fsharp3sample.codeplex.com/"] -< [Text "F# 3.0 Sample Pack"]]
+                LI [A [HRef "http://code.msdn.microsoft.com/site/search?f%5B0%5D.Type=ProgrammingLanguage&f%5B0%5D.Value=F%23&f%5B0%5D.Text=F%23"] -< [Text "MSDN Developer Code Samples"]]            
             ]
 
         let userGroupsTab =
@@ -209,6 +203,8 @@ module Content =
                 LI [A [HRef "http://www.meetup.com/FSharpSeattle/"] -< [Text "F# Seattle User Group"]]            
                 LI [A [HRef "http://www.meetup.com/zurich-fsharp-users/"] -< [Text "Zurich FSharp Users"]]            
                 LI [A [HRef "https://github.com/Nobuhisa/FSUG_JP/wiki"] -< [Text "F# User Group - Japan"]]
+                LI [A [HRef "http://www.meetup.com/Athens-FSharp/"] -< [Text "Athens F# User Group"]]
+                LI [A [HRef "http://www.bennettadelson.com/AllEvents.aspx?sig=c763cbd9-74b4-e011-8e22-1cc1de7983eb"] -< [Text "Cleveland F# SIG"]]
             ]
 
         let forumsTab =

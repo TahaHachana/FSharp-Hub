@@ -307,73 +307,86 @@
    },
    Login:{
     Client:{
-     Control:Runtime.Class({
-      get_Body:function()
-      {
-       return Client2.loginForm(this.redirectUrl);
-      }
-     }),
      loginForm:function(redirectUrl)
      {
-      var userName,x,f,password,x1,f1,formlet1,x2,x3,x4,f2,f3;
-      userName=(x=Controls.Input(""),(f=function(formlet)
+      var userInput,_this,_this1,_this2,submitBtn,x,_this3,f,x1,x4,x5,_this4,x6,_this5,x7,_this6,_this7,x8,_this8;
+      userInput=Default.Input(List.ofArray([(_this=Default.Attr(),_this.NewAttr("type","text")),(_this1=HTML5.Attr(),_this1.NewAttr("autofocus","autofocus")),(_this2=HTML5.Attr(),_this2.NewAttr("placeholder","username"))]));
+      submitBtn=(x=Operators.add(Default.Button(List.ofArray([(_this3=Default.Attr(),_this3.NewAttr("type","button")),Default.Attr().Class("btn"),Default.Id("login-btn")])),List.ofArray([Default.Text("Submit")])),(f=(x1=function()
       {
-       return Enhance.WithTextLabel("Username",formlet);
-      },f(x)));
-      password=(x1=Controls.Password(""),(f1=function(formlet)
-      {
-       return Enhance.WithTextLabel("Password",formlet);
-      },f1(x1)));
-      formlet1=(x2=(x3=Data.$(Data.$((x4=function(n)
-      {
-       return function(pw)
+       return function()
        {
-        return{
-         Name:n,
-         Password:pw
-        };
-       };
-      },Formlet1.Return(x4)),userName),password),(f2=function(formlet)
-      {
-       return Enhance.WithSubmitButton(formlet);
-      },f2(x3))),(f3=function(formlet)
-      {
-       return Enhance.WithFormContainer(formlet);
-      },f3(x2)));
-      return Formlet1.Run(function(loginInfo)
-      {
-       var x5,f4,f6;
-       x5=(f4=function()
-       {
-        var x6,f5;
-        x6=Remoting.Async("Website:12",[loginInfo]);
-        f5=function(_arg1)
+        var x2,f1,f3;
+        x2=(f1=function()
         {
-         if(_arg1)
-          {
-           window.location.href=redirectUrl;
-           return Concurrency.Return(null);
-          }
-         else
-          {
-           alert("Login failed");
-           return Concurrency.Return(null);
-          }
+         var x3,f2;
+         x3=Remoting.Async("Website:12",[{
+          Name:userInput.get_Value(),
+          Password:Client2.passInput().get_Value()
+         }]);
+         f2=function(_arg11)
+         {
+          if(_arg11.$==1)
+           {
+            window.location.href=redirectUrl;
+            return Concurrency.Return(null);
+           }
+          else
+           {
+            alert("Login failed");
+            return Concurrency.Return(null);
+           }
+         };
+         return Concurrency.Bind(x3,f2);
+        },Concurrency.Delay(f1));
+        f3=function(arg00)
+        {
+         var t;
+         t={
+          $:0
+         };
+         return Concurrency.Start(arg00);
         };
-        return Concurrency.Bind(x6,f5);
-       },Concurrency.Delay(f4));
-       f6=function(arg00)
-       {
-        var t;
-        t={
-         $:0
-        };
-        return Concurrency.Start(arg00);
+        return f3(x2);
        };
-       return f6(x5);
-      },formlet1);
+      },function(arg10)
+      {
+       return EventsPervasives.Events().OnClick(x1,arg10);
+      }),(f(x),x)));
+      return Default.Form(List.ofArray([(x4=List.ofArray([(x5=List.ofArray([Default.Text("Login")]),(_this4=Default.Tags(),_this4.NewTag("legend",x5))),(x6=List.ofArray([Default.Text("Username")]),(_this5=Default.Tags(),_this5.NewTag("label",x6))),userInput,(x7=List.ofArray([Default.Text("Password")]),(_this6=Default.Tags(),_this6.NewTag("label",x7))),Client2.passInput()]),(_this7=Default.Tags(),_this7.NewTag("fieldset",x4))),(x8=List.ofArray([submitBtn]),(_this8=Default.Tags(),_this8.NewTag("fieldset",x8)))]));
+     },
+     passInput:Runtime.Field(function()
+     {
+      var x,_this,_this1,f,x1;
+      x=Default.Input(List.ofArray([(_this=Default.Attr(),_this.NewAttr("type","text")),(_this1=HTML5.Attr(),_this1.NewAttr("placeholder","password"))]));
+      f=(x1=function()
+      {
+       return function(key)
+       {
+        var matchValue;
+        matchValue=key.KeyCode;
+        if(matchValue===13)
+         {
+          return jQuery("#login-btn").click();
+         }
+        else
+         {
+          return null;
+         }
+       };
+      },function(arg10)
+      {
+       return EventsPervasives.Events().OnKeyDown(x1,arg10);
+      });
+      f(x);
+      return x;
+     })
+    },
+    Control:Runtime.Class({
+     get_Body:function()
+     {
+      return Client2.loginForm(this.redirectUrl);
      }
-    }
+    })
    },
    NewsAdmin:{
     Client:{
@@ -1212,6 +1225,7 @@
  });
  Runtime.OnLoad(function()
  {
+  Client2.passInput();
   Client1.textarea();
   Client1.form();
   Client1.btn();

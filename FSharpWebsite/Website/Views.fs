@@ -159,7 +159,7 @@ module Views =
                         Shared.navigation
                         Div [Id "login"] -< [
                             H1 [Text "Login"]
-                            Div [new Login.Client.Control(redirectLink)]
+                            Div [new Login.Control(redirectLink)]
                         ]
                     ]
                 ]

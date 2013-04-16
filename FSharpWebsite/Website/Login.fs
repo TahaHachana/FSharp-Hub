@@ -4,55 +4,71 @@ module Login =
 
     open IntelliFactory.WebSharper
 
-    type LoginInfo =
+    type private LoginInfo =
         {
             Name     : string
             Password : string
         }
 
-    module Server =
+    type private Access = Denied | Granted
+
+    module private Server =
         
         open IntelliFactory.WebSharper.Sitelets
 
         [<Rpc>]
         let login loginInfo =
-            if loginInfo.Password = Secure.password then
-                UserSession.LoginUser loginInfo.Name
-                true
-            else
-                false
-            |> async.Return
+            async {
+                if loginInfo.Password = Secure.password then
+                    UserSession.LoginUser loginInfo.Name
+                    return Granted
+                else
+                    return Denied
+            }
 
-    module Client =
+    module private Client =
         
         open IntelliFactory.WebSharper.Html
         open IntelliFactory.WebSharper.Formlet
+        open IntelliFactory.WebSharper.JQuery
+
+        [<JavaScript>]
+        let passInput =
+            Input [Attr.Type "text"; HTML5.Attr.PlaceHolder "password"]
+            |>! OnKeyDown (fun _ key ->
+                match key.KeyCode with
+                    | 13 -> JQuery.Of("#login-btn").Click().Ignore
+                    | _  -> ())
 
         [<JavaScript>]
         let loginForm (redirectUrl: string) =
+            let userInput = Input [Attr.Type "text"; HTML5.Attr.AutoFocus "autofocus"; HTML5.Attr.PlaceHolder "username"]
+            let submitBtn =
+                Button [Attr.Type "button"; Attr.Class "btn"; Id "login-btn"] -< [Text "Submit"]
+               |>! OnClick (fun _ _ ->
+                    async {
+                        let! access = Server.login {Name = userInput.Value; Password = passInput.Value}
+                        match access with
+                            | Denied  -> JavaScript.Alert "Login failed"
+                            | Granted -> Html5.Window.Self.Location.Href <- redirectUrl
+                    } |> Async.Start)
 
-            let userName =
-                Controls.Input ""
-                |> Enhance.WithTextLabel "Username"
-            let password =
-                Controls.Password ""
-                |> Enhance.WithTextLabel "Password"
-            let formlet =
-                Formlet.Yield (fun n pw -> {Name=n; Password=pw})
-                <*> userName <*> password
-                |> Enhance.WithSubmitButton
-                |> Enhance.WithFormContainer
-            Formlet.Run (fun loginInfo ->
-                async {
-                    let! loggedIn = Server.login loginInfo
-                    match loggedIn with
-                            | false -> JavaScript.Alert "Login failed"
-                            | true -> Html5.Window.Self.Location.Href <- redirectUrl
-                } |> Async.Start) formlet
+            Form [
+                FieldSet [
+                    Legend [Text "Login"]
+                    Label [Text "Username"]
+                    userInput
+                    Label [Text "Password"]
+                    passInput
+                ]
+                FieldSet [
+                    submitBtn
+                ]
+            ]
 
-        type Control(redirectUrl) =
+    type Control(redirectUrl) =
         
-            inherit Web.Control ()
+        inherit Web.Control()
 
-            [<JavaScript>]
-            override __.Body = loginForm redirectUrl
+        [<JavaScript>]
+        override __.Body = Client.loginForm redirectUrl :> _

@@ -13,8 +13,8 @@ module Tweets =
         
         open Utilities.Server
 
-        let hashTagRegex = compileRegex "^([\p{P}-[#]]*)#([a-zA-Z][a-zA-Z0-9_]+)(\p{P}*$)"
-        let atRegex = compileRegex "^([\p{P}-[@]]*)@([a-zA-Z][a-zA-Z0-9_]+)(.*)"
+        let hashTagRegex = compileRegex "^([\p{P}-[#]]*)#([a-zA-Z][a-zA-Z0-9_]+)(.*)"
+        let atRegex = compileRegex "^([\p{P}-[@]]*)@([a-zA-Z0-9_]+)(.*)"
         let urlRegex = compileRegex "^(\p{P}*)(https?://.+?)(\p{P}*$)"
 
         let matchGroups (matchObj : Match) =

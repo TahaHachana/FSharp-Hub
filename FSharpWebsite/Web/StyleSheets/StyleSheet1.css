@@ -51,19 +51,19 @@
     margin-left: 10%;
 }
 
-#fsharpTweets,
-#fsharpQuestions,
-#fsharpSnippets
+#fsharp-tweets,
+#fsharp-questions,
+#fsharp-snippets
 {
     height:600px;
     overflow-y:scroll;
 }
 
-#tweetsList,
-#questionsList,
-#snippetsList
+#tweets-list,
+#questions-list,
+#snippets-list
 {
-    list-style-type: none;         
+    list-style-type: none;
 }
 
 #alertDiv

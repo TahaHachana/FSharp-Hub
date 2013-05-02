@@ -32,7 +32,7 @@ module Mongo =
     module RecordTypes =
         
         [<CLIMutableAttribute>]
-        type FSharpQuestion =
+        type Question =
             {
                 _id     : ObjectId
                 Link    : string
@@ -72,19 +72,6 @@ module Mongo =
                     Website   = website
                     Date      = date
                 }
-
-        [<CLIMutableAttribute>]
-        type Tweet =
-            {
-                _id          : ObjectId 
-                TweetID      : string
-                UserID       : string
-                ProfileImage : string
-                DisplayName  : string
-                ScreenName   : string
-                CreationDate : DateTime
-                Text         : string
-            }
 
         [<CLIMutableAttribute>]
         type Book =
@@ -135,8 +122,7 @@ module Mongo =
     [<AutoOpen>]
     module Collections =
     
-        let tweets    = collectionByName<Tweet>          database "tweets"
-        let questions = collectionByName<FSharpQuestion> database "questions"
+        let questions = collectionByName<Question> database "questions"
         let books     = collectionByName<Book>           database "books"
         let snippets  = collectionByName<Snippet>        database "snippets"
         let videos    = collectionByName<Video>          database "videos"
@@ -147,36 +133,11 @@ module Mongo =
         
         let asQueryable (collection : MongoCollection<_>) = collection.FindAll().AsQueryable()
         
-        let tweetsQueryable    = asQueryable tweets
         let questionsQueryable = asQueryable questions
         let booksQueryable     = asQueryable books
         let snippetsQueryable  = asQueryable snippets
         let videosQueryable    = asQueryable videos
         let newsQueryable      = asQueryable news
-
-    module Tweets =
-
-        let latest20() =
-            query {
-                for x in tweetsQueryable do
-                    sortByDescending x.CreationDate
-                    take 20
-            }
-
-        let skipLatest20 skipCount =
-            query {
-                for x in tweetsQueryable do
-                    sortByDescending x.CreationDate
-                    skip skipCount
-                    take 20
-            }
-
-        let takeWhile latestTweetsId =
-            query {
-                for x in tweetsQueryable do
-                    sortByDescending x.CreationDate
-                    takeWhile (x.TweetID <> latestTweetsId)
-            }
 
     module Questions =
 
@@ -185,21 +146,6 @@ module Mongo =
                 for x in questionsQueryable do
                     sortByDescending x.Date
                     take 20
-            }
-
-        let skipLatest20 skipCount =
-            query {
-                for x in questionsQueryable do
-                    sortByDescending x.Date
-                    skip skipCount
-                    take 20
-            }
-
-        let inline takeWhile latestQuestionId =
-            query {
-                for x in questionsQueryable do
-                    sortByDescending x.Date
-                    takeWhile (x._id.ToString() <> latestQuestionId)
             }
 
     module Books =
@@ -220,14 +166,6 @@ module Mongo =
             query {
                 for x in snippetsQueryable do
                     sortByDescending x.Date
-                    take 20
-            }
-
-        let skipLatest20 skipCount =
-            query {
-                for x in snippetsQueryable do
-                    sortByDescending x.Date
-                    skip skipCount
                     take 20
             }
 

@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Website,AddThis,WebSharper,Html,Default,HTML5,List,T,BooksAdmin,Client,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Operators,Arrays,Feedback,Client1,EventsPervasives,jQuery,Forkme,Login,Client2,window,NewsAdmin,Client3,Questions,Client4,Utilities,Client5,Snippets,Client6,Tweets,Client7,Videos,Client8,VideosAdmin,Client9;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,AddThis,WebSharper,Html,Default,HTML5,List,T,BooksAdmin,Client,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Operators,Arrays,Feedback,Client1,EventsPervasives,jQuery,Forkme,Login,Client2,window,NewsAdmin,Client3,Questions,Client4,Snippets,Client5,RegExp,Tweets,Client6,String,Videos,Client7,VideosAdmin,Client8;
  Runtime.Define(Global,{
   Website:{
    AddThis:{
@@ -252,7 +252,7 @@
        var message,x1,f1;
        jQuery("#submit-btn").attr("disabled","disabled");
        message=Client1.textarea().get_Value();
-       x1=Remoting.Async("Website:13",[message]);
+       x1=Remoting.Async("Website:7",[message]);
        f1=function(_arg1)
        {
         var a,b,f2,f3;
@@ -319,7 +319,7 @@
         x2=(f1=function()
         {
          var x3,f2;
-         x3=Remoting.Async("Website:12",[{
+         x3=Remoting.Async("Website:6",[{
           Name:userInput.get_Value(),
           Password:Client2.passInput().get_Value()
          }]);
@@ -475,147 +475,68 @@
    },
    Questions:{
     Client:{
-     Control:Runtime.Class({
-      get_Body:function()
-      {
-       return Client4.questionsDiv();
-      }
-     }),
-     incrementQuestionsCount:function(x)
+     displayQuestions:function(arr,elt)
      {
-      return Client5.incrementDataCount("#fsharpQuestions","data-questions-count",x);
+      var ul,x,f,f1,action;
+      ul=Default.UL(List.ofArray([Default.Id("questions-list")]));
+      x=(f=function(array)
+      {
+       return Arrays.map(Runtime.Tupled(function(tupledArg)
+       {
+        var link,title,date,website,summary;
+        link=tupledArg[0];
+        title=tupledArg[1];
+        date=tupledArg[2];
+        website=tupledArg[3];
+        summary=tupledArg[4];
+        return Client4.li(link,title,date,website,summary);
+       }),array);
+      },f(arr));
+      f1=(action=function(arg00)
+      {
+       return ul.AppendI(arg00);
+      },function(array)
+      {
+       return Arrays.iter(action,array);
+      });
+      f1(x);
+      return elt.AppendI(ul);
      },
-     makeQuestionLi:function(link,title,date,website,summary)
+     li:function(link,title,date,website,summary)
      {
       var x,_this,x1,x2,_this1;
       return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("question")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link)])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this=Default.Tags(),_this.NewTag("strong",x)))])),Default.Br(Runtime.New(T,{
        $:0
       })),(x1=List.ofArray([(x2=date+", "+website,Default.Text(x2))]),(_this1=Default.Tags(),_this1.NewTag("small",x1))),Default.P(List.ofArray([Default.Text(summary)]))]));
      },
-     questionsDiv:function()
+     main:function()
      {
-      var questionsList,loadMoreBtn,x,f,x1,x7,_this,arg003,_this1,arg004,f7,f8;
-      questionsList=Default.UL(List.ofArray([Default.Id("questionsList")]));
-      loadMoreBtn=(x=Default.Button(List.ofArray([Default.Text("Load More"),Default.Attr().Class("btn loadMore")])),(f=(x1=function(x2)
+      var x,f,f1;
+      x=Default.Div(List.ofArray([Default.Id("fsharp-questions")]));
+      f=(f1=function(elt)
       {
-       return function()
+       var x1,f2,f4;
+       x1=(f2=function()
        {
-        var x3,f1,f6;
-        x3=(f1=function()
+        var x2,f3;
+        x2=Remoting.Async("Website:4",[]);
+        f3=function(_arg1)
         {
-         var objectArg,arg00,jquery,count,x4,f2,x5,f3;
-         objectArg=x2["HtmlProvider@32"];
-         ((arg00=x2.Body,function(arg10)
-         {
-          return function(arg20)
+         var arr;
+         if(_arg1.$==1)
           {
-           return objectArg.SetAttribute(arg00,arg10,arg20);
-          };
-         })("disabled"))("disabled");
-         jquery=jQuery("#fsharpQuestions");
-         count=(x4=jquery.attr("data-questions-count"),(f2=function(value)
-         {
-          return value<<0;
-         },f2(x4)));
-         x5=Remoting.Async("Website:5",[count]);
-         f3=function(_arg11)
-         {
-          var x6,f4,mapping,f5,action,_count_,objectArg1,arg002;
-          x6=(f4=(mapping=Runtime.Tupled(function(tupledArg)
+           arr=_arg1.$0;
+           Client4.displayQuestions(arr,elt);
+           return Concurrency.Return(null);
+          }
+         else
           {
-           var link,title,date,website,summary;
-           link=tupledArg[0];
-           title=tupledArg[1];
-           date=tupledArg[2];
-           website=tupledArg[3];
-           summary=tupledArg[4];
-           return Client4.makeQuestionLi(link,title,date,website,summary);
-          }),function(array)
-          {
-           return Arrays.map(mapping,array);
-          }),f4(_arg11));
-          f5=(action=function(arg001)
-          {
-           return questionsList.AppendI(arg001);
-          },function(array)
-          {
-           return Arrays.iter(action,array);
-          });
-          f5(x6);
-          _count_=_arg11.length;
-          Client4.incrementQuestionsCount(_count_);
-          objectArg1=x2["HtmlProvider@32"];
-          (arg002=x2.Body,function(arg10)
-          {
-           return objectArg1.RemoveAttribute(arg002,arg10);
-          })("disabled");
-          return Concurrency.Return(null);
-         };
-         return Concurrency.Bind(x5,f3);
-        },Concurrency.Delay(f1));
-        f6=function(arg00)
-        {
-         var t;
-         t={
-          $:0
-         };
-         return Concurrency.Start(arg00);
+           return Concurrency.Return(null);
+          }
         };
-        return f6(x3);
-       };
-      },function(arg10)
-      {
-       return EventsPervasives.Events().OnClick(x1,arg10);
-      }),(f(x),x)));
-      x7=Operators.add(Default.Div(List.ofArray([Default.Id("fsharpQuestions"),(_this=HTML5.Attr(),(arg003="data-"+"questions-count",_this.NewAttr(arg003,"0"))),(_this1=HTML5.Attr(),(arg004="data-"+"question-id",_this1.NewAttr(arg004,"")))])),List.ofArray([questionsList,loadMoreBtn]));
-      f7=(f8=function()
-      {
-       var x2,f1,f5;
-       x2=(f1=function()
-       {
-        var x3,f2;
-        x3=Remoting.Async("Website:4",[]);
-        f2=Runtime.Tupled(function(_arg21)
-        {
-         var id,fsharpQuestions,x4,f3,mapping,f4,action,objectArg,arg00;
-         id=_arg21[0];
-         fsharpQuestions=_arg21[1];
-         x4=(f3=(mapping=Runtime.Tupled(function(tupledArg)
-         {
-          var link,title,date,website,summary;
-          link=tupledArg[0];
-          title=tupledArg[1];
-          date=tupledArg[2];
-          website=tupledArg[3];
-          summary=tupledArg[4];
-          return Client4.makeQuestionLi(link,title,date,website,summary);
-         }),function(array)
-         {
-          return Arrays.map(mapping,array);
-         }),f3(fsharpQuestions));
-         f4=(action=function(x5)
-         {
-          return questionsList.AppendI(x5);
-         },function(array)
-         {
-          return Arrays.iter(action,array);
-         });
-         f4(x4);
-         Client4.incrementQuestionsCount(20);
-         Client4.setQuestionId(id);
-         objectArg=loadMoreBtn["HtmlProvider@32"];
-         ((arg00=loadMoreBtn.Body,function(arg10)
-         {
-          return function(arg20)
-          {
-           return objectArg.SetCss(arg00,arg10,arg20);
-          };
-         })("visibility"))("visible");
-         return Concurrency.Return(null);
-        });
-        return Concurrency.Bind(x3,f2);
-       },Concurrency.Delay(f1));
-       f5=function(arg00)
+        return Concurrency.Bind(x2,f3);
+       },Concurrency.Delay(f2));
+       f4=function(arg00)
        {
         var t;
         t={
@@ -623,154 +544,82 @@
         };
         return Concurrency.Start(arg00);
        };
-       return f5(x2);
+       return f4(x1);
       },function(w)
       {
-       return Operators.OnAfterRender(f8,w);
+       return Operators.OnAfterRender(f1,w);
       });
-      f7(x7);
-      return x7;
-     },
-     setQuestionId:function(id)
-     {
-      return Client5.setAttributeValue("#fsharpQuestions","data-question-id",id);
+      f(x);
+      return x;
      }
-    }
+    },
+    Control:Runtime.Class({
+     get_Body:function()
+     {
+      return Client4.main();
+     }
+    })
    },
    Snippets:{
     Client:{
-     Control:Runtime.Class({
-      get_Body:function()
-      {
-       return Client6.snippetsDiv();
-      }
-     }),
-     incrementSnippetsCount:function(x)
+     dispalySnippets:function(arr,elt)
      {
-      return Client5.incrementDataCount("#fsharpSnippets","data-snippets-count",x);
+      var ul,x,f,f1,action;
+      ul=Default.UL(List.ofArray([Default.Id("snippets-list")]));
+      x=(f=function(array)
+      {
+       return Arrays.map(Runtime.Tupled(function(tupledArg)
+       {
+        var link,title,description;
+        link=tupledArg[0];
+        title=tupledArg[1];
+        description=tupledArg[2];
+        return Client5.li(link,title,description);
+       }),array);
+      },f(arr));
+      f1=(action=function(arg00)
+      {
+       return ul.AppendI(arg00);
+      },function(array)
+      {
+       return Arrays.iter(action,array);
+      });
+      f1(x);
+      return elt.AppendI(ul);
      },
-     makeSnippetLi:function(link,title,description)
+     li:function(link,title,description)
      {
       var x,_this;
       return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("snippet")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link)])),List.ofArray([(x=List.ofArray([Default.Text(title)]),(_this=Default.Tags(),_this.NewTag("strong",x)))])),Default.P(List.ofArray([Default.Text(description)]))]));
      },
-     snippetsDiv:function()
+     main:function()
      {
-      var snippetsList,loadMoreBtn,x,f,x1,x7,_this,arg003,f7,f8;
-      snippetsList=Default.UL(List.ofArray([Default.Id("snippetsList")]));
-      loadMoreBtn=(x=Default.Button(List.ofArray([Default.Text("Load More"),Default.Attr().Class("btn loadMore")])),(f=(x1=function(x2)
+      var x,f,f1;
+      x=Default.Div(List.ofArray([Default.Id("fsharp-snippets")]));
+      f=(f1=function(elt)
       {
-       return function()
+       var x1,f2,f4;
+       x1=(f2=function()
        {
-        var x3,f1,f6;
-        x3=(f1=function()
+        var x2,f3;
+        x2=Remoting.Async("Website:5",[]);
+        f3=function(_arg1)
         {
-         var objectArg,arg00,jquery,count,x4,f2,x5,f3;
-         objectArg=x2["HtmlProvider@32"];
-         ((arg00=x2.Body,function(arg10)
-         {
-          return function(arg20)
+         var arr;
+         if(_arg1.$==1)
           {
-           return objectArg.SetAttribute(arg00,arg10,arg20);
-          };
-         })("disabled"))("disabled");
-         jquery=jQuery("#fsharpSnippets");
-         count=(x4=jquery.attr("data-snippets-count"),(f2=function(value)
-         {
-          return value<<0;
-         },f2(x4)));
-         x5=Remoting.Async("Website:11",[count]);
-         f3=function(_arg11)
-         {
-          var x6,f4,mapping,f5,action,_count_,objectArg1,arg002;
-          x6=(f4=(mapping=Runtime.Tupled(function(tupledArg)
+           arr=_arg1.$0;
+           Client5.dispalySnippets(arr,elt);
+           return Concurrency.Return(null);
+          }
+         else
           {
-           var link,title,description;
-           link=tupledArg[0];
-           title=tupledArg[1];
-           description=tupledArg[2];
-           return Client6.makeSnippetLi(link,title,description);
-          }),function(array)
-          {
-           return Arrays.map(mapping,array);
-          }),f4(_arg11));
-          f5=(action=function(arg001)
-          {
-           return snippetsList.AppendI(arg001);
-          },function(array)
-          {
-           return Arrays.iter(action,array);
-          });
-          f5(x6);
-          _count_=_arg11.length;
-          Client6.incrementSnippetsCount(_count_);
-          objectArg1=x2["HtmlProvider@32"];
-          (arg002=x2.Body,function(arg10)
-          {
-           return objectArg1.RemoveAttribute(arg002,arg10);
-          })("disabled");
-          return Concurrency.Return(null);
-         };
-         return Concurrency.Bind(x5,f3);
-        },Concurrency.Delay(f1));
-        f6=function(arg00)
-        {
-         var t;
-         t={
-          $:0
-         };
-         return Concurrency.Start(arg00);
+           return Concurrency.Return(null);
+          }
         };
-        return f6(x3);
-       };
-      },function(arg10)
-      {
-       return EventsPervasives.Events().OnClick(x1,arg10);
-      }),(f(x),x)));
-      x7=Operators.add(Default.Div(List.ofArray([Default.Id("fsharpSnippets"),(_this=HTML5.Attr(),(arg003="data-"+"snippets-count",_this.NewAttr(arg003,"0")))])),List.ofArray([snippetsList,loadMoreBtn]));
-      f7=(f8=function()
-      {
-       var x2,f1,f5;
-       x2=(f1=function()
-       {
-        var x3,f2;
-        x3=Remoting.Async("Website:10",[]);
-        f2=function(_arg21)
-        {
-         var x4,f3,mapping,f4,action,objectArg,arg00;
-         x4=(f3=(mapping=Runtime.Tupled(function(tupledArg)
-         {
-          var link,title,description;
-          link=tupledArg[0];
-          title=tupledArg[1];
-          description=tupledArg[2];
-          return Client6.makeSnippetLi(link,title,description);
-         }),function(array)
-         {
-          return Arrays.map(mapping,array);
-         }),f3(_arg21));
-         f4=(action=function(x5)
-         {
-          return snippetsList.AppendI(x5);
-         },function(array)
-         {
-          return Arrays.iter(action,array);
-         });
-         f4(x4);
-         Client6.incrementSnippetsCount(20);
-         objectArg=loadMoreBtn["HtmlProvider@32"];
-         ((arg00=loadMoreBtn.Body,function(arg10)
-         {
-          return function(arg20)
-          {
-           return objectArg.SetCss(arg00,arg10,arg20);
-          };
-         })("visibility"))("visible");
-         return Concurrency.Return(null);
-        };
-        return Concurrency.Bind(x3,f2);
-       },Concurrency.Delay(f1));
-       f5=function(arg00)
+        return Concurrency.Bind(x2,f3);
+       },Concurrency.Delay(f2));
+       f4=function(arg00)
        {
         var t;
         t={
@@ -778,29 +627,66 @@
         };
         return Concurrency.Start(arg00);
        };
-       return f5(x2);
+       return f4(x1);
       },function(w)
       {
-       return Operators.OnAfterRender(f8,w);
+       return Operators.OnAfterRender(f1,w);
       });
-      f7(x7);
-      return x7;
+      f(x);
+      return x;
      }
-    }
+    },
+    Control:Runtime.Class({
+     get_Body:function()
+     {
+      return Client5.main();
+     }
+    })
    },
    Tweets:{
     Client:{
-     Control:Runtime.Class({
-      get_Body:function()
-      {
-       return Client7.tweetsDiv();
-      }
+     atRegex:Runtime.Field(function()
+     {
+      return new RegExp("(@)([A-Za-z0-9-_]+)","g");
      }),
+     displayTweets:function(ul,elt)
+     {
+      return jQuery.getJSON("http://search.twitter.com/search.json?q=%23fsharp&amp;rpp=100&amp;callback=?",Runtime.Tupled(function(tupledArg)
+      {
+       var data,_arg1,x,f,action;
+       data=tupledArg[0];
+       _arg1=tupledArg[1];
+       x=data.results;
+       f=(action=function(result)
+       {
+        var tweetHtml,x1,f1;
+        tweetHtml=(Client6.linkify())(result.text);
+        x1=Client6.tweetLi(result.from_user,result.id_str,result.profile_image_url,result.from_user_name,tweetHtml,result.created_at);
+        f1=function(arg00)
+        {
+         return ul.AppendI(arg00);
+        };
+        return f1(x1);
+       },function(array)
+       {
+        return Arrays.iter(action,array);
+       });
+       f(x);
+       return elt.AppendI(ul);
+      })).then(function()
+      {
+       Client6.toggleActionsVisibility();
+       return Client6.handleTweetActions();
+      },function()
+      {
+       return null;
+      });
+     },
      handleTweetActions:function()
      {
       var jquery;
-      jquery=jQuery(".tweet-action-link");
-      return jquery.mousedown(function(event)
+      jquery=jQuery("a.tweet-action-link");
+      return jquery.click(function(event)
       {
        var href,x,f;
        event.preventDefault();
@@ -813,28 +699,78 @@
        return f(x);
       });
      },
-     incrementTweetsCount:function(x)
+     hashRegex:Runtime.Field(function()
      {
-      return Client5.incrementDataCount("#fsharpTweets","data-tweets-count",x);
-     },
-     makeTweetLi:function(screenName,tweetId,profileImage,fullName,tweetHtml,creationDate)
+      return new RegExp("(#)([A-Za-z0][A-Za-z0-9-_]+)","g");
+     }),
+     linkify:Runtime.Field(function()
      {
-      var profileLink,replyLink,retweetLink,favoriteLink,tweetP,_this,x,_this1,x1,_this2,_this3,_this4,_this5;
-      profileLink="https://twitter.com/"+screenName;
-      replyLink="https://twitter.com/intent/tweet?in_reply_to="+tweetId;
-      retweetLink="https://twitter.com/intent/retweet?tweet_id="+tweetId;
-      favoriteLink="https://twitter.com/intent/favorite?tweet_id="+tweetId;
-      tweetP=Default.P(Runtime.New(T,{
-       $:0
+      var f,f1,g,g1;
+      f=(f1=function(str)
+      {
+       return Client6.replaceUrls(str);
+      },(g=function(str)
+      {
+       return Client6.replaceUsers(str);
+      },function(x)
+      {
+       return g(f1(x));
       }));
-      tweetP.set_Html(tweetHtml);
-      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweet"),(_this=Default.Attr(),_this.NewAttr("style","clear: both;"))])),List.ofArray([Default.Div(List.ofArray([Operators.add(Operators.add(Default.A(List.ofArray([Default.HRef(profileLink),Default.Attr().Class("twitterProfileLink")])),List.ofArray([Default.Img(List.ofArray([Default.Src(profileImage),Default.Alt(fullName),Default.Attr().Class("avatar"),Default.Height("48"),Default.Width("48")])),(x=List.ofArray([Default.Text(fullName)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),List.ofArray([Default.Text(" @"+screenName)])),Default.Br(Runtime.New(T,{
-       $:0
-      })),(x1=List.ofArray([Default.Text(creationDate)]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),tweetP,Operators.add(Default.Div(List.ofArray([Default.Attr().Class("tweetActions"),(_this3=Default.Attr(),_this3.NewAttr("style","visibility: hidden;"))])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),Default.Attr().Class("tweet-action-link"),(_this4=Default.Attr(),_this4.NewAttr("style","margin-right: 5px;"))])),List.ofArray([Default.Text("Reply")])),Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),Default.Attr().Class("tweet-action-link"),(_this5=Default.Attr(),_this5.NewAttr("style","margin-right: 5px;"))])),List.ofArray([Default.Text("Retweet")])),Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Favorite")]))]))]))]));
-     },
-     setTweetId:function(id)
+      g1=function(str)
+      {
+       return Client6.replaceHashs(str);
+      };
+      return function(x)
+      {
+       return g1(f(x));
+      };
+     }),
+     main:function()
      {
-      return Client5.setAttributeValue("#fsharpTweets","data-tweet-id",id);
+      var x,f,f1;
+      x=Default.Div(List.ofArray([Default.Id("fsharp-tweets")]));
+      f=(f1=function(elt)
+      {
+       var x1,f2,f4;
+       x1=(f2=function()
+       {
+        var ul,x2,f3;
+        ul=Default.UL(List.ofArray([Default.Id("tweets-list")]));
+        x2=Client6.displayTweets(ul,elt);
+        f3=function(value)
+        {
+         value;
+        };
+        f3(x2);
+        return Concurrency.Return(null);
+       },Concurrency.Delay(f2));
+       f4=function(arg00)
+       {
+        var t;
+        t={
+         $:0
+        };
+        return Concurrency.Start(arg00);
+       };
+       return f4(x1);
+      },function(w)
+      {
+       return Operators.OnAfterRender(f1,w);
+      });
+      f(x);
+      return x;
+     },
+     replaceHashs:function(str)
+     {
+      return(new String(str)).replace(Client6.hashRegex(),"<a href=\"https://twitter.com/search/?q=%23$2\" target=\"_blank\">#$2</a>");
+     },
+     replaceUrls:function(str)
+     {
+      return(new String(str)).replace(Client6.urlRegex(),"<a href=\"$1\" target=\"_blank\">$1</a>");
+     },
+     replaceUsers:function(str)
+     {
+      return(new String(str)).replace(Client6.atRegex(),"<a href=\"https://twitter.com/$2\" target=\"_blank\">@$2</a>");
      },
      toggleActionsVisibility:function()
      {
@@ -849,161 +785,32 @@
        return jQuery(".tweetActions",this).css("visibility","hidden");
       });
      },
-     tweetsDiv:function()
+     tweetLi:function(screenName,tweetId,profileImage,fullName,tweetHtml,creationDate)
      {
-      var tweetsList,loadMoreBtn,x,f,x1,x7,_this,arg003,_this1,arg004,f7,f8;
-      tweetsList=Default.UL(List.ofArray([Default.Id("tweetsList")]));
-      loadMoreBtn=(x=Default.Button(List.ofArray([Default.Text("Load More"),Default.Attr().Class("btn loadMore")])),(f=(x1=function(x2)
-      {
-       return function()
-       {
-        var x3,f1,f6;
-        x3=(f1=function()
-        {
-         var objectArg,arg00,jquery,count,x4,f2,x5,f3;
-         objectArg=x2["HtmlProvider@32"];
-         ((arg00=x2.Body,function(arg10)
-         {
-          return function(arg20)
-          {
-           return objectArg.SetAttribute(arg00,arg10,arg20);
-          };
-         })("disabled"))("disabled");
-         jquery=jQuery("#fsharpTweets");
-         count=(x4=jquery.attr("data-tweets-count"),(f2=function(value)
-         {
-          return value<<0;
-         },f2(x4)));
-         x5=Remoting.Async("Website:8",[count]);
-         f3=function(_arg11)
-         {
-          var x6,f4,mapping,f5,action,_count_,objectArg1,arg002;
-          x6=(f4=(mapping=Runtime.Tupled(function(tupledArg)
-          {
-           var screenName,tweetId,profileImage,displayName,text,creationDate;
-           screenName=tupledArg[0];
-           tweetId=tupledArg[1];
-           profileImage=tupledArg[2];
-           displayName=tupledArg[3];
-           text=tupledArg[4];
-           creationDate=tupledArg[5];
-           return Client7.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
-          }),function(array)
-          {
-           return Arrays.map(mapping,array);
-          }),f4(_arg11));
-          f5=(action=function(arg001)
-          {
-           return tweetsList.AppendI(arg001);
-          },function(array)
-          {
-           return Arrays.iter(action,array);
-          });
-          f5(x6);
-          _count_=_arg11.length;
-          Client7.incrementTweetsCount(_count_);
-          Client7.toggleActionsVisibility();
-          Client7.handleTweetActions();
-          objectArg1=x2["HtmlProvider@32"];
-          (arg002=x2.Body,function(arg10)
-          {
-           return objectArg1.RemoveAttribute(arg002,arg10);
-          })("disabled");
-          return Concurrency.Return(null);
-         };
-         return Concurrency.Bind(x5,f3);
-        },Concurrency.Delay(f1));
-        f6=function(arg00)
-        {
-         var t;
-         t={
-          $:0
-         };
-         return Concurrency.Start(arg00);
-        };
-        return f6(x3);
-       };
-      },function(arg10)
-      {
-       return EventsPervasives.Events().OnClick(x1,arg10);
-      }),(f(x),x)));
-      x7=Operators.add(Default.Div(List.ofArray([Default.Id("fsharpTweets"),(_this=HTML5.Attr(),(arg003="data-"+"tweets-count",_this.NewAttr(arg003,"0"))),(_this1=HTML5.Attr(),(arg004="data-"+"tweet-id",_this1.NewAttr(arg004,"")))])),List.ofArray([tweetsList,loadMoreBtn]));
-      f7=(f8=function()
-      {
-       var x2,f1,f6;
-       x2=(f1=function()
-       {
-        var x3,f2;
-        x3=Remoting.Async("Website:7",[]);
-        f2=function(_arg2)
-        {
-         var latestTweetId,x4,f3,x5,f4,mapping,f5,action,objectArg,arg00;
-         latestTweetId=(x4=_arg2[0],(f3=Runtime.Tupled(function(tupledArg)
-         {
-          var _arg21,id,_arg3,_arg4,_arg5,_arg6;
-          _arg21=tupledArg[0];
-          id=tupledArg[1];
-          _arg3=tupledArg[2];
-          _arg4=tupledArg[3];
-          _arg5=tupledArg[4];
-          _arg6=tupledArg[5];
-          return id;
-         }),f3(x4)));
-         x5=(f4=(mapping=Runtime.Tupled(function(tupledArg)
-         {
-          var screenName,tweetId,profileImage,displayName,text,creationDate;
-          screenName=tupledArg[0];
-          tweetId=tupledArg[1];
-          profileImage=tupledArg[2];
-          displayName=tupledArg[3];
-          text=tupledArg[4];
-          creationDate=tupledArg[5];
-          return Client7.makeTweetLi(screenName,tweetId,profileImage,displayName,text,creationDate);
-         }),function(array)
-         {
-          return Arrays.map(mapping,array);
-         }),f4(_arg2));
-         f5=(action=function(x6)
-         {
-          return tweetsList.AppendI(x6);
-         },function(array)
-         {
-          return Arrays.iter(action,array);
-         });
-         f5(x5);
-         Client7.incrementTweetsCount(20);
-         Client7.setTweetId(latestTweetId);
-         objectArg=loadMoreBtn["HtmlProvider@32"];
-         ((arg00=loadMoreBtn.Body,function(arg10)
-         {
-          return function(arg20)
-          {
-           return objectArg.SetCss(arg00,arg10,arg20);
-          };
-         })("visibility"))("visible");
-         Client7.toggleActionsVisibility();
-         Client7.handleTweetActions();
-         return Concurrency.Return(null);
-        };
-        return Concurrency.Bind(x3,f2);
-       },Concurrency.Delay(f1));
-       f6=function(arg00)
-       {
-        var t;
-        t={
-         $:0
-        };
-        return Concurrency.Start(arg00);
-       };
-       return f6(x2);
-      },function(w)
-      {
-       return Operators.OnAfterRender(f8,w);
-      });
-      f7(x7);
-      return x7;
+      var profileLink,replyLink,retweetLink,favoriteLink,p,_this,x,_this1,x1,_this2,_this3,_this4,_this5;
+      profileLink="https://twitter.com/"+screenName;
+      replyLink="https://twitter.com/intent/tweet?in_reply_to="+tweetId;
+      retweetLink="https://twitter.com/intent/retweet?tweet_id="+tweetId;
+      favoriteLink="https://twitter.com/intent/favorite?tweet_id="+tweetId;
+      p=Default.P(Runtime.New(T,{
+       $:0
+      }));
+      p.set_Html(tweetHtml);
+      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweet"),(_this=Default.Attr(),_this.NewAttr("style","clear: both;"))])),List.ofArray([Default.Div(List.ofArray([Operators.add(Operators.add(Default.A(List.ofArray([Default.HRef(profileLink),Default.Attr().Class("twitterProfileLink")])),List.ofArray([Default.Img(List.ofArray([Default.Src(profileImage),Default.Alt(fullName),Default.Attr().Class("avatar"),Default.Height("48"),Default.Width("48")])),(x=List.ofArray([Default.Text(fullName)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),List.ofArray([Default.Text(" @"+screenName)])),Default.Br(Runtime.New(T,{
+       $:0
+      })),(x1=List.ofArray([Default.Text(creationDate)]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),p,Operators.add(Default.Div(List.ofArray([Default.Attr().Class("tweetActions"),(_this3=Default.Attr(),_this3.NewAttr("style","visibility: hidden;"))])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),Default.Attr().Class("tweet-action-link"),(_this4=Default.Attr(),_this4.NewAttr("style","margin-right: 5px;"))])),List.ofArray([Default.Text("Reply")])),Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),Default.Attr().Class("tweet-action-link"),(_this5=Default.Attr(),_this5.NewAttr("style","margin-right: 5px;"))])),List.ofArray([Default.Text("Retweet")])),Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Favorite")]))]))]))]));
+     },
+     urlRegex:Runtime.Field(function()
+     {
+      return new RegExp("([A-Za-z]+:\\/\\/[A-Za-z0-9-_]+\\.[A-Za-z0-9-_:%&amp;;\\?\\/.=]+)","g");
+     })
+    },
+    Control:Runtime.Class({
+     get_Body:function()
+     {
+      return Client6.main();
      }
-    }
+    })
    },
    Utilities:{
     Client:{
@@ -1035,7 +842,7 @@
      PagerViewer:Runtime.Class({
       get_Body:function()
       {
-       return Client8.pager();
+       return Client7.pager();
       }
      }),
      pager:function()
@@ -1088,7 +895,7 @@
      Control:Runtime.Class({
       get_Body:function()
       {
-       return Client9.main();
+       return Client8.main();
       }
      }),
      main:function()
@@ -1212,19 +1019,23 @@
   Client3=Runtime.Safe(NewsAdmin.Client);
   Questions=Runtime.Safe(Website.Questions);
   Client4=Runtime.Safe(Questions.Client);
-  Utilities=Runtime.Safe(Website.Utilities);
-  Client5=Runtime.Safe(Utilities.Client);
   Snippets=Runtime.Safe(Website.Snippets);
-  Client6=Runtime.Safe(Snippets.Client);
+  Client5=Runtime.Safe(Snippets.Client);
+  RegExp=Runtime.Safe(Global.RegExp);
   Tweets=Runtime.Safe(Website.Tweets);
-  Client7=Runtime.Safe(Tweets.Client);
+  Client6=Runtime.Safe(Tweets.Client);
+  String=Runtime.Safe(Global.String);
   Videos=Runtime.Safe(Website.Videos);
-  Client8=Runtime.Safe(Videos.Client);
+  Client7=Runtime.Safe(Videos.Client);
   VideosAdmin=Runtime.Safe(Website.VideosAdmin);
-  return Client9=Runtime.Safe(VideosAdmin.Client);
+  return Client8=Runtime.Safe(VideosAdmin.Client);
  });
  Runtime.OnLoad(function()
  {
+  Client6.urlRegex();
+  Client6.linkify();
+  Client6.hashRegex();
+  Client6.atRegex();
   Client2.passInput();
   Client1.textarea();
   Client1.form();

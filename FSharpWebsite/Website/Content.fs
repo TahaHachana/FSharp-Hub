@@ -78,9 +78,9 @@ module Content =
                             LI [A [HRef "#snippets"; HTML5.Data "toggle" "tab"] -< [Text "Snippets"]]
                         ]
                         Div [Class "tab-content"] -< [
-                            Div [Class "tab-pane active"; Id "tweets"] -< [new Tweets.Client.Control()]
-                            Div [Class "tab-pane"; Id "questions"] -< [new Questions.Client.Control()]
-                            Div [Class "tab-pane"; Id "snippets"] -< [new Snippets.Client.Control()]
+                            Div [Class "tab-pane active"; Id "tweets"] -< [new Tweets.Control()]
+                            Div [Class "tab-pane"; Id "questions"]     -< [new Questions.Control()]
+                            Div [Class "tab-pane"; Id "snippets"]      -< [new Snippets.Control()]
                         ]
                     ]
                 ]

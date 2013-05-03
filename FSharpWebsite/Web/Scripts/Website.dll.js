@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Website,AddThis,WebSharper,Html,Default,HTML5,List,T,BooksAdmin,Client,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Operators,Arrays,Feedback,Client1,EventsPervasives,jQuery,Forkme,Login,Client2,window,NewsAdmin,Client3,Questions,Client4,Snippets,Client5,RegExp,Tweets,Client6,String,Videos,Client7,VideosAdmin,Client8;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,AddThis,WebSharper,Html,Default,HTML5,List,T,BooksAdmin,Client,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Operators,Arrays,Feedback,Client1,EventsPervasives,jQuery,ForkMe,Login,Client2,window,NewsAdmin,Client3,Questions,Client4,Snippets,Client5,RegExp,Tweets,Client6,String,Videos,Client7,VideosAdmin,Client8;
  Runtime.Define(Global,{
   Website:{
    AddThis:{
@@ -293,16 +293,17 @@
      }
     })
    },
-   Forkme:{
-    Viewer:Runtime.Class({
+   ForkMe:{
+    Control:Runtime.Class({
      get_Body:function()
      {
-      return Forkme.ribbon();
+      return ForkMe.main();
      }
     }),
-    ribbon:function()
+    main:function()
     {
-     return Operators.add(Default.A(List.ofArray([Default.HRef("https://github.com/TahaHachana/FSharp-Hub")])),List.ofArray([Default.Img(List.ofArray([Default.Src("https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"),Default.Alt("Fork me on GitHub"),Default.Id("forkme")]))]));
+     var _this;
+     return Operators.add(Default.A(List.ofArray([Default.HRef("https://github.com/TahaHachana/FSharp-Hub"),(_this=Default.Attr(),_this.NewAttr("target","_blank"))])),List.ofArray([Default.Img(List.ofArray([Default.Src("https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"),Default.Alt("Fork me on GitHub"),Default.Id("forkme")]))]));
     }
    },
    Login:{
@@ -787,7 +788,7 @@
      },
      tweetLi:function(screenName,tweetId,profileImage,fullName,tweetHtml,creationDate)
      {
-      var profileLink,replyLink,retweetLink,favoriteLink,p,_this,x,_this1,x1,_this2,_this3,_this4,_this5;
+      var profileLink,replyLink,retweetLink,favoriteLink,p,_this,_this1,x,_this2,x1,_this3,_this4,_this5,_this6;
       profileLink="https://twitter.com/"+screenName;
       replyLink="https://twitter.com/intent/tweet?in_reply_to="+tweetId;
       retweetLink="https://twitter.com/intent/retweet?tweet_id="+tweetId;
@@ -796,9 +797,9 @@
        $:0
       }));
       p.set_Html(tweetHtml);
-      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweet"),(_this=Default.Attr(),_this.NewAttr("style","clear: both;"))])),List.ofArray([Default.Div(List.ofArray([Operators.add(Operators.add(Default.A(List.ofArray([Default.HRef(profileLink),Default.Attr().Class("twitterProfileLink")])),List.ofArray([Default.Img(List.ofArray([Default.Src(profileImage),Default.Alt(fullName),Default.Attr().Class("avatar"),Default.Height("48"),Default.Width("48")])),(x=List.ofArray([Default.Text(fullName)]),(_this1=Default.Tags(),_this1.NewTag("strong",x)))])),List.ofArray([Default.Text(" @"+screenName)])),Default.Br(Runtime.New(T,{
+      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweet"),(_this=Default.Attr(),_this.NewAttr("style","clear: both;"))])),List.ofArray([Default.Div(List.ofArray([Operators.add(Operators.add(Default.A(List.ofArray([Default.HRef(profileLink),Default.Attr().Class("twitterProfileLink"),(_this1=Default.Attr(),_this1.NewAttr("target","_blank"))])),List.ofArray([Default.Img(List.ofArray([Default.Src(profileImage),Default.Alt(fullName),Default.Attr().Class("avatar"),Default.Height("48"),Default.Width("48")])),(x=List.ofArray([Default.Text(fullName)]),(_this2=Default.Tags(),_this2.NewTag("strong",x)))])),List.ofArray([Default.Text(" @"+screenName)])),Default.Br(Runtime.New(T,{
        $:0
-      })),(x1=List.ofArray([Default.Text(creationDate)]),(_this2=Default.Tags(),_this2.NewTag("small",x1))),p,Operators.add(Default.Div(List.ofArray([Default.Attr().Class("tweetActions"),(_this3=Default.Attr(),_this3.NewAttr("style","visibility: hidden;"))])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),Default.Attr().Class("tweet-action-link"),(_this4=Default.Attr(),_this4.NewAttr("style","margin-right: 5px;"))])),List.ofArray([Default.Text("Reply")])),Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),Default.Attr().Class("tweet-action-link"),(_this5=Default.Attr(),_this5.NewAttr("style","margin-right: 5px;"))])),List.ofArray([Default.Text("Retweet")])),Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Favorite")]))]))]))]));
+      })),(x1=List.ofArray([Default.Text(creationDate)]),(_this3=Default.Tags(),_this3.NewTag("small",x1))),p,Operators.add(Default.Div(List.ofArray([Default.Attr().Class("tweetActions"),(_this4=Default.Attr(),_this4.NewAttr("style","visibility: hidden;"))])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),Default.Attr().Class("tweet-action-link"),(_this5=Default.Attr(),_this5.NewAttr("style","margin-right: 5px;"))])),List.ofArray([Default.Text("Reply")])),Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),Default.Attr().Class("tweet-action-link"),(_this6=Default.Attr(),_this6.NewAttr("style","margin-right: 5px;"))])),List.ofArray([Default.Text("Retweet")])),Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Favorite")]))]))]))]));
      },
      urlRegex:Runtime.Field(function()
      {
@@ -1011,7 +1012,7 @@
   Client1=Runtime.Safe(Feedback.Client);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
   jQuery=Runtime.Safe(Global.jQuery);
-  Forkme=Runtime.Safe(Website.Forkme);
+  ForkMe=Runtime.Safe(Website.ForkMe);
   Login=Runtime.Safe(Website.Login);
   Client2=Runtime.Safe(Login.Client);
   window=Runtime.Safe(Global.window);

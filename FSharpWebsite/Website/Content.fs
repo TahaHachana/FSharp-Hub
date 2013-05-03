@@ -62,7 +62,7 @@ module Content =
         let row1 : HtmlElement =
             Div [Class "row"; Style "margin-bottom: 30px;"] -< [
                 Div [Class "span4 offset4"] -< [
-                    A [Class "btn btn-primary btn-large pull-left home-btn"; HRef "http://www.tryfsharp.org/"; Rel "nofollow"] -< [Text "Try F#"] 
+                    A [Class "btn btn-primary btn-large pull-left home-btn"; HRef "http://www.tryfsharp.org/"; Rel "nofollow"; Target "_blank"] -< [Text "Try F#"] 
                     A [Class "btn btn-success btn-large pull-right home-btn"; HRef "/resources"] -< [Text "Download F#"] 
                 ]
                 Div [Class "span4"] -< [new AddThis.Control()]
@@ -86,7 +86,7 @@ module Content =
                 ]
                 Div [Class "span6"] -< [
                     H3 [Class "centered"] -< [Text "Latest News"]
-                    Div [News.Server.newsList()]
+                    Div [News.list()]
                 ]
             ]
 

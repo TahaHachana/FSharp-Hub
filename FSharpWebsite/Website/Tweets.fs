@@ -61,7 +61,7 @@ module Tweets =
             p.Html <- tweetHtml
             LI [Attr.Class "tweet"; Attr.Style "clear: both;"] -< [
                 Div [
-                    A [HRef profileLink; Attr.Class "twitterProfileLink"] -< [
+                    A [HRef profileLink; Attr.Class "twitterProfileLink"; Attr.Target "_blank"] -< [
                         Img [Src profileImage; Alt fullName; Attr.Class "avatar"; Height "48"; Width "48"]
                         Strong [Text fullName]
                     ] -< [Text (" @" + screenName)]

@@ -18,7 +18,7 @@ module Views =
             [
                 Div [Id "wrap"] -< [
                     Home.navigation
-                    Div [new Forkme.Viewer()]
+                    Div [new ForkMe.Control()]
                     Home.heroUnit
                     Div [Class "container"] -< [
                         Home.row1 :> INode<_>
@@ -49,7 +49,7 @@ module Views =
             [
                 Div [Id "wrap"] -< [
                     Books.navigation
-                    Div [new Forkme.Viewer()]
+                    Div [new ForkMe.Control()]
                     Div [Class "container"] -< [
                         Books.header
                         Div [Books.Server.booksDiv ()]
@@ -71,7 +71,7 @@ module Views =
                 [
                     Div [Id "wrap"] -< [
                         navigation
-                        Div [new Forkme.Viewer()]
+                        Div [new ForkMe.Control()]
                         Div [Class "container"] -< [
                             Videos.header
                             Div [element]
@@ -98,7 +98,7 @@ module Views =
             [
                 Div [Id "wrap"] -< [
                     Resources.navigation
-                    Div [new Forkme.Viewer()]
+                    Div [new ForkMe.Control()]
                     Div [Class "container"] -< [
                         Resources.header
                         Resources.tabs
@@ -113,7 +113,7 @@ module Views =
             [
                 Div [Id "wrap"] -< [
                     Ecosystem.navigation
-                    Div [new Forkme.Viewer()]
+                    Div [new ForkMe.Control()]
                     Div [Class "container"; HTML5.Data "target" ".nav-div"] -< [
                         Ecosystem.header
                         Div [Class "row"] -< [

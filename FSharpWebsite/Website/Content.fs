@@ -1,7 +1,6 @@
 ﻿namespace Website
 
 module Content =
-
     open IntelliFactory.WebSharper
     open IntelliFactory.Html
     open IntelliFactory.WebSharper.Sitelets

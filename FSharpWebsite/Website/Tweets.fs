@@ -1,56 +1,32 @@
 ﻿namespace Website
 
 module Tweets =
-
     open IntelliFactory.WebSharper
     
+    module Server =
+        open TweetSharp
+        open System
+ 
+        let svc = TwitterService(Secure.consKey, Secure.consSecret)
+        svc.AuthenticateWith(Secure.token, Secure.tokenSecret)
+
+        let options = SearchOptions()
+        options.Q <- "#fsharp"
+        options.Count <- Nullable(100)
+
+        [<Rpc>]
+        let tweets() =
+            async {
+                let data =
+                    svc.Search(options).Statuses
+                    |> Seq.toList
+                    |> List.map (fun x -> x.Author.ScreenName, x.Id.ToString(), x.Author.ProfileImageUrl, x.User.Name, x.TextAsHtml, x.CreatedDate.ToLongDateString())
+                return data }
+
     [<JavaScript>]
     module Client =
         open IntelliFactory.WebSharper.Html
         open IntelliFactory.WebSharper.JQuery
-
-        type Tweet =
-            {
-                created_at              : string
-                from_user               : string
-                from_user_id            : string
-                from_user_id_str        : string
-                from_user_name          : string
-                geo                     : string
-                id                      : string
-                id_str                  : string
-                iso_language_code       : string
-                metadata                : obj
-                profile_image_url       : string
-                profile_image_url_https : string
-                source                  : string
-                text                    : string
-            }
-
-        type Result =
-            {
-                completed_in     : string
-                max_id           : string
-                max_id_str       : string
-                next_page        : string
-                page             : string
-                query            : string
-                refresh_url      : string
-                results          : Tweet []
-                results_per_page : string
-                since_id         : string
-                since_id_str     : string
-            }
-
-        let atRegex   = EcmaScript.RegExp("(@)([A-Za-z0-9-_]+)", "g")
-        let hashRegex = EcmaScript.RegExp("(#)([A-Za-z0][A-Za-z0-9-_]+)", "g")
-        let urlRegex  = EcmaScript.RegExp("([A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&amp;;\?\/.=]+)", "g")
-
-        let replaceUsers (str : string) = EcmaScript.String(str).Replace(atRegex, "<a href=\"https://twitter.com/$2\" target=\"_blank\">@$2</a>")
-        let replaceHashs (str : string) = EcmaScript.String(str).Replace(hashRegex, "<a href=\"https://twitter.com/search/?q=%23$2\" target=\"_blank\">#$2</a>")
-        let replaceUrls (str : string)  = EcmaScript.String(str).Replace(urlRegex, "<a href=\"$1\" target=\"_blank\">$1</a>")
-
-        let linkify = replaceUrls >> replaceUsers >> replaceHashs
 
         let tweetLi screenName tweetId profileImage fullName tweetHtml creationDate =
             let profileLink  = "https://twitter.com/"                          + screenName
@@ -88,28 +64,20 @@ module Tweets =
                 let href = elt.GetAttribute "href"
                 Html5.Window.Self.ShowModalDialog href |> ignore).Ignore
 
-        let displayTweets (ul : Element) (elt : Element) =       
-            JQuery.GetJSON("http://search.twitter.com/search.json?q=%23fsharp&amp;rpp=100&amp;callback=?", (fun (data, _) ->
-                let data = As<Result> data
-                data.results
-                |> Array.iter (fun result ->
-                    let tweetHtml = linkify <| result.text
-                    tweetLi result.from_user result.id_str result.profile_image_url result.from_user_name tweetHtml result.created_at
-                    |> ul.Append)
-                do elt.Append ul)
-            ).Then(
-                (fun _ ->
-                    do toggleActionsVisibility()
-                    do handleTweetActions()),
-                (fun _ -> do ()))
-
         let main() =
             Div [Id "fsharp-tweets"]
             |>! OnAfterRender (fun elt ->
                 async {
                     let ul = UL [Id "tweets-list"]
-                    displayTweets ul elt |> ignore
-                } |> Async.Start)
+                    let! tweets = Server.tweets()
+                    tweets
+                    |> List.iter (fun (screenName, tweetId, profileImage, fullName, tweetHtml, creationDate) ->
+                        let li = tweetLi screenName tweetId profileImage fullName tweetHtml creationDate
+                        do ul.Append li)
+                    do elt.Append ul
+                    do toggleActionsVisibility()
+                    do handleTweetActions() }
+                |> Async.Start)
 
     type Control() =
         inherit Web.Control()

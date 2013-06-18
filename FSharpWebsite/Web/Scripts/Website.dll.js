@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Website,AddThis,WebSharper,Html,Default,HTML5,List,T,BooksAdmin,Client,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Operators,Arrays,Feedback,Client1,EventsPervasives,jQuery,ForkMe,Login,Client2,window,NewsAdmin,Client3,Questions,Client4,Snippets,Client5,RegExp,Tweets,Client6,String,Videos,Client7,VideosAdmin,Client8;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,AddThis,WebSharper,Html,Default,HTML5,List,T,BooksAdmin,Client,Formlet,Controls,Enhance,Data,Formlet1,Remoting,alert,Concurrency,Operators,Arrays,Feedback,Client1,EventsPervasives,jQuery,ForkMe,Login,Client2,window,NewsAdmin,Client3,Questions,Client4,Snippets,Client5,Tweets,Client6,Seq,Videos,Client7,VideosAdmin,Client8;
  Runtime.Define(Global,{
   Website:{
    AddThis:{
@@ -252,7 +252,7 @@
        var message,x1,f1;
        jQuery("#submit-btn").attr("disabled","disabled");
        message=Client1.textarea().get_Value();
-       x1=Remoting.Async("Website:7",[message]);
+       x1=Remoting.Async("Website:8",[message]);
        f1=function(_arg1)
        {
         var a,b,f2,f3;
@@ -320,7 +320,7 @@
         x2=(f1=function()
         {
          var x3,f2;
-         x3=Remoting.Async("Website:6",[{
+         x3=Remoting.Async("Website:7",[{
           Name:userInput.get_Value(),
           Password:Client2.passInput().get_Value()
          }]);
@@ -603,7 +603,7 @@
        x1=(f2=function()
        {
         var x2,f3;
-        x2=Remoting.Async("Website:5",[]);
+        x2=Remoting.Async("Website:6",[]);
         f3=function(_arg1)
         {
          var arr;
@@ -646,43 +646,6 @@
    },
    Tweets:{
     Client:{
-     atRegex:Runtime.Field(function()
-     {
-      return new RegExp("(@)([A-Za-z0-9-_]+)","g");
-     }),
-     displayTweets:function(ul,elt)
-     {
-      return jQuery.getJSON("http://search.twitter.com/search.json?q=%23fsharp&amp;rpp=100&amp;callback=?",Runtime.Tupled(function(tupledArg)
-      {
-       var data,_arg1,x,f,action;
-       data=tupledArg[0];
-       _arg1=tupledArg[1];
-       x=data.results;
-       f=(action=function(result)
-       {
-        var tweetHtml,x1,f1;
-        tweetHtml=(Client6.linkify())(result.text);
-        x1=Client6.tweetLi(result.from_user,result.id_str,result.profile_image_url,result.from_user_name,tweetHtml,result.created_at);
-        f1=function(arg00)
-        {
-         return ul.AppendI(arg00);
-        };
-        return f1(x1);
-       },function(array)
-       {
-        return Arrays.iter(action,array);
-       });
-       f(x);
-       return elt.AppendI(ul);
-      })).then(function()
-      {
-       Client6.toggleActionsVisibility();
-       return Client6.handleTweetActions();
-      },function()
-      {
-       return null;
-      });
-     },
      handleTweetActions:function()
      {
       var jquery;
@@ -700,52 +663,45 @@
        return f(x);
       });
      },
-     hashRegex:Runtime.Field(function()
-     {
-      return new RegExp("(#)([A-Za-z0][A-Za-z0-9-_]+)","g");
-     }),
-     linkify:Runtime.Field(function()
-     {
-      var f,f1,g,g1;
-      f=(f1=function(str)
-      {
-       return Client6.replaceUrls(str);
-      },(g=function(str)
-      {
-       return Client6.replaceUsers(str);
-      },function(x)
-      {
-       return g(f1(x));
-      }));
-      g1=function(str)
-      {
-       return Client6.replaceHashs(str);
-      };
-      return function(x)
-      {
-       return g1(f(x));
-      };
-     }),
      main:function()
      {
       var x,f,f1;
       x=Default.Div(List.ofArray([Default.Id("fsharp-tweets")]));
       f=(f1=function(elt)
       {
-       var x1,f2,f4;
+       var x1,f2,f5;
        x1=(f2=function()
        {
         var ul,x2,f3;
         ul=Default.UL(List.ofArray([Default.Id("tweets-list")]));
-        x2=Client6.displayTweets(ul,elt);
-        f3=function(value)
+        x2=Remoting.Async("Website:5",[]);
+        f3=function(_arg1)
         {
-         value;
+         var f4,action;
+         f4=(action=Runtime.Tupled(function(tupledArg)
+         {
+          var screenName,tweetId,profileImage,fullName,tweetHtml,creationDate,li;
+          screenName=tupledArg[0];
+          tweetId=tupledArg[1];
+          profileImage=tupledArg[2];
+          fullName=tupledArg[3];
+          tweetHtml=tupledArg[4];
+          creationDate=tupledArg[5];
+          li=Client6.tweetLi(screenName,tweetId,profileImage,fullName,tweetHtml,creationDate);
+          return ul.AppendI(li);
+         }),function(list)
+         {
+          return Seq.iter(action,list);
+         });
+         f4(_arg1);
+         elt.AppendI(ul);
+         Client6.toggleActionsVisibility();
+         Client6.handleTweetActions();
+         return Concurrency.Return(null);
         };
-        f3(x2);
-        return Concurrency.Return(null);
+        return Concurrency.Bind(x2,f3);
        },Concurrency.Delay(f2));
-       f4=function(arg00)
+       f5=function(arg00)
        {
         var t;
         t={
@@ -753,25 +709,13 @@
         };
         return Concurrency.Start(arg00);
        };
-       return f4(x1);
+       return f5(x1);
       },function(w)
       {
        return Operators.OnAfterRender(f1,w);
       });
       f(x);
       return x;
-     },
-     replaceHashs:function(str)
-     {
-      return(new String(str)).replace(Client6.hashRegex(),"<a href=\"https://twitter.com/search/?q=%23$2\" target=\"_blank\">#$2</a>");
-     },
-     replaceUrls:function(str)
-     {
-      return(new String(str)).replace(Client6.urlRegex(),"<a href=\"$1\" target=\"_blank\">$1</a>");
-     },
-     replaceUsers:function(str)
-     {
-      return(new String(str)).replace(Client6.atRegex(),"<a href=\"https://twitter.com/$2\" target=\"_blank\">@$2</a>");
      },
      toggleActionsVisibility:function()
      {
@@ -800,11 +744,7 @@
       return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("tweet"),(_this=Default.Attr(),_this.NewAttr("style","clear: both;"))])),List.ofArray([Default.Div(List.ofArray([Operators.add(Operators.add(Default.A(List.ofArray([Default.HRef(profileLink),Default.Attr().Class("twitterProfileLink"),(_this1=Default.Attr(),_this1.NewAttr("target","_blank"))])),List.ofArray([Default.Img(List.ofArray([Default.Src(profileImage),Default.Alt(fullName),Default.Attr().Class("avatar"),Default.Height("48"),Default.Width("48")])),(x=List.ofArray([Default.Text(fullName)]),(_this2=Default.Tags(),_this2.NewTag("strong",x)))])),List.ofArray([Default.Text(" @"+screenName)])),Default.Br(Runtime.New(T,{
        $:0
       })),(x1=List.ofArray([Default.Text(creationDate)]),(_this3=Default.Tags(),_this3.NewTag("small",x1))),p,Operators.add(Default.Div(List.ofArray([Default.Attr().Class("tweetActions"),(_this4=Default.Attr(),_this4.NewAttr("style","visibility: hidden;"))])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(replyLink),Default.Attr().Class("tweet-action-link"),(_this5=Default.Attr(),_this5.NewAttr("style","margin-right: 5px;"))])),List.ofArray([Default.Text("Reply")])),Operators.add(Default.A(List.ofArray([Default.HRef(retweetLink),Default.Attr().Class("tweet-action-link"),(_this6=Default.Attr(),_this6.NewAttr("style","margin-right: 5px;"))])),List.ofArray([Default.Text("Retweet")])),Operators.add(Default.A(List.ofArray([Default.HRef(favoriteLink),Default.Attr().Class("tweet-action-link")])),List.ofArray([Default.Text("Favorite")]))]))]))]));
-     },
-     urlRegex:Runtime.Field(function()
-     {
-      return new RegExp("([A-Za-z]+:\\/\\/[A-Za-z0-9-_]+\\.[A-Za-z0-9-_:%&amp;;\\?\\/.=]+)","g");
-     })
+     }
     },
     Control:Runtime.Class({
      get_Body:function()
@@ -1022,10 +962,9 @@
   Client4=Runtime.Safe(Questions.Client);
   Snippets=Runtime.Safe(Website.Snippets);
   Client5=Runtime.Safe(Snippets.Client);
-  RegExp=Runtime.Safe(Global.RegExp);
   Tweets=Runtime.Safe(Website.Tweets);
   Client6=Runtime.Safe(Tweets.Client);
-  String=Runtime.Safe(Global.String);
+  Seq=Runtime.Safe(WebSharper.Seq);
   Videos=Runtime.Safe(Website.Videos);
   Client7=Runtime.Safe(Videos.Client);
   VideosAdmin=Runtime.Safe(Website.VideosAdmin);
@@ -1033,10 +972,6 @@
  });
  Runtime.OnLoad(function()
  {
-  Client6.urlRegex();
-  Client6.linkify();
-  Client6.hashRegex();
-  Client6.atRegex();
   Client2.passInput();
   Client1.textarea();
   Client1.form();

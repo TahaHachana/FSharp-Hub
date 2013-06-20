@@ -56,7 +56,6 @@
     <Compile Include="Views.fs" />
     <Compile Include="Controller.fs" />
     <Compile Include="Site.fs" />
-    <None Include="Script1.fsx" />
     <None Include="WebSharper.targets" />
     <None Include="packages.config" />
   </ItemGroup>

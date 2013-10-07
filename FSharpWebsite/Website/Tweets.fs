@@ -1,86 +1,130 @@
-﻿namespace Website
+﻿module Website.Tweets
 
-module Tweets =
-    open IntelliFactory.WebSharper
-    
-    module Server =
-        open TweetSharp
-        open System
- 
-        let svc = TwitterService(Secure.consKey, Secure.consSecret)
-        svc.AuthenticateWith(Secure.token, Secure.tokenSecret)
+open IntelliFactory.WebSharper
 
-        let options = SearchOptions()
-        options.Q <- "#fsharp"
-        options.Count <- Nullable(100)
+type Tweet =
+    {
+        Avatar     : string
+        Date       : string
+        Html       : string
+        Id         : string
+        Name       : string
+        ScreenName : string
+    }
 
-        [<Rpc>]
-        let tweets() =
-            async {
-                let data =
-                    svc.Search(options).Statuses
+    static member New avatar date html id name screenName =
+        {
+            Avatar     = avatar
+            Date       = date
+            Html       = html
+            Id         = id
+            Name       = name
+            ScreenName = screenName
+        }
+
+type SearchResult = Failure | Success of Tweet list
+
+/// Server-side code.
+module private Server =
+    open TweetSharp
+    open System
+
+    // Twitter authentication
+    let ts = TwitterService(Secret.consKey, Secret.consSecret)
+    ts.AuthenticateWith(Secret.token, Secret.tokenSecret)
+
+    // search options
+    let options = SearchOptions()
+    options.Q <- "#fsharp"
+    options.Count <- Nullable 100
+
+    /// Returns the latest 100 "#fsharp" tweets.
+    [<Rpc>]
+    let fetchTweets() =
+        async {
+            let searchResult =
+                try
+                    ts.Search(options).Statuses
                     |> Seq.toList
-                    |> List.map (fun x -> x.Author.ScreenName, x.Id.ToString(), x.Author.ProfileImageUrl, x.User.Name, x.TextAsHtml, x.CreatedDate.ToLongDateString())
-                return data }
+                    |> List.map (fun status ->
+                        Tweet.New
+                            status.Author.ProfileImageUrl
+                            (status.CreatedDate.ToLongDateString())
+                            status.TextAsHtml
+                            (status.Id.ToString())
+                            status.User.Name
+                            status.Author.ScreenName)
+                    |> Success
+                with _ -> Failure
+            return searchResult }
 
-    [<JavaScript>]
-    module Client =
-        open IntelliFactory.WebSharper.Html
-        open IntelliFactory.WebSharper.JQuery
+/// Client-side code.
+[<JavaScript>]
+module private Client =
+    open IntelliFactory.WebSharper.Html
+    open IntelliFactory.WebSharper.JQuery
 
-        let tweetLi screenName tweetId profileImage fullName tweetHtml creationDate =
-            let profileLink  = "https://twitter.com/"                          + screenName
-            let replyLink    = "https://twitter.com/intent/tweet?in_reply_to=" + tweetId
-            let retweetLink  = "https://twitter.com/intent/retweet?tweet_id="  + tweetId
-            let favoriteLink = "https://twitter.com/intent/favorite?tweet_id=" + tweetId
-            let p = P []
-            p.Html <- tweetHtml
-            LI [Attr.Class "tweet"; Attr.Style "clear: both;"] -< [
-                Div [
-                    A [HRef profileLink; Attr.Class "twitterProfileLink"; Attr.Target "_blank"] -< [
-                        Img [Src profileImage; Alt fullName; Attr.Class "avatar"; Height "48"; Width "48"]
-                        Strong [Text fullName]
-                    ] -< [Text (" @" + screenName)]
-                    Br []
-                    Small [Text creationDate]
-                    p
-                    Div [Attr.Class "tweetActions"; Attr.Style "visibility: hidden;"] -< [
-                        A [HRef replyLink   ; Attr.Class "tweet-action-link"; Attr.Style "margin-right: 5px;"] -< [Text "Reply"]
-                        A [HRef retweetLink ; Attr.Class "tweet-action-link"; Attr.Style "margin-right: 5px;"] -< [Text "Retweet"]
-                        A [HRef favoriteLink; Attr.Class "tweet-action-link"]                                  -< [Text "Favorite"]
-                    ]
+    /// Creates an <li> containing the details of a tweet (screen name, creation date...).
+    let li tweet =
+        let id = tweet.Id
+        let name = tweet.Name
+        let screenName = tweet.ScreenName
+        let profileLink = "https://twitter.com/" + screenName
+        let replyLink = "https://twitter.com/intent/tweet?in_reply_to=" + id
+        let retweetLink = "https://twitter.com/intent/retweet?tweet_id="  + id
+        let favoriteLink = "https://twitter.com/intent/favorite?tweet_id=" + id
+        let p = P []
+        p.Html <- tweet.Html
+        LI [Attr.Class "list-group-item"] -< [
+            Div [
+                A [HRef profileLink; Attr.Class "profile-link"; Attr.Target "_blank"] -< [
+                    Img [Src tweet.Avatar; Alt name; Attr.Class "avatar"]
+                    Strong [Text name]
+                ] -< [Text <| " @" + screenName]
+                Br []
+                Small [Text tweet.Date]
+                p
+                Div [Attr.Class "tweet-actions"] -< [
+                    A [HRef replyLink; Attr.Class "tweet-action"; Attr.Style "margin-right: 5px;"] -< [Text "Reply"]
+                    A [HRef retweetLink; Attr.Class "tweet-action"; Attr.Style "margin-right: 5px;"] -< [Text "Retweet"]
+                    A [HRef favoriteLink; Attr.Class "tweet-action"] -< [Text "Favorite"]
                 ]
             ]
+        ]
 
-        let toggleActionsVisibility() =
-            let jquery = JQuery.Of ".tweet"
-            jquery.Mouseenter(fun x _ -> JQuery.Of(".tweetActions", x).Css("visibility", "visible").Ignore).Ignore
-            jquery.Mouseleave(fun x _ -> JQuery.Of(".tweetActions", x).Css("visibility", "hidden").Ignore).Ignore
+    /// Toggles the visibility of the reply, retweet and favorite links.
+    let toggleActionsVisibility() =
+        let jquery = JQuery.Of ".list-group-item"
+        jquery.Mouseenter(fun x _ -> JQuery.Of(".tweet-actions", x).Css("visibility", "visible").Ignore).Ignore
+        jquery.Mouseleave(fun x _ -> JQuery.Of(".tweet-actions", x).Css("visibility", "hidden").Ignore).Ignore
 
-        let handleTweetActions() =
-            let jquery = JQuery.Of "a.tweet-action-link"
-            jquery.Click(fun elt event ->
-                do event.PreventDefault()
-                let href = elt.GetAttribute "href"
-                Html5.Window.Self.ShowModalDialog href |> ignore).Ignore
+    /// Opens the reply, retweet and favorite links in a modal dialog.
+    let handleTweetActions() =
+        let jquery = JQuery.Of "a.tweet-action"
+        jquery.Click(fun elt event ->
+            event.PreventDefault()
+            let href = elt.GetAttribute "href"
+            Html5.Window.Self.ShowModalDialog href |> ignore).Ignore
 
-        let main() =
-            Div [Id "fsharp-tweets"]
-            |>! OnAfterRender (fun elt ->
-                async {
-                    let ul = UL [Id "tweets-list"]
-                    let! tweets = Server.tweets()
-                    tweets
-                    |> List.iter (fun (screenName, tweetId, profileImage, fullName, tweetHtml, creationDate) ->
-                        let li = tweetLi screenName tweetId profileImage fullName tweetHtml creationDate
-                        do ul.Append li)
-                    do elt.Append ul
-                    do toggleActionsVisibility()
-                    do handleTweetActions() }
-                |> Async.Start)
+    /// Appends a <div> containing a list of tweets to the DOM.
+    let main() =
+        Div [Attr.Class "home-widget"]
+        |>! OnAfterRender (fun elt ->
+            async {
+                let! searchResults = Server.fetchTweets()
+                match searchResults with
+                    | Failure -> JavaScript.Alert "Failed to fetch the latest tweets."
+                    | Success tweets ->
+                        let ul = UL [Attr.Class "list-group"; Attr.Id "tweets-ul"]
+                        tweets |> List.iter (fun tweet -> ul.Append (li tweet))
+                        elt.Append ul
+                        toggleActionsVisibility()
+                        handleTweetActions() }
+            |> Async.Start)
 
-    type Control() =
-        inherit Web.Control()
+/// A control for serving the main pagelet.
+type Control() =
+    inherit Web.Control()
 
-        [<JavaScript>]
-        override this.Body = Client.main() :> _
+    [<JavaScript>]
+    override this.Body = Client.main() :> _

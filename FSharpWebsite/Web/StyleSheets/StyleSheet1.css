@@ -1,168 +1,104 @@
-﻿body
-{
-    padding-top: 40px;
+﻿#main {
+    padding-top: 60px;
 }
 
-#forkme
-{
-    position: absolute;
-    top: 40px;
-    right: 0;
-    border: 0;    
+#jumbotron {
+    background-color: #f8f8f8;
 }
 
-.avatar
-{
+#lead {
+    text-align: left;
+}
+
+#jumbotron a {
+    width: 200px;
+}
+
+.home-widget {
+    overflow-y: scroll;
+    height: 800px;
+}
+
+#push {
+    height: 60px;
+}
+
+#add-this {
+    height: 25px;
+    margin-bottom: 20px;
+}
+
+footer div {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.cover {
+    display: block;
+    margin: 0 auto;
+}
+
+.books-row, .videos-row {
+    margin-bottom: 20px;
+}
+
+.books-row div, .videos-row div {
+    margin-top: 10px;
+}
+
+.thumb {
+    height: 120px;
+    display: block;
+    margin: 0 auto;
+    max-width: 210px;
+}
+
+.col-lg-4 h3 {
+    text-align: center;
+}
+
+#signin {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* Twitter widget styles */
+.avatar {
     float: left;
     margin-right: 10px;
     border-radius: 5px;
+    height: 48px;
+    width: 48px;
 }
 
-.twitterProfileLink:hover
-{
+.profile-link:hover {
     text-decoration: none;
 }
 
-.tweetActions
-{
-    list-style-type: none;
+.tweet-actions {
     visibility: hidden;
 }
 
-/*.tweetAction
-{
-    float: left;
-    margin-right: 5px;
-}*/
+/*----------*/
 
-.tweet,
-.question,
-.snippet,
-.news-item
-{
-    margin: 12px 12px 25px 12px;
-    border-bottom: 1px solid lightgrey;
-}
+/* Sticky footer styles http://getbootstrap.com/examples/sticky-footer-navbar/ */
 
-.loadMore
-{
-    visibility: hidden;
-    width: 80%;
-    margin-left: 10%;
-}
-
-#fsharp-tweets,
-#fsharp-questions,
-#fsharp-snippets
-{
-    height:600px;
-    overflow-y:scroll;
-}
-
-#tweets-list,
-#questions-list,
-#snippets-list
-{
-    list-style-type: none;
-}
-
-#alertDiv
-{
-    width: 40%;
-    margin-left: 30%;
-    display:none;
-}
-
-.cover
-{
-    height: 220px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.videoThumb
-{
-    height: 120px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#forkme {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    border: 0;    
-}
-
-#definition {
-    margin-top: 20px;
-    text-align: justify;
-}
-
-#hero {
-    background-color: white;
-}
-
-#login, #admin, #books-admin, #videos-admin, #news-admin {
-    margin-top: 50px;
-}
-
-.home-btn {
-    width: 120px;
-}
-
-.affix-a {
-    border: 1px solid lightgrey;
-    padding: 12px !important;
-    margin-bottom: -1px;
-}
-
-.affix-a-first {
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-}
-
-.affix-a-last {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-}
-
-.product {
-    padding-top: 30px;
-    margin-bottom: 50px;
-}
-
-/* See http://twitter.github.com/bootstrap/examples/sticky-footer-navbar.html */
-
-html, body
-{
+html,
+body {
     height: 100%;
 }
 
-#wrap
-{
+#wrap {
     min-height: 100%;
     height: auto !important;
     height: 100%;
     margin: 0 auto -60px;
+    padding: 0 0 60px;
 }
 
-#footer
-{
-    margin-top: 100px;
+#footer {
     height: 60px;
     background-color: #f5f5f5;
 }
 
-@media (max-width: 767px)
-{
-    #footer
-    {
-        margin-left: -20px;
-        margin-right: -20px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-}
+/*----------*/

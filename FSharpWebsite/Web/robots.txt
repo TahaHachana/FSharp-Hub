@@ -1,2 +1,2 @@
 ﻿User-Agent: *
-Disallow: /custom404
+Disallow: /error

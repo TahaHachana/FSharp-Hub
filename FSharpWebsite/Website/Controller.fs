@@ -1,34 +1,29 @@
-﻿namespace Website
+﻿module Website.Controller
 
-module Controller =
+open IntelliFactory.WebSharper.Sitelets
+open Model
 
-    open IntelliFactory.WebSharper.Sitelets
-    open Model
+let protect view =
+    let user = UserSession.GetLoggedInUser()
+    match user with
+    | None -> Content.Redirect <| Login None
+    | _ -> view
 
-    let protect view =
-        let user = UserSession.GetLoggedInUser()
-        match user with
-            | None    -> Content.Redirect <| Login None
-            | _       -> view
-
-    let logout() =
-        UserSession.Logout ()
-        Content.Redirect Home
+let logout() =
+    UserSession.Logout ()
+    Content.Redirect Home
     
-    let controller =
+let controller =
 
-        let handle = function
-            | Home          -> Views.home
-            | Books         -> Views.books
-            | Custom404     -> Views.custom404
-            | Videos pageId -> Views.videosView pageId
-            | Resources     -> Views.resources
-            | Admin         -> protect Views.admin
-            | Login action  -> Views.login action
-            | Logout        -> logout()
-            | BooksAdmin    -> protect Views.booksAdmin
-            | VideosAdmin   -> protect Views.videosAdmin
-            | NewsAdmin     -> protect Views.newsAdmin
-            | Ecosystem     -> Views.ecosystem
+    let handle = function
+        | Home          -> Views.home
+        | Books         -> Views.books
+        | Error         -> Views.error
+        | Videos pageId -> Views.videos pageId
+        | Admin         -> protect Views.admin
+        | Login action  -> Views.login action
+        | Logout        -> logout()
+        | BooksAdmin    -> protect Views.booksAdmin
+        | VideosAdmin   -> protect Views.videosAdmin
 
-        { Handle = handle }
+    { Handle = handle }

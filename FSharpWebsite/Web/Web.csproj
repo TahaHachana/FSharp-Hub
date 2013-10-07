@@ -56,7 +56,9 @@
     <Content Include="Images\Books\WebCloudMobileFSharp.gif" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\affix.min.js" />
+    <Content Include="Scripts\BootstrapTabs.min.js" />
     <Content Include="Scripts\ga.js" />
+    <Content Include="Scripts\html5shiv.js" />
     <Content Include="Scripts\IntelliFactory.Formlet.dll.min.js" />
     <Content Include="Scripts\IntelliFactory.Reactive.dll.min.js" />
     <Content Include="Scripts\IntelliFactory.WebSharper.Collections.dll.js" />
@@ -68,13 +70,18 @@
     <Content Include="Scripts\IntelliFactory.WebSharper.Formlet.dll.min.js" />
     <Content Include="Scripts\IntelliFactory.WebSharper.Html.dll.js" />
     <Content Include="Scripts\IntelliFactory.WebSharper.Html.dll.min.js" />
+    <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\scrollspy.min.js" />
     <Content Include="Scripts\Website.dll.js" />
     <Content Include="Scripts\Website.dll.min.js" />
     <Content Include="Content\**\*.*" />
     <Content Include="Sitemap.xml" />
-    <Content Include="StyleSheets\bootstrap.css" />
     <Content Include="StyleSheets\StyleSheet1.css" />
+    <Content Include="Templates\Admin.html" />
+    <Content Include="Templates\Books.html" />
+    <Content Include="Templates\Error.html" />
+    <Content Include="Templates\Home.html" />
+    <Content Include="Templates\Videos.html" />
     <Content Include="Themes\**\*.*" />
     <Content Include="Views\**\*.*" />
     <Content Include="*.asax" />
@@ -88,13 +95,13 @@
     <Reference Include="FSharp.Core">
       <Private>true</Private>
     </Reference>
-    <Reference Include="MongoDB.Bson, Version=1.8.0.124, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+    <Reference Include="MongoDB.Bson, Version=1.8.3.9, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\mongocsharpdriver.1.8.0\lib\net35\MongoDB.Bson.dll</HintPath>
+      <HintPath>..\..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver, Version=1.8.0.124, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+    <Reference Include="MongoDB.Driver, Version=1.8.3.9, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\mongocsharpdriver.1.8.0\lib\net35\MongoDB.Driver.dll</HintPath>
+      <HintPath>..\..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />

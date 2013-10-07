@@ -1,33 +1,32 @@
-﻿namespace Website
+﻿module Website.Site
 
 open IntelliFactory.WebSharper.Sitelets
 open Model
 open Controller
 
-module Site =
+let router =
+    Router.Table
+        [
+            Home       , "/"
+            BooksAdmin , "/admin/books"
+            VideosAdmin, "/admin/videos"
+            Login None , "/login"
+            Error      , "/error"
+            Books      , "/books"
+            Admin      , "/admin"
+        ]
+    <|>
+    Router.Infer()
 
-    let router : Router<Action> =
-        Router.Table
-            [
-                Home       , "/"
-                BooksAdmin , "/admin/books"
-                VideosAdmin, "/admin/videos"
-                NewsAdmin  , "/admin/news"
-                Login None , "/login"
-                Custom404  , "/custom404"
-            ]
-        <|>
-        Router.Infer()
-
-    let Main =
-        {
-            Controller = controller
-            Router     = router
-        }
+let Main =
+    {
+        Controller = controller
+        Router     = router
+    }
     
 type Website() =
     interface IWebsite<Action> with
-        member this.Sitelet = Site.Main
+        member this.Sitelet = Main
         member this.Actions = []
 
 [<assembly: WebsiteAttribute(typeof<Website>)>]

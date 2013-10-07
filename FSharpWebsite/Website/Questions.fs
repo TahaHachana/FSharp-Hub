@@ -1,59 +1,59 @@
-﻿namespace Website
+﻿module Website.Questions
 
 open IntelliFactory.WebSharper
 
-module Questions =
+module private Server =
+    open Records
+    open Mongo
 
-    module private Server =
-        open Mongo
+    let quesData (q:Question) =
+        q.Link, q.Title, q.Date.ToString(),
+        q.Website, q.Summary
 
-        let quesData (question : Question) = question.Link, question.Title, question.Date.ToString(), question.Website, question.Summary
+    let quesData'() =
+        Questions.latest20()
+        |> Seq.toArray
+        |> Array.map quesData
+        |> Some
 
-        let quesData'() =
-            Questions.latest20()
-            |> Seq.toArray
-            |> Array.map quesData
-            |> Some
+    [<Rpc>]
+    let latest() =
+        async {
+            let dataOption = try quesData'() with _ -> None
+            return dataOption
+        }
 
-        [<Rpc>]
-        let latest() =
+[<JavaScript>]
+module Client =
+    open IntelliFactory.WebSharper.Html
+
+    let li (link, title, date, website, summary) =
+        LI [Attr.Class "list-group-item"] -< [
+            A [HRef link] -< [Strong [Text title]]
+            Br []
+            Small [Text <| date + ", " + website]
+            P [Text summary]
+        ]
+
+    let displayQuestions arr (elt : Element) =
+        let ul = UL [Attr.Class "list-group"; Id "questions-list"]
+        arr
+        |> Array.map li
+        |> Array.iter ul.Append
+        elt.Append ul
+
+    let main() =
+        Div [Attr.Class "home-widget"]
+        |>! OnAfterRender(fun elt ->
             async {
-                let dataOption = try quesData'() with _ -> None
-                return dataOption
-            }
+                let! questions = Server.latest()
+                match questions with
+                    | None -> ()
+                    | Some questions -> displayQuestions questions elt
+            } |> Async.Start)
+
+type Control() =
+    inherit Web.Control()
 
     [<JavaScript>]
-    module Client =
-        open IntelliFactory.WebSharper.Html
-        open Utilities.Client
-
-        let li (link, title, date, website, summary) =
-            LI [Attr.Class "question"] -< [
-                A [HRef link] -< [Strong [Text title]]
-                Br []
-                Small [Text <| date + ", " + website]
-                P [Text summary]
-            ]
-
-        let displayQuestions arr (elt : Element) =
-            let ul = UL [Id "questions-list"]
-            arr
-            |> Array.map li
-            |> Array.iter ul.Append
-            do elt.Append ul
-
-        let main() =
-            Div [Id "fsharp-questions"]
-            |>! OnAfterRender(fun elt ->
-                async {
-                    let! questions = Server.latest()
-                    match questions with
-                        | None     -> do ()
-                        | Some arr -> do displayQuestions arr elt
-                } |> Async.Start)
-
-    type Control() =
-        inherit Web.Control()
-
-        [<JavaScript>]
-        override this.Body = Client.main() :> _
+    override this.Body = Client.main() :> _

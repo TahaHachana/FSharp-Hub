@@ -24,10 +24,13 @@
    <url>
       <loc>http://fsharp-hub.apphb.com/videos/6</loc>
    </url>
-   <url>
-      <loc>http://fsharp-hub.apphb.com/ecosystem</loc>
-   </url>
-   <url>
-      <loc>http://fsharp-hub.apphb.com/resources</loc>
-   </url>
+  <url>
+    <loc>http://fsharp-hub.apphb.com/videos/7</loc>
+  </url>
+  <url>
+    <loc>http://fsharp-hub.apphb.com/videos/8</loc>
+  </url>
+  <url>
+    <loc>http://fsharp-hub.apphb.com/videos/9</loc>
+  </url>
 </urlset> 

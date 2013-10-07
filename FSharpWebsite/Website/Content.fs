@@ -1,331 +1,215 @@
-﻿namespace Website
+﻿module Website.Content
 
-module Content =
-    open IntelliFactory.WebSharper
-    open IntelliFactory.Html
-    open IntelliFactory.WebSharper.Sitelets
-    open IntelliFactory.WebSharper.Sitelets.Content
-    open Utilities.Server
+open System
+open IntelliFactory.Html
+open IntelliFactory.WebSharper.Sitelets
+open IntelliFactory.WebSharper.Sitelets.Content
 
-    module Shared =
+module Shared =
+
+    let random url =
+        let dateStr = Uri.EscapeUriString(DateTime.Now.ToString())
+        url + "?d=" + dateStr     
         
-        let navigation : HtmlElement = navigation None
+    let loginInfo (ctx: Context<_>) =
+        let userOption = UserSession.GetLoggedInUser ()
+        let link =
+            match userOption with
+                | Some user ->
+                    Utils.link
+                        (random "/")
+                        <| "Sign out (" + user + ")"                    
+                | None ->
+                    A [
+                        Class "navbar-right btn btn-default navbar-btn"
+                        HRef ("/login")
+                    ] -< [Text "Sign in"]                    
+        Div [Class "pull-right"] -< [link]
 
-        let ( => ) anchor href = A [HRef href] -< [Text anchor]
+    let ga = Script [Src "/Scripts/ga.js"]
 
-        let footer : HtmlElement =
-            HTML5.Footer [Id "footer"] -< [
-                Div [Class "container"; Style "padding-top: 20px;"] -< [
-                    P [Text "Powered by "] -< [A ["WebSharper" => "http://www.websharper.com/"]]
-                ]            
+module Home =
+    let title = "FSharp Programming Language"
+
+    let metaDesc = "Latest tweets, snippets and questions about the F# programming language."
+
+    let definition : HtmlElement =
+            P [Id "lead"] -< [
+                Strong [Text "FSharp"]
+                Text " is an advanced, multi-paradigm, strongly typed open source programming language.
+                    F# allows you to solve complex problems with simple, accurate and maintainable code
+                    and to be more productive thanks to features like functions as values, type inference, 
+                    pattern matching and computation expressions. It's a general purpose language that you can
+                    use to build desktop, web and mobile applications and to perform cloud computations."
             ]
 
-        let randomizeUrl url = url + "?d=" + System.Uri.EscapeUriString (System.DateTime.Now.ToString())
+    let jumbotron : HtmlElement =
+        Div [Class "jumbotron"; Id "jumbotron"] -< [
+            Div [Class "text-center"] -< [
+                H1 [Text "FSharp Language"]
+                definition
+                P [
+                    A [
+                        Class "btn btn-success btn-lg"
+                        HRef "http://www.tryfsharp.org/"
+                        Target "_blank"
+                    ] -< [Text "Try F#"] 
+                ]
+            ]
+        ]
 
-        let loginInfo logoutAction loginAction (ctx: Context<_>) =
-            let user = UserSession.GetLoggedInUser ()
-            let link =
-                match user with
-                    | Some username -> "Log Out (" + username + ")" => (randomizeUrl <| ctx.Link logoutAction)
-                    | None -> "Login" => (ctx.Link <| loginAction None)
-            Div [Class "pull-right"] -< [link]
+    let widgetsRow : HtmlElement =
+        Div [Class "row"] -< [
+            Div [Class "col-lg-4"] -< [
+                H3 [Text "Tweets"] :> INode<_>
+                new Tweets.Control() :> _
+            ]
+            Div [Class "col-lg-4"] -< [
+                H3 [Text "Questions"] :> INode<_>
+                new Questions.Control() :> _
+            ]
+            Div [Class "col-lg-4"] -< [
+                H3 [Text "Snippets"] :> INode<_>
+                new Snippets.Control() :> _
+            ]
+        ]
 
-        let ga : HtmlElement = Script [Src "/Scripts/ga.js"]
+    let body =
+        Div [Id "wrap"] -< [
+            Nav.navElt <| Some "Home"
+            Div [Class "container"; Id "main"] -< [
+                jumbotron :> INode<_>
+                AddThis.elt :> _
+                widgetsRow :> _
+            ]
+            Div [Id "push"]
+            Shared.ga
+        ]
 
-    module Home =
+module Books =
+    let title = "FSharp Books"
+
+    let metaDesc = "Books about FSharp published by Apress, O'Reilly, PACKT and Manning."
+
+    let header : HtmlElement =
+        Div [Class "page-header"] -< [
+            H1 [Text "FSharp Books"]
+            P [Text "Learn F# and explore advanced topics by reading books written by experts from Microsoft and the language community."]
+        ]
+
+    let body =
+        Div [Id "wrap"] -< [
+            Nav.navElt <| Some "Books"
+            Div [Class "container"; Id "main"] -< [
+                yield header
+                yield! Books.main()
+            ]
+            Div [Id "push"]
+            Shared.ga
+        ]
+
+module Videos =
+    let title pageId = sprintf "FSharp Videos - Page %d" pageId
     
-        let title = "FSharp Programming Language"
+    let metaDesc = "F# videos available on YouTube, Vimeo, SkillsMatter..."
 
-        let metaDescription = "Latest news, tweets and questions about the F# programming language."
-
-        let navigation : HtmlElement = navigation <| Some "Home"
-
-        let definition : HtmlElement =
-                P [Id "definition"] -< [
-                    Strong [Text "FSharp"]
-                    Text " is an advanced, multi-paradigm, strongly typed open source programming language.
-                        F# allows you to solve complex problems with simple, accurate and maintainable code
-                        and to be more productive thanks to features like functions as values, type inference, 
-                        pattern matching, computation expressions ... It's a general purpose language that you can
-                        use to build desktop, Web and mobile applications and to perform cloud computations."
-                ]
-
-        let heroUnit : HtmlElement =
-            Div [Id "hero"; Class "hero-unit"] -< [
-                Div [Class "container text-center"] -< [
-                    H1 [Text "FSharp Programming Language"]
-                    definition
-                ]
-            ]
-
-        let row1 : HtmlElement =
-            Div [Class "row"; Style "margin-bottom: 30px;"] -< [
-                Div [Class "span4 offset4"] -< [
-                    A [Class "btn btn-primary btn-large pull-left home-btn"; HRef "http://www.tryfsharp.org/"; Rel "nofollow"; Target "_blank"] -< [Text "Try F#"] 
-                    A [Class "btn btn-success btn-large pull-right home-btn"; HRef "/resources"] -< [Text "Download F#"] 
-                ]
-                Div [Class "span4"] -< [new AddThis.Control()]
-            ]
-
-        let row2() : HtmlElement =
-            Div [Class "row-fluid"; Style "margin-top: 50px;"] -< [
-                Div [Class "span6"] -< [
-                    Div [Class "tabbable"] -< [
-                        UL [Class "nav nav-tabs"] -< [
-                            LI [Class "active"] -< [A [HRef "#tweets"; HTML5.Data "toggle" "tab"] -< [Text "Tweets"]]
-                            LI [A [HRef "#questions"; HTML5.Data "toggle" "tab"] -< [Text "Questions"]]
-                            LI [A [HRef "#snippets"; HTML5.Data "toggle" "tab"] -< [Text "Snippets"]]
-                        ]
-                        Div [Class "tab-content"] -< [
-                            Div [Class "tab-pane active"; Id "tweets"] -< [new Tweets.Control()]
-                            Div [Class "tab-pane"; Id "questions"]     -< [new Questions.Control()]
-                            Div [Class "tab-pane"; Id "snippets"]      -< [new Snippets.Control()]
-                        ]
-                    ]
-                ]
-                Div [Class "span6"] -< [
-                    H3 [Class "centered"] -< [Text "Latest News"]
-                    Div [News.list()]
-                ]
-            ]
-
-    module Books =
-
-        let title = "FSharp Books - F#"
-        let metaDescription = "Books about FSharp published by Apress, O'Reilly and Manning."
-
-        let navigation : HtmlElement = navigation <| Some "Books"
-
-        let header : HtmlElement =
-            header
-                "FSharp Books"
-                "Learn F# and explore advanced topics by reading books by experts
-                from Microsoft and the language community."
-
-    module Videos =
-
-        let title pageId = sprintf "FSharp Videos - Page %d" pageId
-        let metaDescription = "Videos about F# available on YouTube, Vimeo, SkillsMatter ..."
-
-        let navigation : HtmlElement = navigation <| Some "Videos"
-
-        let header : HtmlElement =
-            header
-                "FSharp Videos"
-                "Watch F# presentations, tutorials, podcasts and short videos."
-
-    module Resources =
-
-        let title = "FSharp Resources"
-        let metaDescription = "F# downloads, user groups, mailing lists, code samples and forums."
-
-        let navigation : HtmlElement = navigation <| Some "Resources"
-
-        let header : HtmlElement =
-            header
-                "FSharp Resources"
-                "Download F# IDEs and connect with the community through forums, mailing lists and user groups."
-
-        let downloadsTab : HtmlElement =
-            Div [
-                H2 [Text "IDEs"]
-                UL [Class "unstyled"] -< [
-                    LI [A [HRef "http://www.cloudsharper.com/"] -< [Text "CloudSharper"]]
-                    LI [A [HRef "http://www.tsunami.io/"] -< [Text "Tsunami IDE"]]
-                    LI [
-                        A [HRef "http://www.microsoft.com/visualstudio/eng/downloads"]
-                            -< [Text "Visual Studio 2012"]
-                    ]
-                    LI [
-                        A [HRef "http://www.microsoft.com/web/gallery/install.aspx?appid=FSharpVWD11"]
-                            -< [Text "F# tools for Visual Studio Express 2012 for Web"]
-                    ]
-                ]
-                HR []
-                H2 [Text "Language Specification"]
-                H3 [Text "F# 3.0"]
-                UL [Class "unstyled"] -< [
-                    LI [
-                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html"]
-                            -< [Text "HTML"]
-                    ]                
-                    LI [
-                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.pdf"]
-                            -< [Text "PDF"]
-                    ]                
-                ]
-                H3 [Text "F# 2.0"]
-                UL [Class "unstyled"] -< [
-                    LI [
-                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec-2.0-final.html"]
-                            -< [Text "HTML"]
-                    ]                
-                    LI [
-                        A [HRef "http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec-2.0-final.pdf"]
-                            -< [Text "PDF"]
-                    ]                
-                ]
-            ]
-
-        let mailingListsTab =
-            UL [Class "unstyled"] -< [
-                LI [
-                    A [HRef "http://groups.google.com/group/fsharp-opensource"]
-                        -< [Text "FSharp Open Source Community"]
-                ]            
-                LI [
-                    A [HRef "http://groups.google.com/group/fsharpMake"]
-                        -< [Text "FAKE - F# Make"]
-                ]            
-                LI [
-                    A [HRef "http://groups.google.com/group/websharper"]
-                        -< [Text "WebSharper"]
-                ]            
-            ]
-
-        let codeSamplesTab =
-            UL [Class "unstyled"] -< [
-                LI [A [HRef "http://fsharp3sample.codeplex.com/"] -< [Text "F# 3.0 Sample Pack"]]
-                LI [A [HRef "http://code.msdn.microsoft.com/site/search?f%5B0%5D.Type=ProgrammingLanguage&f%5B0%5D.Value=F%23&f%5B0%5D.Text=F%23"] -< [Text "MSDN Developer Code Samples"]]            
-            ]
-
-        let userGroupsTab =
-            UL [Class "unstyled"] -< [
-                LI [A [HRef "http://www.meetup.com/nyc-fsharp/"] -< [Text "New York City F# User Group"]]            
-                LI [A [HRef "http://www.meetup.com/Chicago-F-Users/"] -< [Text "Chicago F# Users"]]            
-                LI [A [HRef "http://www.meetup.com/FSharpHelsinki/"] -< [Text "The Greater Helsinki Area F# User Group"]]            
-                LI [A [HRef "http://www.meetup.com/Houston-FSharp-User-Group/"] -< [Text "Houston F# User Group"]]            
-                LI [A [HRef "http://www.meetup.com/FSharpLondon/"] -< [Text "F#unctional Londoners Meetup Group"]]            
-                LI [A [HRef "http://www.meetup.com/New-England-F-Users-Group/"] -< [Text "New England F# Users Group"]]            
-                LI [A [HRef "http://fpish.net/org/c4fs"] -< [Text "Community For F#"]]            
-                LI [A [HRef "http://www.meetup.com/sfsharp/"] -< [Text "The San Francisco Bay Area F# User Group"]]            
-                LI [A [HRef "http://www.meetup.com/FSharpSeattle/"] -< [Text "F# Seattle User Group"]]            
-                LI [A [HRef "http://www.meetup.com/zurich-fsharp-users/"] -< [Text "Zurich FSharp Users"]]            
-                LI [A [HRef "https://github.com/Nobuhisa/FSUG_JP/wiki"] -< [Text "F# User Group - Japan"]]
-                LI [A [HRef "http://www.meetup.com/Athens-FSharp/"] -< [Text "Athens F# User Group"]]
-                LI [A [HRef "http://www.bennettadelson.com/AllEvents.aspx?sig=c763cbd9-74b4-e011-8e22-1cc1de7983eb"] -< [Text "Cleveland F# SIG"]]
-            ]
-
-        let forumsTab =
-            UL [Class "unstyled"] -< [
-                LI [A [HRef "http://fpish.net/topics"] -< [Text "FPish"]]            
-                LI [A [HRef "http://social.msdn.microsoft.com/Forums/en-US/fsharpgeneral/threads"] -< [Text "Visual F# forum"]]            
-                LI [A [HRef "http://stackoverflow.com/questions/tagged/f%23"] -< [Text "StackOverflow"]]            
-            ]            
-
-        let socialTab =
-            Div [
-                Text "The F# community is mainly active on Twitter. Stay up-to-date by adding a search for the #fsharp hashtag in your Twitter client. There is also a "
-                A [HRef "https://plus.google.com/u/0/communities/103033063915546239179/"] -< [Text "Google+ community"]
-                Text " that you can add to your circles."
-            ]
-
-        let tabs =
-            Div [Class "tabbable tabs-left"] -< [
-                UL [Class "nav nav-tabs"] -< [
-                    LI [Class "active"] -< [A [HRef "#downloads"; HTML5.Data "toggle" "tab"] -< [Text "Downloads"]]
-                    LI [A [HRef "#mailinglists"; HTML5.Data "toggle" "tab"] -< [Text "Mailing Lists"]]
-                    LI [A [HRef "#codesamples"; HTML5.Data "toggle" "tab"] -< [Text "Code Samples"]]
-                    LI [A [HRef "#user-groups"; HTML5.Data "toggle" "tab"] -< [Text "User Groups"]]
-                    LI [A [HRef "#forums"; HTML5.Data "toggle" "tab"] -< [Text "Forums"]]
-                    LI [A [HRef "#social"; HTML5.Data "toggle" "tab"] -< [Text "Social"]]
-                ]
-                Div [Class "tab-content"] -< [
-                    Div [Class "tab-pane active"; Id "downloads"] -< [downloadsTab]
-                    Div [Class "tab-pane"; Id "mailinglists"]     -< [mailingListsTab]
-                    Div [Class "tab-pane"; Id "codesamples"]      -< [codeSamplesTab]
-                    Div [Class "tab-pane"; Id "user-groups"]      -< [userGroupsTab]
-                    Div [Class "tab-pane"; Id "forums"]           -< [forumsTab]
-                    Div [Class "tab-pane"; Id "social"]           -< [socialTab]
-                ]
-            ]
-
-    module Ecosystem =
-
-        let title = "FSharp Ecosystem"
+    let header : HtmlElement =
+        Div [Class "page-header"] -< [
+            H1 [Text "FSharp Videos"]
+            P [Text "Watch F# presentations, tutorials, podcasts and short videos."]
+        ]
         
-        let metaDescription = "Third party F# products and services."
-        
-        let navigation : HtmlElement = navigation <| Some "Ecosystem"
-        
-        let header : HtmlElement = header "FSharp Ecosystem" "Third party F# tools, frameworks and consultancy services."
+    let nav pageId =
+        match pageId with
+        | 1 -> Nav.navElt <| Some "Videos"
+        | _ -> Nav.navElt None
 
-        let websharper : HtmlElement =
-            Div [Id "websharper"; Class "product"] -< [
-                H2 [A [HRef "http://www.websharper.com/"] -< [Text "WebSharper"]]
-                P [
-                    Strong [Text "WebSharper"]
-                    Text " is a HTML5 centric Web and mobile development framework that allows you to build an entire Web/mobile application using only the F# programming language. The client-side code is compiled to optimized JavaScript and the server-side backend runs on .NET. Among its powerful features we can mention:"
-                ]
-                UL [
-                    LI [Text "F# to JavaScript compiler"]
-                    LI [Text "Access to JavaScript libraries and TypeScript interoperability"]
-                    LI [Text "Strongly-typed URLs"]
-                    LI [Text "Seamless client-server AJAX communication"]
-                    LI [Text "The FSharp library running on JavaScript"]
-                    LI [Text "..."]
-                ]
-                P [
-                    Text "WebSharper is also open source, the code is available on "
-                    A [HRef "https://bitbucket.org/IntelliFactory/websharper/src"] -< [Text "Bitbucket"]
-                    Text " and "
-                    A [HRef "https://github.com/intellifactory/websharper"] -< [Text "GitHub"]
-                    Text ". You can start developing WebSharper applications by "
-                    A [HRef "http://www.websharper.com/downloads"] -< [Text "downloading the latest release"]
-                    Text " or by using one of the following open source templates:"
-                ]
-                UL [
-                    LI [A [HRef "https://github.com/TahaHachana/WebSharperMVC"] -< [Text "WebSharper MVC template"]]
-                    LI [A [HRef "https://github.com/intellifactory/websharper-bootstrap-site"] -< [Text "WebSharper Bootstrap site"]]
+    let body pageId =
+        let videos = Mongo.Videos.all()
+        let divs = Videos.main videos <| (pageId - 1) * 15
+        Div [Id "wrap"] -< [
+            nav pageId
+            Div [Class "container"; Id "main"] -< [
+                yield header
+                yield! divs
+                yield Videos.paginationDiv videos pageId
+            ]
+            Div [Id "push"]
+            Shared.ga
+        ]
+
+module Error =
+    let body =
+        Div [Id "wrap"] -< [
+            Nav.navElt None
+            Div [Class "container"; Id "main"] -< [
+                Div [Class "page-header"] -< [
+                    H1 [Text "The requested URL doesn't exist."]
                 ]
             ]
+            Div [Id "push"]
+            Shared.ga
+        ]
 
-        let fcore : HtmlElement =
-            Div [Id "fcore"; Class "product"] -< [
-                H2 [A [HRef "http://www.statfactory.co.uk/"] -< [Text "FCore"]]
-                P [
-                    Strong [Text "FCore"]
-                    Text " is a F# numerics library by StatFactory. FCore allows you to develop numerical code in F# and get C++ performance on CPU and GPU. From the features of FCore we can highlight:"
+module Login =
+    let body action action' (ctx:Context<_>) =
+            let link =
+                match action with
+                | Some action -> action
+                | None -> action'
+                |> ctx.Link
+            Div [Id "wrap"] -< [
+                Nav.navElt None
+                Div [Class "container"; Id "main"] -< [
+                    Div [new Login.Control(link)]
                 ]
-                UL [
-                    LI [Text "Intuitive F# API"]
-                    LI [Text "Random Generators"]
-                    LI [Text "Vector Functions"]
-                    LI [Text "Descriptive Stats"]
-                    LI [Text "Unlimited Memory"]
-                    LI [Text "..."]
-                ]
-                P [Text "StatFactory offers a fully functional evaluation version of FCore with online and local documentation. They also offer custom development in order to meet special requirements and offer new functionality."]
+                Div [Id "push"]
+                Shared.ga
             ]
 
-        let aleacubase : HtmlElement =
-            Div [Id "aleacubase"; Class "product"] -< [
-                H2 [A [HRef "https://www.quantalea.net/"] -< [Text "Alea.cuBase"]]
-                P [
-                    Strong [Text "Alea.cuBase"]
-                    Text " is a framework for building CUDA accelerated GPU applications on the .NET framework. Alea.cuBase features seamless integration with .NET, a solid framework, dynamic code generation and C/C++ performance."
-                ]
-                P [
-                    Text "You can try Alea.cuBase for 30 days and learn about its features from the documentation and the samples available on "
-                    A [HRef "https://github.com/quantalea/Alea.cuSamples"] -< [Text "GitHub"]
-                    Text "."
-                ]
-            ]
+module Admin =
+    let btns =
+        Div [Class "row"] -< [
+            Div [Class "col-lg-4"] -< [
+                A [Class "btn btn-default btn-lg"; HRef "/admin/books"]
+                -< [Text "Books"]]
+            Div [Class "col-lg-4"] -< [
+                A [Class "btn btn-default btn-lg"; HRef "/admin/videos"]
+                -< [Text "Videos"]]
+        ]
 
-        let supervision : HtmlElement =
-            Div [Id "supervision"; Class "product"] -< [
-                H2 [A [HRef "http://www.stati-cal.com/projects/supervision/"] -< [Text "Supervision"]]
-                P [
-                    Strong [Text "Supervision"]
-                    Text " transforms C/AL object text files into interactive HTML pages. Supervision by StatiCal is a useful static analysis tool for Microsoft Dynamics NAV developers."
-                ]
+    let body ctx =
+        Div [Id "wrap"] -< [
+            Nav.navElt None
+            Div [Class "container"; Id "main"] -< [
+                Div [Class "row"] -< [Shared.loginInfo ctx]
+                btns
             ]
+            Div [Id "push"]
+            Shared.ga
+        ]
 
-        let prism : HtmlElement =
-            Div [Id "prism"; Class "product"] -< [
-                H2 [A [HRef "http://www.stati-cal.com/projects/prism/"] -< [Text "Prism"]]
-                P [
-                    Strong [Text "Prism"]
-                    Text " is an interactive C/AL code viewer for Microsoft Dynamics NAV developers."
-                ]
+module BooksAdmin =
+    let body ctx =
+        Div [Id "wrap"] -< [
+            Nav.navElt None 
+            Div [Class "container"; Id "main"] -< [
+                Div [Class "row"] -< [Shared.loginInfo ctx]
+                Div [new BooksAdmin.Control()]                  
             ]
+            Div [Id "push"]
+            Shared.ga
+        ]
+
+module VideosAdmin =
+    let body ctx =
+        Div [Id "wrap"] -< [
+            Nav.navElt None 
+            Div [Class "container"; Id "main"] -< [
+                Div [Class "row"] -< [Shared.loginInfo ctx]
+                H1 [Text "Add new video"]
+                Div [new VideosAdmin.Control()]               
+            ]
+            Div [Id "push"]
+            Shared.ga
+        ]

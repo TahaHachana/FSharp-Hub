@@ -4,6 +4,7 @@ open System
 open IntelliFactory.Html
 open IntelliFactory.WebSharper.Sitelets
 open IntelliFactory.WebSharper.Sitelets.Content
+open Model
 
 module Shared =
 
@@ -17,7 +18,7 @@ module Shared =
             match userOption with
                 | Some user ->
                     Utils.link
-                        (random "/")
+                        (random <| ctx.Link Action.Logout)
                         <| "Sign out (" + user + ")"                    
                 | None ->
                     A [

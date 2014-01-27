@@ -60,11 +60,17 @@ let paginationDiv items pageId =
     let length = pages.Length
     let pages' =
         match length with
-        | l when l < 11 -> pages
+        | _ when length < 11 -> pages
         | _ ->
-            pages.[(pageId - 5) .. ]
-            |> Seq.truncate 10
-            |> Seq.toArray
+            match pageId with
+            | _ when pageId < 6 ->
+                pages
+                |> Seq.truncate 10
+                |> Seq.toArray
+            | _ ->
+                pages.[(pageId - 5) .. ]
+                |> Seq.truncate 10
+                |> Seq.toArray
     match length with
         | 1 -> Div []
         | _ ->

@@ -59,18 +59,19 @@ let paginationDiv items pageId =
         |> ceil |> int |> fun x -> [|1 .. x|]
     let length = pages.Length
     let pages' =
-        match length with
-        | _ when length < 11 -> pages
+        match pageId with
+        | _ when pageId < 7 -> pages |> Seq.truncate 10 |> Seq.toArray
         | _ ->
-            match pageId with
-            | _ when pageId < 6 ->
-                pages
-                |> Seq.truncate 10
+            let tail =
+                pages.[pageId ..]
+                |> Seq.truncate 4
                 |> Seq.toArray
-            | _ ->
-                pages.[(pageId - 5) .. ]
-                |> Seq.truncate 10
-                |> Seq.toArray
+            pages.[.. pageId - 1]
+            |> Array.rev
+            |> Seq.truncate (10 - tail.Length)
+            |> Seq.toArray
+            |> Array.rev
+            |> fun x -> Array.append x tail
     match length with
         | 1 -> Div []
         | _ ->

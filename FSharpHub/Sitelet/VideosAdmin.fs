@@ -7,7 +7,7 @@ module Server =
     open Mongo
     open Records
 
-    [<Rpc>]
+    [<Remote>]
     let insertVideo title url thumbnail website date =
         async {
             let isDate, datetime = DateTime.TryParse date

@@ -36,10 +36,10 @@ module private Server =
     // search options
     let options = SearchOptions()
     options.Q <- "#fsharp"
-    options.Count <- Nullable 100
+    options.Count <- Nullable 50
 
     /// Returns the latest 100 "#fsharp" tweets.
-    [<Rpc>]
+    [<Remote>]
     let fetchTweets() =
         async {
             let searchResult =

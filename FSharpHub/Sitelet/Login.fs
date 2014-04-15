@@ -13,7 +13,7 @@ type Access = Denied | Granted
 module Server =
     open IntelliFactory.WebSharper.Sitelets
 
-    [<Rpc>]
+    [<Remote>]
     let login loginInfo =
         async {
             let access =

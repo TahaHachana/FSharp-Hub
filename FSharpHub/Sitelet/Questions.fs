@@ -16,7 +16,7 @@ module private Server =
         |> Array.map quesData
         |> Some
 
-    [<Rpc>]
+    [<Remote>]
     let latest() =
         async {
             let dataOption = try quesData'() with _ -> None

@@ -1,5 +1,10 @@
 ﻿module Website.Mongo
 
+#if INTERACTIVE
+#r """..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Bson.dll"""
+#r """..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Driver.dll"""
+#endif
+
 open System.Globalization
 open System.Linq
 open MongoDB.Driver

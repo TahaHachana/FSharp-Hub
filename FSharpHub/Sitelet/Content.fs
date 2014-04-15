@@ -80,7 +80,6 @@ module Home =
             Nav.navElt <| Some "Home"
             Div [Class "container"; Id "main"] -< [
                 jumbotron :> INode<_>
-                AddThis.elt :> _
                 widgetsRow :> _
             ]
             Div [Id "push"]

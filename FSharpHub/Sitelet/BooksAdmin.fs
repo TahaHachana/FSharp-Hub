@@ -7,7 +7,7 @@ module Server =
     open Mongo
     open Records
 
-    [<Rpc>]
+    [<Remote>]
     let books() =
         async {
             let booksData =
@@ -17,7 +17,7 @@ module Server =
             return booksData
         }
 
-    [<Rpc>]
+    [<Remote>]
     let addBook url title authors publisher isbn pages date cover =
         async {
             let authors' = Array.ofList authors

@@ -10,11 +10,11 @@ declare module Website {
     module VideosAdmin {
         module Client {
             var main : {
-                (): _Html.IPagelet;
+                (): __ABBREV.__Html.IPagelet;
             };
         }
         interface Control {
-            get_Body(): _Html.IPagelet;
+            get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
     module Tweets {
@@ -29,48 +29,48 @@ declare module Website {
         interface SearchResult {
         }
         interface Control {
-            get_Body(): _Html.IPagelet;
+            get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
     module Snippets {
         module Client {
             var li : {
-                (link: string, title: string, description: string): _Html.Element;
+                (link: string, title: string, description: string): __ABBREV.__Html.Element;
             };
             var dispalySnippets : {
-                (arr: any[], elt: _Html.Element): void;
+                (arr: any[], elt: __ABBREV.__Html.Element): void;
             };
             var main : {
-                (): _Html.Element;
+                (): __ABBREV.__Html.Element;
             };
         }
         interface Control {
-            get_Body(): _Html.IPagelet;
+            get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
     module Questions {
         module Client {
             var li : {
-                (link: string, title: string, date: string, website: string, summary: string): _Html.Element;
+                (link: string, title: string, date: string, website: string, summary: string): __ABBREV.__Html.Element;
             };
             var displayQuestions : {
-                (arr: any[], elt: _Html.Element): void;
+                (arr: any[], elt: __ABBREV.__Html.Element): void;
             };
             var main : {
-                (): _Html.Element;
+                (): __ABBREV.__Html.Element;
             };
         }
         interface Control {
-            get_Body(): _Html.IPagelet;
+            get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
     module Login {
         module Client {
             var loginForm : {
-                (redirectUrl: string): _Html.Element;
+                (redirectUrl: string): __ABBREV.__Html.Element;
             };
             var passInput : {
-                (): _Html.Element;
+                (): __ABBREV.__Html.Element;
             };
         }
         interface LoginInfo {
@@ -80,23 +80,23 @@ declare module Website {
         interface Access {
         }
         interface Control {
-            get_Body(): _Html.IPagelet;
+            get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
     module BooksAdmin {
         module Client {
             var tr : {
-                (title: string, publisher: string): _Html.Element;
+                (title: string, publisher: string): __ABBREV.__Html.Element;
             };
             var main : {
-                (): _Html.Element;
+                (): __ABBREV.__Html.Element;
             };
             var addFormlet : {
-                (): _Html.IPagelet;
+                (): __ABBREV.__Html.IPagelet;
             };
         }
         interface Control {
-            get_Body(): _Html.IPagelet;
+            get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
     module Records {
@@ -104,7 +104,7 @@ declare module Website {
             _id: any;
             Link: string;
             Title: string;
-            Date: _WebSharper.DateTimeProxy;
+            Date: __ABBREV.__WebSharper.DateTimeProxy;
             Website: string;
             Summary: string;
         }
@@ -113,7 +113,7 @@ declare module Website {
             Link: string;
             Title: string;
             Description: string;
-            Date: _WebSharper.DateTimeProxy;
+            Date: __ABBREV.__WebSharper.DateTimeProxy;
         }
         interface Video {
             _id: any;
@@ -121,7 +121,7 @@ declare module Website {
             Url: string;
             Thumbnail: string;
             Website: string;
-            Date: _WebSharper.DateTimeProxy;
+            Date: __ABBREV.__WebSharper.DateTimeProxy;
         }
         interface Book {
             _id: any;
@@ -131,7 +131,7 @@ declare module Website {
             Publisher: string;
             ISBN: string;
             Pages: number;
-            ReleaseDate: _WebSharper.DateTimeProxy;
+            ReleaseDate: __ABBREV.__WebSharper.DateTimeProxy;
             Cover: string;
         }
     }
@@ -139,12 +139,12 @@ declare module Website {
         interface Page {
             Title: string;
             MetaDesc: string;
-            Body: _Html1.Element<_Web.Control>;
+            Body: any;
         }
     }
+}
+declare module __ABBREV {
     
-    import _Html = IntelliFactory.WebSharper.Html;
-    import _WebSharper = IntelliFactory.WebSharper;
-    import _Html1 = IntelliFactory.Html.Html;
-    import _Web = IntelliFactory.WebSharper.Web;
+    export import __Html = IntelliFactory.WebSharper.Html;
+    export import __WebSharper = IntelliFactory.WebSharper;
 }

@@ -15,7 +15,7 @@ module Server =
         |> Array.map snippetData
         |> Some
 
-    [<Rpc>]
+    [<Remote>]
     let latest() =
         async {
             let dataOption = try latestSnippets() with _ -> None

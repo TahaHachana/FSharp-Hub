@@ -1,6 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Web
+# Visual Studio Express 2013 for Web
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C31B06D1-9E6F-4A3B-AF28-32D417B67091}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSharpHub", "FSharpHub\FSharpHub.csproj", "{339922CE-86B8-4294-9984-DF069D6AA1BB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B967E460-04ED-4DF9-883E-9A5179676B92} = {B967E460-04ED-4DF9-883E-9A5179676B92}
@@ -8,12 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSharpHub", "FSharpHub\FSha
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Sitelet", "Sitelet\Sitelet.fsproj", "{B967E460-04ED-4DF9-883E-9A5179676B92}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C31B06D1-9E6F-4A3B-AF28-32D417B67091}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NuGet", "NuGet\NuGet.fsproj", "{C2DC46A2-BA82-4468-AC15-383E9CDAED83}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharpHub.Data", "FSharpHub.Data\FSharpHub.Data.fsproj", "{639E5D02-5461-415C-90EE-8EEADBA3201B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +35,14 @@ Global
 		{B967E460-04ED-4DF9-883E-9A5179676B92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B967E460-04ED-4DF9-883E-9A5179676B92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B967E460-04ED-4DF9-883E-9A5179676B92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2DC46A2-BA82-4468-AC15-383E9CDAED83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2DC46A2-BA82-4468-AC15-383E9CDAED83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2DC46A2-BA82-4468-AC15-383E9CDAED83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2DC46A2-BA82-4468-AC15-383E9CDAED83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{639E5D02-5461-415C-90EE-8EEADBA3201B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{639E5D02-5461-415C-90EE-8EEADBA3201B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{639E5D02-5461-415C-90EE-8EEADBA3201B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{639E5D02-5461-415C-90EE-8EEADBA3201B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Body,Controls,Html,Default,List,Data,Reactive,HotStream,Formlet1,Base,Result,T,Operators,jQuery,EventsPervasives,Formlet2,Operators1,CssConstants,Math,Seq,Utils,Tree,Edit,Form,Arrays,FormletProvider,Formlet3,Util,LayoutProvider,LayoutUtils,Reactive1,Validator,ValidatorProvidor,RegExp,Collections,Dictionary,ElementStore,Enhance,FormButtonConfiguration,FormContainerConfiguration,Padding,ManyConfiguration,ValidationFrameConfiguration,ValidationIconConfiguration,JSON,FormletBuilder,Layout,FormRowConfiguration,LabelConfiguration,Padding1,Enumerator;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Body,Controls,Html,Default,List,Data,Reactive,HotStream,Formlet1,Base,Result,T,Operators,jQuery,EventsPervasives,Formlet2,Operators1,CssConstants,Math,Seq,Utils,Tree,Edit,Form,Arrays,IntrinsicFunctionProxy,FormletProvider,Formlet3,Util,LayoutProvider,LayoutUtils,Reactive1,Validator,ValidatorProvidor,RegExp,Collections,Dictionary,ElementStore,Enhance,FormButtonConfiguration,FormContainerConfiguration,Padding,ManyConfiguration,ValidationFrameConfiguration,ValidationIconConfiguration,JSON,FormletBuilder,Layout,FormRowConfiguration,LabelConfiguration,Padding1,Enumerator;
  Runtime.Define(Global,{
   IntelliFactory:{
    WebSharper:{
@@ -438,7 +438,7 @@
         body=readOnly?Operators.add(select,List.ofArray([Default.Attr().NewAttr("disabled","disabled")])):select;
         sValue=Runtime.New(Result,{
          $:0,
-         $0:aVls[sIx]
+         $0:IntrinsicFunctionProxy.GetArray(aVls,sIx)
         });
         state=HotStream.New(sValue);
         reset=function()
@@ -451,7 +451,7 @@
         {
          return!readOnly?state.Trigger(Runtime.New(Result,{
           $:0,
-          $0:aVls[body.get_Value()<<0]
+          $0:IntrinsicFunctionProxy.GetArray(aVls,body.get_Value()<<0)
          })):null;
         };
         EventsPervasives.Events().OnChange(arg00,body);
@@ -518,7 +518,10 @@
            Body:form.Body,
            Dispose1:form.Dispose1,
            Notify:form.Notify,
-           State:_this.Utils.Reactive.Select(form.State,f)
+           State:_this.Utils.Reactive.Select(form.State,function(x)
+           {
+            return f(x);
+           })
           });
          },
          LayoutInternal:_this.LayoutInternal,
@@ -662,7 +665,7 @@
      ElementStore:Runtime.Class({
       Init:function()
       {
-       this.store=Dictionary.New21();
+       this.store=Dictionary.New2();
        return;
       },
       RegisterElement:function(key,f)
@@ -898,7 +901,10 @@
        return Formlet2.Map(function(source)
        {
         return Seq.choose(chooser,source);
-       },Formlet2.FlipBody(Formlet2.SelectMany(Formlet2.Map(f,add))));
+       },Formlet2.FlipBody(Formlet2.SelectMany(Formlet2.Map(function(v)
+       {
+        return f(v);
+       },add))));
       },
       Padding:Runtime.Class({},{
        get_Default:function()
@@ -1499,9 +1505,13 @@
        {
         return _builder_.Bind(Formlet2.WithNotificationChannel(Formlet2.LiftResult(Formlet2.InitWithFailure(formlet))),Runtime.Tupled(function(_arg1)
         {
-         var res;
+         var res,notify;
          res=_arg1[0];
-         return _builder_.ReturnFrom((submReset(_arg1[1]))(res));
+         notify=_arg1[1];
+         return _builder_.ReturnFrom((submReset(function(arg00)
+         {
+          return notify(arg00);
+         }))(res));
         }));
        })));
       },
@@ -1588,11 +1598,21 @@
       },
       Bind:function(fl,f)
       {
-       return Data.OfIFormlet(Data.PropagateRenderFrom(fl,Data.BaseFormlet().Bind(fl,f)));
+       var arg10;
+       arg10=function(x)
+       {
+        return f(x);
+       };
+       return Data.OfIFormlet(Data.PropagateRenderFrom(fl,Data.BaseFormlet().Bind(fl,arg10)));
       },
       BindWith:function(compose,formlet,f)
       {
-       return Data.OfIFormlet(Data.PropagateRenderFrom(formlet,Data.BaseFormlet().BindWith(compose,formlet,f)));
+       var arg20;
+       arg20=function(x)
+       {
+        return f(x);
+       };
+       return Data.OfIFormlet(Data.PropagateRenderFrom(formlet,Data.BaseFormlet().BindWith(compose,formlet,arg20)));
       },
       BuildForm:function(f)
       {
@@ -1756,7 +1776,12 @@
       },
       Replace:function(formlet,f)
       {
-       return Data.OfIFormlet(Data.PropagateRenderFrom(formlet,Data.BaseFormlet().Replace(formlet,f)));
+       var arg10;
+       arg10=function(x)
+       {
+        return f(x);
+       };
+       return Data.OfIFormlet(Data.PropagateRenderFrom(formlet,Data.BaseFormlet().Replace(formlet,arg10)));
       },
       ReplaceFirstWithFailure:function(formlet)
       {
@@ -1839,19 +1864,27 @@
      FormletBuilder:Runtime.Class({
       Bind:function(formlet,f)
       {
-       return Data.OfIFormlet(Data.PropagateRenderFrom(formlet,Data.BaseFormlet().Bind(formlet,f)));
+       var arg10;
+       arg10=function(x)
+       {
+        return f(x);
+       };
+       return Data.OfIFormlet(Data.PropagateRenderFrom(formlet,Data.BaseFormlet().Bind(formlet,arg10)));
       },
       Delay:function(f)
       {
-       return Data.OfIFormlet(Data.BaseFormlet().Delay(f));
+       return Data.OfIFormlet(Data.BaseFormlet().Delay(function(x)
+       {
+        return f(x);
+       }));
       },
       Return:function(x)
       {
        return Data.OfIFormlet(Data.BaseFormlet().Return(x));
       },
-      ReturnFrom:function(formlet)
+      ReturnFrom:function(f)
       {
-       return Data.OfIFormlet(formlet);
+       return Data.OfIFormlet(f);
       }
      },{
       New:function()
@@ -2423,6 +2456,7 @@
   Edit=Runtime.Safe(Tree.Edit);
   Form=Runtime.Safe(Base.Form);
   Arrays=Runtime.Safe(WebSharper.Arrays);
+  IntrinsicFunctionProxy=Runtime.Safe(WebSharper.IntrinsicFunctionProxy);
   FormletProvider=Runtime.Safe(Base.FormletProvider);
   Formlet3=Runtime.Safe(Data.Formlet);
   Util=Runtime.Safe(WebSharper.Util);

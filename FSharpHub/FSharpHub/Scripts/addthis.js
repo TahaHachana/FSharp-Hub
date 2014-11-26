@@ -2,6 +2,7 @@
     'theme' : 'dark',
     'share' : {
         'position' : 'left',
-        'numPreferredServices' : 5
+        'numPreferredServices': 3,
+        'services': 'facebook,twitter'
     }   
 });

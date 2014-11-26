@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Collections,BalancedTree,Operators,Seq,List,T,Arrays,IntrinsicFunctionProxy,Enumerator,JavaScript,DictionaryUtil,Dictionary,Unchecked,FSharpMap,Pair,Option,MapUtil,FSharpSet,SetModule,SetUtil,LinkedList,EnumeratorProxy,ListProxy,ResizeArray,ResizeArrayProxy;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Collections,BalancedTree,Operators,IntrinsicFunctionProxy,Seq,List,T,Arrays,Enumerator,JavaScript,DictionaryUtil,Dictionary,Unchecked,FSharpMap,Pair,Option,MapUtil,FSharpSet,SetModule,SetUtil,Array,HashSet,HashSetUtil,HashSet1,LinkedList,EnumeratorProxy,ListProxy,ResizeArray,ResizeArrayProxy;
  Runtime.Define(Global,{
   IntelliFactory:{
    WebSharper:{
@@ -28,7 +28,7 @@
       },
       Build:function(data,min,max)
       {
-       var center;
+       var center,left,right;
        if(max-min+1<=0)
         {
          return null;
@@ -36,7 +36,9 @@
        else
         {
          center=(min+max)/2>>0;
-         return BalancedTree.Branch(data[center],BalancedTree.Build(data,min,center-1),BalancedTree.Build(data,center+1,max));
+         left=BalancedTree.Build(data,min,center-1);
+         right=BalancedTree.Build(data,center+1,max);
+         return BalancedTree.Branch(IntrinsicFunctionProxy.GetArray(data,center),left,right);
         }
       },
       Contains:function(v,t)
@@ -129,7 +131,7 @@
        };
        t1=t;
        for(i=0;i<=IntrinsicFunctionProxy.GetLength(spine)-1;i++){
-        matchValue=spine[i];
+        matchValue=IntrinsicFunctionProxy.GetArray(spine,i);
         if(matchValue[0])
          {
           x1=matchValue[1];
@@ -249,10 +251,7 @@
       },
       GetEnumerator:function()
       {
-       return Enumerator.Get(Arrays.map(Runtime.Tupled(function(tuple)
-       {
-        return tuple[1];
-       }),JavaScript.GetFields(this.data)));
+       return Enumerator.Get(JavaScript.GetFieldValues(this.data));
       },
       Remove:function(k)
       {
@@ -303,9 +302,18 @@
         return comparer.GetHashCode(x);
        }));
       },
-      New1:function(capacity,comparer)
+      New1:function(dictionary)
       {
-       return Runtime.New(this,Dictionary.New3(comparer));
+       return Runtime.New(this,Dictionary.New11(dictionary,function(x)
+       {
+        return function(y)
+        {
+         return Unchecked.Equals(x,y);
+        };
+       },function(obj)
+       {
+        return Unchecked.Hash(obj);
+       }));
       },
       New11:function(init,equals,hash)
       {
@@ -322,37 +330,7 @@
         }
        return r;
       },
-      New12:function()
-      {
-       return Runtime.New(this,Dictionary.New21());
-      },
-      New2:function(dictionary)
-      {
-       return Runtime.New(this,Dictionary.New11(dictionary,function(x)
-       {
-        return function(y)
-        {
-         return Unchecked.Equals(x,y);
-        };
-       },function(obj)
-       {
-        return Unchecked.Hash(obj);
-       }));
-      },
-      New21:function()
-      {
-       return Runtime.New(this,Dictionary.New11([],function(x)
-       {
-        return function(y)
-        {
-         return Unchecked.Equals(x,y);
-        };
-       },function(obj)
-       {
-        return Unchecked.Hash(obj);
-       }));
-      },
-      New3:function(comparer)
+      New12:function(comparer)
       {
        return Runtime.New(this,Dictionary.New11([],function(x)
        {
@@ -364,6 +342,27 @@
        {
         return comparer.GetHashCode(x);
        }));
+      },
+      New2:function()
+      {
+       return Runtime.New(this,Dictionary.New11([],function(x)
+       {
+        return function(y)
+        {
+         return Unchecked.Equals(x,y);
+        };
+       },function(obj)
+       {
+        return Unchecked.Hash(obj);
+       }));
+      },
+      New3:function()
+      {
+       return Runtime.New(this,Dictionary.New2());
+      },
+      New4:function(capacity,comparer)
+      {
+       return Runtime.New(this,Dictionary.New12(comparer));
       }
      }),
      DictionaryUtil:{
@@ -589,6 +588,320 @@
        return r;
       }
      }),
+     HashSet:{
+      HashSet:Runtime.Class({
+       Add:function(item)
+       {
+        return this.add(item);
+       },
+       Clear:function()
+       {
+        this.data=Array.prototype.constructor.apply(undefined,[].concat([]));
+        this.count=0;
+        return;
+       },
+       Contains:function(item)
+       {
+        var arr;
+        arr=this.data[this.hash.call(null,item)];
+        return arr==null?false:this.arrContains(item,arr);
+       },
+       CopyTo:function(arr)
+       {
+        var i,all,i1;
+        i=0;
+        all=HashSetUtil.concat(this.data);
+        for(i1=0;i1<=all.length-1;i1++){
+         IntrinsicFunctionProxy.SetArray(arr,i1,all[i1]);
+        }
+        return;
+       },
+       ExceptWith:function(xs)
+       {
+        var enumerator;
+        enumerator=Enumerator.Get(xs);
+        while(enumerator.MoveNext())
+         {
+          this.Remove(enumerator.get_Current());
+         }
+        return;
+       },
+       GetEnumerator:function()
+       {
+        return Enumerator.Get(HashSetUtil.concat(this.data));
+       },
+       IntersectWith:function(xs)
+       {
+        var other,all,i,item;
+        other=HashSet1.New3(xs,this.equals,this.hash);
+        all=HashSetUtil.concat(this.data);
+        for(i=0;i<=all.length-1;i++){
+         item=all[i];
+         if(!other.Contains(item))
+          {
+           this.Remove(item);
+          }
+        }
+        return;
+       },
+       IsProperSubsetOf:function(xs)
+       {
+        var other;
+        other=Arrays.ofSeq(xs);
+        return this.count<IntrinsicFunctionProxy.GetLength(other)?this.IsSubsetOf(other):false;
+       },
+       IsProperSupersetOf:function(xs)
+       {
+        var other;
+        other=Arrays.ofSeq(xs);
+        return this.count>IntrinsicFunctionProxy.GetLength(other)?this.IsSupersetOf(other):false;
+       },
+       IsSubsetOf:function(xs)
+       {
+        var other;
+        other=HashSet1.New3(xs,this.equals,this.hash);
+        return Seq.forall(function(arg00)
+        {
+         return other.Contains(arg00);
+        },HashSetUtil.concat(this.data));
+       },
+       IsSupersetOf:function(xs)
+       {
+        var x=this;
+        return Seq.forall(function(arg00)
+        {
+         return x.Contains(arg00);
+        },xs);
+       },
+       Overlaps:function(xs)
+       {
+        var x=this;
+        return Seq.exists(function(arg00)
+        {
+         return x.Contains(arg00);
+        },xs);
+       },
+       Remove:function(item)
+       {
+        var arr;
+        arr=this.data[this.hash.call(null,item)];
+        if(arr==null)
+         {
+          return false;
+         }
+        else
+         {
+          if(this.arrRemove(item,arr))
+           {
+            this.count=this.count-1;
+            return true;
+           }
+          else
+           {
+            return false;
+           }
+         }
+       },
+       RemoveWhere:function(cond)
+       {
+        var all,i,item;
+        all=HashSetUtil.concat(this.data);
+        for(i=0;i<=all.length-1;i++){
+         item=all[i];
+         if(cond(item))
+          {
+           this.Remove(item);
+          }
+        }
+        return;
+       },
+       SetEquals:function(xs)
+       {
+        var other;
+        other=HashSet1.New3(xs,this.equals,this.hash);
+        return this.get_Count()===other.get_Count()?this.IsSupersetOf(other):false;
+       },
+       SymmetricExceptWith:function(xs)
+       {
+        var enumerator,item;
+        enumerator=Enumerator.Get(xs);
+        while(enumerator.MoveNext())
+         {
+          item=enumerator.get_Current();
+          if(this.Contains(item))
+           {
+            this.Remove(item);
+           }
+          else
+           {
+            this.Add(item);
+           }
+         }
+        return;
+       },
+       UnionWith:function(xs)
+       {
+        var enumerator;
+        enumerator=Enumerator.Get(xs);
+        while(enumerator.MoveNext())
+         {
+          this.Add(enumerator.get_Current());
+         }
+        return;
+       },
+       add:function(item)
+       {
+        var h,arr,ps;
+        h=this.hash.call(null,item);
+        arr=this.data[h];
+        if(arr==null)
+         {
+          this.data[h]=[item];
+          this.count=this.count+1;
+          return true;
+         }
+        else
+         {
+          if(this.arrContains(item,arr))
+           {
+            return false;
+           }
+          else
+           {
+            ps=[item];
+            arr.push.apply(arr,[].concat(ps));
+            this.count=this.count+1;
+            return true;
+           }
+         }
+       },
+       arrContains:function(item,arr)
+       {
+        var c,i,l;
+        c=true;
+        i=0;
+        l=arr.length;
+        while(c?i<l:false)
+         {
+          if((this.equals.call(null,arr[i]))(item))
+           {
+            c=false;
+           }
+          else
+           {
+            i=i+1;
+           }
+         }
+        return!c;
+       },
+       arrRemove:function(item,arr)
+       {
+        var c,i,l,start,ps;
+        c=true;
+        i=0;
+        l=arr.length;
+        while(c?i<l:false)
+         {
+          if((this.equals.call(null,arr[i]))(item))
+           {
+            start=i;
+            ps=[];
+            arr.splice.apply(arr,[start,1].concat(ps));
+            c=false;
+           }
+          else
+           {
+            i=i+1;
+           }
+         }
+        return!c;
+       },
+       get_Count:function()
+       {
+        return this.count;
+       }
+      },{
+       New:function(comparer)
+       {
+        return Runtime.New(this,HashSet1.New3(Seq.empty(),function(x)
+        {
+         return function(y)
+         {
+          return comparer.Equals(x,y);
+         };
+        },function(x)
+        {
+         return comparer.GetHashCode(x);
+        }));
+       },
+       New1:function(init,comparer)
+       {
+        return Runtime.New(this,HashSet1.New3(init,function(x)
+        {
+         return function(y)
+         {
+          return comparer.Equals(x,y);
+         };
+        },function(x)
+        {
+         return comparer.GetHashCode(x);
+        }));
+       },
+       New11:function(init)
+       {
+        return Runtime.New(this,HashSet1.New3(init,function(x)
+        {
+         return function(y)
+         {
+          return Unchecked.Equals(x,y);
+         };
+        },function(obj)
+        {
+         return Unchecked.Hash(obj);
+        }));
+       },
+       New2:function()
+       {
+        return Runtime.New(this,HashSet1.New3(Seq.empty(),function(x)
+        {
+         return function(y)
+         {
+          return Unchecked.Equals(x,y);
+         };
+        },function(obj)
+        {
+         return Unchecked.Hash(obj);
+        }));
+       },
+       New3:function(init,equals,hash)
+       {
+        var r,enumerator;
+        r=Runtime.New(this,{});
+        r.equals=equals;
+        r.hash=hash;
+        r.data=Array.prototype.constructor.apply(undefined,[].concat([]));
+        r.count=0;
+        enumerator=Enumerator.Get(init);
+        while(enumerator.MoveNext())
+         {
+          r.add(enumerator.get_Current());
+         }
+        return r;
+       }
+      }),
+      HashSetUtil:{
+       concat:function($o)
+       {
+        var $0=this,$this=this;
+        var r=[];
+        for(var k in $o){
+         r.push.apply(r,$o[k]);
+        }
+        ;
+        return r;
+       }
+      }
+     },
      LinkedList:{
       EnumeratorProxy:Runtime.Class({
        Dispose:function()
@@ -723,23 +1036,39 @@
        },
        Find:function(value)
        {
-        var node;
+        var node,notFound;
         node=this.n;
-        while(!Unchecked.Equals(node,null)?node.v!=value:false)
+        notFound=true;
+        while(notFound?!Unchecked.Equals(node,null):false)
          {
-          node=node.n;
+          if(node.v==value)
+           {
+            notFound=false;
+           }
+          else
+           {
+            node=node.n;
+           }
          }
-        return node==value?node:null;
+        return notFound?null:node;
        },
        FindLast:function(value)
        {
-        var node;
+        var node,notFound;
         node=this.p;
-        while(!Unchecked.Equals(node,null)?node.v!=value:false)
+        notFound=true;
+        while(notFound?!Unchecked.Equals(node,null):false)
          {
-          node=node.p;
+          if(node.v==value)
+           {
+            notFound=false;
+           }
+          else
+           {
+            node=node.p;
+           }
          }
-        return node==value?node:null;
+        return notFound?null:node;
        },
        GetEnumerator:function()
        {
@@ -1044,7 +1373,7 @@
        },
        GetRange:function(index,count)
        {
-        return ResizeArrayProxy.New3(Arrays.sub(this.arr,index,count));
+        return ResizeArrayProxy.New(Arrays.sub(this.arr,index,count));
        },
        Insert:function(index,items)
        {
@@ -1080,31 +1409,31 @@
        },
        get_Item:function(x)
        {
-        return this.arr[x];
+        return IntrinsicFunctionProxy.GetArray(this.arr,x);
        },
        set_Item:function(x,v)
        {
-        this.arr[x]=v;
+        return IntrinsicFunctionProxy.SetArray(this.arr,x,v);
        }
       },{
-       New:function(el)
-       {
-        return Runtime.New(this,ResizeArrayProxy.New3(Seq.toArray(el)));
-       },
-       New1:function()
-       {
-        return Runtime.New(this,ResizeArrayProxy.New3([]));
-       },
-       New2:function()
-       {
-        return Runtime.New(this,ResizeArrayProxy.New3([]));
-       },
-       New3:function(arr)
+       New:function(arr)
        {
         var r;
         r=Runtime.New(this,{});
         r.arr=arr;
         return r;
+       },
+       New1:function()
+       {
+        return Runtime.New(this,ResizeArrayProxy.New([]));
+       },
+       New11:function(el)
+       {
+        return Runtime.New(this,ResizeArrayProxy.New(Seq.toArray(el)));
+       },
+       New2:function()
+       {
+        return Runtime.New(this,ResizeArrayProxy.New([]));
        }
       }),
       splice:function($arr,$index,$howMany,$items)
@@ -1157,11 +1486,11 @@
   Collections=Runtime.Safe(WebSharper.Collections);
   BalancedTree=Runtime.Safe(Collections.BalancedTree);
   Operators=Runtime.Safe(WebSharper.Operators);
+  IntrinsicFunctionProxy=Runtime.Safe(WebSharper.IntrinsicFunctionProxy);
   Seq=Runtime.Safe(WebSharper.Seq);
   List=Runtime.Safe(WebSharper.List);
   T=Runtime.Safe(List.T);
   Arrays=Runtime.Safe(WebSharper.Arrays);
-  IntrinsicFunctionProxy=Runtime.Safe(WebSharper.IntrinsicFunctionProxy);
   Enumerator=Runtime.Safe(WebSharper.Enumerator);
   JavaScript=Runtime.Safe(WebSharper.JavaScript);
   DictionaryUtil=Runtime.Safe(Collections.DictionaryUtil);
@@ -1174,6 +1503,10 @@
   FSharpSet=Runtime.Safe(Collections.FSharpSet);
   SetModule=Runtime.Safe(Collections.SetModule);
   SetUtil=Runtime.Safe(Collections.SetUtil);
+  Array=Runtime.Safe(Global.Array);
+  HashSet=Runtime.Safe(Collections.HashSet);
+  HashSetUtil=Runtime.Safe(HashSet.HashSetUtil);
+  HashSet1=Runtime.Safe(HashSet.HashSet);
   LinkedList=Runtime.Safe(Collections.LinkedList);
   EnumeratorProxy=Runtime.Safe(LinkedList.EnumeratorProxy);
   ListProxy=Runtime.Safe(LinkedList.ListProxy);

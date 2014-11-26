@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration>Release</Configuration>
@@ -20,6 +21,8 @@
     <OutputPath>bin\</OutputPath>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>8111140f</NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup>
     <DebugType>pdbonly</DebugType>
@@ -34,12 +37,29 @@
       <HintPath>$(MSBuildThisFileDirectory)/../packages/FSharp.Core.3.0.0.2/lib/net40/FSharp.Core.dll</HintPath>
       <SpecificVersion>true</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Bson.dll</HintPath>
+    <Reference Include="LinqToTwitter.AspNet">
+      <HintPath>..\packages\LinqToTwitter.3.1.0\lib\net45\LinqToTwitter.AspNet.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Driver.dll</HintPath>
+    <Reference Include="LinqToTwitterPcl, Version=3.1.0.13733, Culture=neutral, PublicKeyToken=957107be965c25d9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\LinqToTwitter.3.1.0\lib\net45\LinqToTwitterPcl.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MongoDB.Bson, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="StacMan, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\StacMan.1.1.2\lib\StacMan.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -49,14 +69,31 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.20\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.20\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
@@ -83,46 +120,28 @@
     <Content Include="robots.txt" />
     <Content Include="Scripts\addthis.js" />
     <Content Include="Scripts\ga.js" />
-    <Content Include="Scripts\html5shiv.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.Formlet.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.Formlet.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.Formlet.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.Html.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.JavaScript\Runtime.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.JavaScript\Runtime.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.Reactive.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.Reactive.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.Reactive.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Collections.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Collections.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Collections.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Control.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Control.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Control.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.d.ts" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Dom.d.ts" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Ecma.d.ts" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Formlet.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Formlet.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Formlet.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Html.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Html.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Html.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Html5.d.ts" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.JQuery.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Sitelets.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Sitelets.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Sitelets.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Testing.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Testing.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Testing.min.js" />
-    <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper.Web.d.ts" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper\Json.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.WebSharper\Json.min.js" />
-    <Content Include="Scripts\WebSharper\Sitelet.d.ts" />
     <Content Include="Scripts\WebSharper\Sitelet.js" />
     <Content Include="Scripts\WebSharper\Sitelet.min.js" />
     <Content Include="Sitemap.xml">
@@ -140,26 +159,45 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="packages.config" />
+    <Content Include="JSON\Tweets.json" />
+    <Content Include="JSON\StackOverflowQuestions.json" />
+    <None Include="Properties\PublishProfiles\FSharpHub.pubxml" />
+    <None Include="Properties\PublishProfiles\FSharpHubFileSystem.pubxml" />
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Sitelet\Sitelet.fsproj">
       <Project>{b967e460-04ed-4df9-883e-9a5179676b92}</Project>
       <Name>Sitelet</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <None Include="Properties\PublishProfiles\FSharpHubFileSystem.pubxml" />
-    <Content Include="Scripts\WebSharper\build.tmp" />
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <TypeScriptCompile Include="Scripts\WebSharper\FSharpHub.Data.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.Formlet.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.Reactive.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.Collections.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.Control.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.Dom.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.Ecma.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.Formlet.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.Html.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.Html5.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.JQuery.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.Sitelets.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.Testing.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\IntelliFactory.WebSharper.Web.d.ts" />
+    <TypeScriptCompile Include="Scripts\WebSharper\Sitelet.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Import Project="WebSharper.targets" Condition="Exists('WebSharper.targets')" />
@@ -187,11 +225,11 @@
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
     <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
-  <Import Project="..\packages\WebSharper.2.5.104.37\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.2.5.104.37\build\WebSharper.targets')" />
+  <Import Project="..\packages\WebSharper.2.5.130.67\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.2.5.130.67\build\WebSharper.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Activez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est le suivant : {0}.</ErrorText>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\WebSharper.2.5.104.37\build\WebSharper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.2.5.104.37\build\WebSharper.targets'))" />
+    <Error Condition="!Exists('..\packages\WebSharper.2.5.130.67\build\WebSharper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.2.5.130.67\build\WebSharper.targets'))" />
   </Target>
 </Project>

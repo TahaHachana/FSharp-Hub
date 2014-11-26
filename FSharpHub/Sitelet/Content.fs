@@ -63,7 +63,7 @@ module Home =
         Div [Class "row"] -< [
             Div [Class "col-lg-4"] -< [
                 H3 [Text "Tweets"] :> INode<_>
-                new Tweets.Control() :> _
+                new Twitter.Control() :> _
             ]
             Div [Class "col-lg-4"] -< [
                 H3 [Text "Questions"] :> INode<_>
@@ -75,16 +75,65 @@ module Home =
             ]
         ]
 
-    let body =
-        Div [Id "wrap"] -< [
-            Nav.navElt <| Some "Home"
-            Div [Class "container"; Id "main"] -< [
-                jumbotron :> INode<_>
-                widgetsRow :> _
+    let body :HtmlElement =
+        Div [
+            Div [Id "twitter"; Class "anchor"] -< [
+                Div [Class "page-header"] -< [
+                    H2 [Text "Twitter"] 
+                ] :> INode<_>
+                Div [Class "progress"; Id "twitter-progress"] -< [
+                    Div [
+                        Class "progress-bar progress-bar-striped active"
+                        NewAttribute "role" "progressbar"
+                        NewAttribute "aria-valuenow" "45"
+                        NewAttribute "aria-valuemin" "0"
+                        NewAttribute "aria-valuemax" "100"
+                        Style "width: 100%"
+                    ]
+                ] :> _
+                new Twitter.Control() :> _
+            ] 
+            Div [Id "stackoverflow"; Class "anchor"] -< [
+                Div [Class "page-header"] -< [
+                    H2 [Text "StackOverflow"]
+                ] :> INode<_>
+                Div [Class "progress"; Id "so-progress"] -< [
+                    Div [
+                        Class "progress-bar progress-bar-striped active"
+                        NewAttribute "role" "progressbar"
+                        NewAttribute "aria-valuenow" "45"
+                        NewAttribute "aria-valuemin" "0"
+                        NewAttribute "aria-valuemax" "100"
+                        Style "width: 100%"
+                    ]
+                ] :> _
+
+                new StackOverflow.Control() :> _
             ]
-            Div [Id "push"]
-            Shared.ga
+//            H2 [Text "Gists (disabled)"] :> _
+////            new GitHubGists.Control() :> _
+//            H2 [Text "New GitHub Repos"] :> _
+//            new GitHubRepos.NewReposControl() :> _
+//            H2 [Text "Recentely Updated GitHub Repos"] :> _
+//            new GitHubRepos.UpdatedReposControl() :> _
+////            H2 [Text "Active GitHub Issues"] :> _
+////            new GitHubIssues.Control() :> _
+//            H2 [Text "NuGet"] :> _
+////            new NuGet.Control() :> _
+//            H2 [Text "News"] :> _
+//            new News.Control() :> _
         ]
+
+//        Div []
+//        Div [Id "wrap"] -< [
+//            Nav.navElt <| Some "Home"
+//            Div [Class "container"; Id "main"] -< [
+//                jumbotron :> INode<_>
+//                widgetsRow :> _
+//            ]
+//            Div [Id "push"]
+//            Shared.ga
+//        ]
 
 module Books =
     let title = "FSharp Books"

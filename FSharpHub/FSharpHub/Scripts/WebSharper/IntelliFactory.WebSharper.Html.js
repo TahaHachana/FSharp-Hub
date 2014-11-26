@@ -47,7 +47,7 @@
       {
        var attr;
        attr=this.HtmlProvider.CreateAttribute(this.Name);
-       attr.nodeValue=this.Value;
+       attr.value=this.Value;
        return attr;
       }
      },{
@@ -730,7 +730,7 @@
        },
        AppendAttribute:function(node,attr)
        {
-        return this.SetAttribute(node,attr.nodeName,attr.nodeValue);
+        return this.SetAttribute(node,attr.nodeName,attr.value);
        },
        AppendNode:function(node,el)
        {

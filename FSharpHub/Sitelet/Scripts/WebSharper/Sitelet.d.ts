@@ -17,16 +17,70 @@ declare module Website {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
-    module Tweets {
-        interface Tweet {
-            Avatar: string;
-            Date: string;
-            Html: string;
-            Id: string;
-            Name: string;
-            ScreenName: string;
+    module News {
+        interface Response {
+            responseData: any;
         }
-        interface SearchResult {
+        interface data {
+            feed: any;
+        }
+        interface feedDetails {
+            entries: any[];
+        }
+        interface Entry {
+            title: string;
+            link: string;
+            contentSnippet: string;
+        }
+        interface Control {
+            get_Body(): __ABBREV.__Html.IPagelet;
+        }
+        var main : {
+            (): __ABBREV.__Html.Element;
+        };
+    }
+    module GitHubIssues {
+        interface Control {
+            get_Body(): __ABBREV.__Html.IPagelet;
+        }
+    }
+    module GitHubRepos {
+        interface NewReposControl {
+            get_Body(): __ABBREV.__Html.IPagelet;
+        }
+        interface UpdatedReposControl {
+            get_Body(): __ABBREV.__Html.IPagelet;
+        }
+    }
+    module GitHubGists {
+        interface Control {
+            get_Body(): __ABBREV.__Html.IPagelet;
+        }
+    }
+    module StackOverflow {
+        interface SoQuestion {
+            id: number;
+            link: string;
+            title: string;
+            creationDate: string;
+            answerCount: number;
+            ownerAvatar: string;
+            ownerLink: string;
+            tags: string[];
+            score: number;
+            acceptedAnswerId: __ABBREV.__WebSharper.OptionProxy<number>;
+        }
+        interface Control {
+            get_Body(): __ABBREV.__Html.IPagelet;
+        }
+    }
+    module Twitter {
+        interface Tweet {
+            id: number;
+            screenName: string;
+            avatar: string;
+            statusAsHtml: string;
+            createdAt: string;
         }
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;
@@ -135,6 +189,17 @@ declare module Website {
             Cover: string;
         }
     }
+    module Utils {
+        var truncate : {
+            <_M1>(xs: __ABBREV.__WebSharper.seq<_M1>, count: number): __ABBREV.__WebSharper.seq<_M1>;
+        };
+        var skip : {
+            <_M1>(xs: __ABBREV.__WebSharper.seq<_M1>, count: number): __ABBREV.__WebSharper.seq<_M1>;
+        };
+        var split : {
+            <_M1>(count: number, xs: __ABBREV.__WebSharper.seq<_M1>): __ABBREV.__List.T<__ABBREV.__WebSharper.seq<_M1>>;
+        };
+    }
     module Skin {
         interface Page {
             Title: string;
@@ -147,4 +212,5 @@ declare module __ABBREV {
     
     export import __Html = IntelliFactory.WebSharper.Html;
     export import __WebSharper = IntelliFactory.WebSharper;
+    export import __List = IntelliFactory.WebSharper.List;
 }

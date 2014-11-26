@@ -1,4 +1,4 @@
-﻿#main {
+﻿/*#main {
     padding-top: 60px;
 }
 
@@ -57,7 +57,6 @@ footer div {
     margin: 0 auto;
 }
 
-/* Twitter widget styles */
 .avatar {
     float: left;
     margin-right: 10px;
@@ -72,28 +71,127 @@ footer div {
 
 .tweet-actions {
     visibility: hidden;
-}
-
-/*----------*/
+}*/
 
 /* Sticky footer styles http://getbootstrap.com/examples/sticky-footer-navbar/ */
 
-html,
-body {
-    height: 100%;
+html {
+    position: relative;
+    min-height: 100%;
 }
 
-#wrap {
-    min-height: 100%;
-    height: auto !important;
-    height: 100%;
-    margin: 0 auto -60px;
-    padding: 0 0 60px;
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    /*position: relative;*/
 }
 
 #footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
     height: 60px;
     background-color: #f5f5f5;
 }
 
-/*----------*/
+/* Footer */
+
+#footer > .container > p {
+    padding-top: 20px;
+}
+
+/* Common */
+#main {
+    padding-top: 100px;
+    /*position: relative;*/
+}
+
+#push {
+    height: 60px;
+}
+
+/* Home */
+.media:first-child {
+    margin-top: 15px;
+}
+
+.avatar {
+    border-radius: 3px;
+    width: 48px;
+    height: 48px;
+}
+
+.affix {
+    position: fixed;
+    top: 150px;
+    /*width:225px;*/
+  }
+
+.anchor {
+    padding-top: 70px;
+    margin-top: -70px;
+    /*min-height: 500px;*/
+}
+
+.data-row {margin-bottom: 15px;}
+
+#sidebar > .nav > .active > a, #sidebar > .nav > .active:hover > a, #sidebar > .nav > .active:focus > a {
+    padding-left: 18px;
+    font-weight: 700;
+    /*color: #563d7c;*/
+    color: blue;
+    background-color: transparent;
+    border-left: 2px solid blue;
+}
+
+#sidebar > .nav > li > a {
+    display: block;
+    padding: 4px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #999;
+}
+
+#sidebar .nav>li>a:hover, #sidebar .nav>li>a:focus {
+    padding-left: 19px;
+    /*color: #563d7c;*/
+    color: blue;
+    text-decoration: none;
+    background-color: transparent;
+    border-left: 1px solid blue;
+}
+
+.label {margin-right: 5px;}
+
+.progress {width: 50%;}
+
+/* Books */
+.books-row {
+    margin-bottom: 20px;
+}
+
+.books-row div {
+    margin-top: 10px;
+}
+
+.cover {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Videos */
+.videos-row {
+    margin-bottom: 20px;
+}
+
+.videos-row div {
+    margin-top: 10px;
+}
+
+.thumb {
+    height: 120px;
+    display: block;
+    margin: 0 auto;
+    max-width: 210px;
+}

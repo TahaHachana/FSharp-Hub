@@ -111,7 +111,7 @@
     <Compile Include="Skin.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="Records.fs" />
-    <Compile Include="Secret.fs" />
+    <Compile Include="Credentials.fs" />
     <Compile Include="Mongo.fs" />
     <Compile Include="Books.fs" />
     <Compile Include="BooksAdmin.fs" />
@@ -120,7 +120,6 @@
     <Compile Include="Questions.fs" />
     <Compile Include="Snippets.fs" />
     <Compile Include="Templates.fs" />
-    <Compile Include="Credentials.fs" />
     <Compile Include="Twitter.fs" />
     <Compile Include="StackOverflow.fs" />
     <Compile Include="GitHubGists.fs" />

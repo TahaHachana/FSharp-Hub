@@ -112,6 +112,7 @@
     <Content Include="Images\Books\FoundationsFSharp.png" />
     <Content Include="Images\Books\FSharp4CSharpDevs.gif" />
     <Content Include="Images\Books\FSharp4Scientists.jpg" />
+    <Content Include="Images\Books\FunctionalProgrammingUsingFSharp.jpg" />
     <Content Include="Images\Books\ProfessionalFSharp2.jpg" />
     <Content Include="Images\Books\ProgrammingFSharp.gif" />
     <Content Include="Images\Books\ProgrammingFSharp3.gif" />

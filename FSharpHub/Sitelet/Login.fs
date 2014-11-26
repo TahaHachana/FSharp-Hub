@@ -17,7 +17,7 @@ module Server =
     let login loginInfo =
         async {
             let access =
-                match loginInfo.Password = Secret.password with
+                match loginInfo.Password = Credentials.password with
                 | false -> Denied
                 | true ->
                     UserSession.LoginUser loginInfo.Name

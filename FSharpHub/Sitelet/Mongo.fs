@@ -13,7 +13,7 @@ open Records
 let culture = CultureInfo.CreateSpecificCulture "en-US"
 CultureInfo.DefaultThreadCurrentCulture <- culture
 
-let client = MongoClient Secret.connectionString
+let client = MongoClient Credentials.connectionString
 let server = client.GetServer()
 let db = server.GetDatabase "fsharpwebsite"
 let collByName<'T> (name:string) = db.GetCollection<'T> name

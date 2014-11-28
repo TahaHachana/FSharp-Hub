@@ -98,12 +98,23 @@ module private Client =
     open IntelliFactory.WebSharper.Html
     open IntelliFactory.WebSharper.JQuery
 
+    let hideProress() =
+        match JQuery.Of("[data-status=\"loading\"]").Length with
+        | 0 ->
+            JQuery.Of("#progress-bar").SlideUp().Ignore
+            JQuery.Of("[data-spy=\"scroll\"]").Each(
+                fun x -> JQuery.Of(x)?scrollspy("refresh")
+            ).Ignore
+        | _ ->
+            JQuery.Of("[data-spy=\"scroll\"]").Each(
+                fun x -> JQuery.Of(x)?scrollspy("refresh")
+            ).Ignore
+
     let main() =
-        Div []
+        Div [HTML5.Attr.Data "status" "loading"]
         |>! OnAfterRender (fun elt ->
             async {
                 let! questions = Server.questions()
-                JQuery.Of("#so-progress").FadeOut().Ignore
                 questions
                 |> Array.mapi (fun idx q ->
                     let cls = if idx % 2 = 0 then "col-md-5" else "col-md-5 col-md-offset-1"
@@ -138,7 +149,8 @@ module private Client =
                     -< x
                     |> elt.Append
                 )
-                JQuery.Of("[data-spy=\"scroll\"]").Each(fun x -> JQuery.Of(x)?scrollspy("refresh")).Ignore
+                elt.RemoveAttribute "data-status"
+                hideProress()
             }
             |> Async.Start)
 

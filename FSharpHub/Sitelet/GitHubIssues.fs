@@ -12,6 +12,8 @@ module private Server =
     let culture = CultureInfo.CreateSpecificCulture "en-US"
     CultureInfo.DefaultThreadCurrentCulture <- culture
 
+    let credStore = InMemoryCredentialStore(Credentials("TahaHachana", "SX2BV31yDWcz2tDW"))
+    let github = new GitHubClient(new ProductHeaderValue("FSharpHub"), credStore)
 
     let request = SearchIssuesRequest("")
     request.Language <- Nullable Language.FSharp

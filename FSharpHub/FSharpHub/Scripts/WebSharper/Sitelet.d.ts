@@ -76,11 +76,14 @@ declare module Website {
     }
     module Twitter {
         interface Tweet {
-            id: number;
+            id: string;
             screenName: string;
             avatar: string;
             statusAsHtml: string;
             createdAt: string;
+            isRetweeted: boolean;
+            retweetedId: __ABBREV.__WebSharper.OptionProxy<string>;
+            retweetedScreenName: __ABBREV.__WebSharper.OptionProxy<string>;
         }
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;

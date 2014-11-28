@@ -131,7 +131,7 @@ body {
 .anchor {
     padding-top: 70px;
     margin-top: -70px;
-    /*min-height: 500px;*/
+    min-height: 1000px;
 }
 
 .data-row {margin-bottom: 15px;}
@@ -164,7 +164,17 @@ body {
 
 .label {margin-right: 5px;}
 
-.progress {width: 50%;}
+.progress {
+    width: 30%;
+    position: fixed;
+    top: 60px;
+    left: 35%;
+}
+
+#progress-bar {
+    padding: 5px;
+    background-color: ghostwhite;
+}
 
 /* Books */
 .books-row {

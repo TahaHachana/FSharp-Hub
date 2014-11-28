@@ -457,12 +457,28 @@
    },
    StackOverflow:{
     Client:{
+     hideProress:function()
+     {
+      if(jQuery("[data-status=\"loading\"]").length===0)
+       {
+        jQuery("#progress-bar").slideUp();
+        return jQuery("[data-spy=\"scroll\"]").each(function()
+        {
+         return jQuery(this).scrollspy.call(null,"refresh");
+        });
+       }
+      else
+       {
+        return jQuery("[data-spy=\"scroll\"]").each(function()
+        {
+         return jQuery(this).scrollspy.call(null,"refresh");
+        });
+       }
+     },
      main:function()
      {
       var x;
-      x=Default.Div(Runtime.New(T,{
-       $:0
-      }));
+      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
       Operators.OnAfterRender(function(elt)
       {
        return Concurrency.Start(Concurrency.Delay(function()
@@ -471,7 +487,6 @@
         x1=Remoting.Async("Sitelet:5",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
-         jQuery("#so-progress").fadeOut();
          Seq.iter(function(x2)
          {
           return elt.AppendI(Operators.add(Default.Div(List.ofArray([Default.Attr().Class("row data-row")])),x2));
@@ -506,10 +521,8 @@
            })))]))]));
           };
          },arg101)));
-         jQuery("[data-spy=\"scroll\"]").each(function()
-         {
-          return jQuery(this).scrollspy.call(null,"refresh");
-         });
+         elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+         Client7.hideProress();
          return Concurrency.Return(null);
         });
        }));
@@ -526,10 +539,28 @@
    },
    Twitter:{
     Client:{
+     hideProress:function()
+     {
+      if(jQuery("[data-status=\"loading\"]").length===0)
+       {
+        jQuery("#progress-bar").slideUp();
+        return jQuery("[data-spy=\"scroll\"]").each(function()
+        {
+         return jQuery(this).scrollspy.call(null,"refresh");
+        });
+       }
+      else
+       {
+        return jQuery("[data-spy=\"scroll\"]").each(function()
+        {
+         return jQuery(this).scrollspy.call(null,"refresh");
+        });
+       }
+     },
      main:function()
      {
       var x;
-      x=Default.Div(List.ofArray([Default.Attr().Class("home-widget")]));
+      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
       Operators.OnAfterRender(function(elt)
       {
        return Concurrency.Start(Concurrency.Delay(function()
@@ -538,7 +569,6 @@
         x1=Remoting.Async("Sitelet:6",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
-         jQuery("#twitter-progress").fadeOut();
          Seq.iter(function(x2)
          {
           return elt.AppendI(Operators.add(Default.Div(List.ofArray([Default.Attr().Class("row data-row")])),x2));
@@ -546,23 +576,25 @@
          {
           return function(tweet)
           {
-           var p,cls,arg102,arg103,arg104,arg105;
+           var cls,p,patternInput,statusId,screenName,arg102,arg103,arg104,arg105,arg106;
+           cls=idx%2===0?"col-md-5":"col-md-5 col-md-offset-1";
            p=Default.P(Runtime.New(T,{
             $:0
            }));
            p.set_Html(tweet.statusAsHtml);
-           cls=idx%2===0?"col-md-5":"col-md-5 col-md-offset-1";
+           patternInput=tweet.isRetweeted?[tweet.retweetedScreenName.$0,tweet.retweetedId.$0]:[tweet.screenName,tweet.id];
+           statusId=patternInput[1];
+           screenName=patternInput[0];
            arg102="https://twitter.com/"+tweet.screenName;
            arg103=tweet.avatar;
            arg104="https://twitter.com/"+tweet.screenName;
-           arg105=List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href","https://twitter.com/"+tweet.screenName+"/status/"+Global.String(tweet.id)),Default.Attr().NewAttr("target","_blank"),Default.Text(tweet.createdAt)]))]);
-           return Operators.add(Default.Div(List.ofArray([Default.Attr().Class(cls)])),List.ofArray([Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Attr().Class("media-left"),Default.Attr().NewAttr("href",arg102),Default.Attr().NewAttr("target","_blank")])),List.ofArray([Default.Img(List.ofArray([Default.Attr().NewAttr("src",arg103),Default.Attr().Class("avatar")]))])),Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media-body")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("media-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg104),Default.Attr().NewAttr("target","_blank"),Default.Text(tweet.screenName)])),Default.Span(List.ofArray([Default.Text(" ")])),Default.Tags().NewTag("small",arg105)])),p]))]))]));
+           arg106="https://twitter.com/"+screenName+"/status/"+statusId;
+           arg105=List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg106),Default.Attr().NewAttr("target","_blank"),Default.Text(tweet.createdAt)]))]);
+           return Operators.add(Default.Div(List.ofArray([Default.Attr().Class(cls)])),List.ofArray([Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Attr().Class("media-left"),Default.Attr().NewAttr("href",arg102),Default.Attr().NewAttr("target","_blank")])),List.ofArray([Default.Img(List.ofArray([Default.Attr().NewAttr("src",arg103),Default.Attr().Class("avatar")]))])),Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media-body")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("media-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg104),Default.Attr().NewAttr("target","_blank"),Default.Text(tweet.screenName)])),Default.Text(" "),Default.Tags().NewTag("small",arg105)])),p]))]))]));
           };
          },arg101)));
-         jQuery("[data-spy=\"scroll\"]").each(function()
-         {
-          return jQuery(this).scrollspy.call(null,"refresh");
-         });
+         elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+         Client8.hideProress();
          return Concurrency.Return(null);
         });
        }));

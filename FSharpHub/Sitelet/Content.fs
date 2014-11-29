@@ -81,34 +81,27 @@ module Home =
                 Div [Class "page-header"] -< [
                     H2 [Text "Twitter"] 
                 ] :> INode<_>
-//                Div [Class "progress"; Id "twitter-progress"] -< [
-//                    Div [
-//                        Class "progress-bar progress-bar-striped active"
-//                        NewAttribute "role" "progressbar"
-//                        NewAttribute "aria-valuenow" "45"
-//                        NewAttribute "aria-valuemin" "0"
-//                        NewAttribute "aria-valuemax" "100"
-//                        Style "width: 100%"
-//                    ]
-//                ] :> _
                 new Twitter.Control() :> _
             ] 
             Div [Id "stackoverflow"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "StackOverflow"]
                 ] :> INode<_>
-//                Div [Class "progress"; Id "so-progress"] -< [
-//                    Div [
-//                        Class "progress-bar progress-bar-striped active"
-//                        NewAttribute "role" "progressbar"
-//                        NewAttribute "aria-valuenow" "45"
-//                        NewAttribute "aria-valuemin" "0"
-//                        NewAttribute "aria-valuemax" "100"
-//                        Style "width: 100%"
-//                    ]
-//                ] :> _
                 new StackOverflow.Control() :> _
             ]
+            Div [Id "new-github-repos"; Class "anchor"] -< [
+                Div [Class "page-header"] -< [
+                    H2 [Text "New GitHub Repos"]
+                ] :> INode<_>
+                new GitHubRepos.NewReposControl() :> _
+            ]
+            Div [Id "updated-github-repos"; Class "anchor"] -< [
+                Div [Class "page-header"] -< [
+                    H2 [Text "Updated GitHub Repos"]
+                ] :> INode<_>
+                new GitHubRepos.UpdatedReposControl() :> _
+            ]
+
 //            H2 [Text "Gists (disabled)"] :> _
 ////            new GitHubGists.Control() :> _
 //            H2 [Text "New GitHub Repos"] :> _

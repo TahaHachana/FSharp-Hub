@@ -123,6 +123,7 @@
     <Compile Include="Twitter.fs" />
     <Compile Include="StackOverflow.fs" />
     <Compile Include="GitHubGists.fs" />
+    <Compile Include="GitHub.fs" />
     <Compile Include="GitHubRepos.fs" />
     <Compile Include="GitHubIssues.fs" />
     <Compile Include="NuGet.fs" />

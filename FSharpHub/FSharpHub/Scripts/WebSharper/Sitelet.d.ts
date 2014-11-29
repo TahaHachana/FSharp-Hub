@@ -45,6 +45,15 @@ declare module Website {
         }
     }
     module GitHubRepos {
+        interface Repo {
+            ownerLink: string;
+            ownerAvatar: string;
+            name: string;
+            description: string;
+            link: string;
+            createdAt: string;
+            pushedAt: string;
+        }
         interface NewReposControl {
             get_Body(): __ABBREV.__Html.IPagelet;
         }

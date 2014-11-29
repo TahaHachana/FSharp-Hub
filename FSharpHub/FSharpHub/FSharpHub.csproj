@@ -163,6 +163,8 @@
     <Content Include="packages.config" />
     <Content Include="JSON\Tweets.json" />
     <Content Include="JSON\StackOverflowQuestions.json" />
+    <Content Include="JSON\NewGitHubRepos.json" />
+    <Content Include="JSON\UpdatedGitHubRepos.json" />
     <None Include="Properties\PublishProfiles\FSharpHub.pubxml" />
     <None Include="Properties\PublishProfiles\FSharpHubFileSystem.pubxml" />
     <None Include="Web.Release.config">

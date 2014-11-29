@@ -1,44 +1,121 @@
 module Website.GitHubRepos
 
 open IntelliFactory.WebSharper
-open FSharpHub.Data
+//open FSharpHub.Data
+
+type Repo =
+    {
+        ownerLink : string
+        ownerAvatar : string
+        name : string
+        description : string
+        link : string
+        createdAt : string
+        pushedAt : string
+    }
 
 module private Server =
 
     open System.IO
     open Newtonsoft.Json
+    open Octokit
+    open Octokit.Internal
+    open System
+    open System.Globalization
+    open System.Web
+
+    let private newRepo (r:Repository) =
+        
+        {
+            ownerLink = r.Owner.HtmlUrl
+            ownerAvatar = r.Owner.AvatarUrl
+            name = r.FullName
+            description = r.Description
+            link = r.HtmlUrl
+            createdAt = r.CreatedAt.ToString()
+            pushedAt = r.PushedAt.ToString()
+        }
+
+    module NewRepos =
+
+        let private request = SearchRepositoriesRequest("")
+        request.Language <- Nullable Language.FSharp
+        request.Fork <- ForkQualifier.ExcludeForks
+//        request.Created <- DateRange.LessThanOrEquals (DateTime.Now)
+        
+        request.Created <- DateRange.GreaterThanOrEquals (DateTime.Now.AddDays -7.)
+//        request.PerPage <- 100
+//        request.Page <- 1
+
+        let repos() =
+            async {
+                try
+                    let reposArray =
+                        GitHub.client.Search.SearchRepo(request).Result.Items
+                        |> Seq.toArray
+                        |> Array.sortBy (fun x -> x.CreatedAt)
+                        |> Array.rev
+                        |> fun x -> x.[..49]
+                        |> Array.map newRepo
+                    return Some reposArray
+                with _ -> return None
+            }
+
+    module RecentlyUpdated =
+
+        let private request = SearchRepositoriesRequest("")
+        request.Language <- Nullable Language.FSharp
+        request.Updated <-  DateRange.GreaterThanOrEquals (DateTime.Now.AddDays -7.)
+//        request.PerPage <- 100
+//        request.Page <- 1
+
+        let repos() =
+            async {
+                try
+                    let reposArray =
+                        GitHub.client.Search.SearchRepo(request).Result.Items
+                        |> Seq.toArray
+                        |> Array.sortBy (fun x -> x.PushedAt.Value)
+                        |> Array.rev
+                        |> fun x -> x.[..49]
+                        |> Array.map newRepo
+                    return Some reposArray
+                with _ -> return None
+            }
 
     [<Remote>]
     let newRepos() =
         async {
-            let! reposArray = GitHubRepos.New.repos()
+            let! reposArray = NewRepos.repos()
+            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/NewGitHubRepos.json"
             match reposArray with
             | None ->
                 let repos =
-                    let json = File.ReadAllText("~/JSON/NewGitHubRepos.json")
-                    JsonConvert.DeserializeObject(json, typeof<GitHubRepos.Repo []>)
-                    :?> GitHubRepos.Repo []
+                    let json = File.ReadAllText jsonPath
+                    JsonConvert.DeserializeObject(json, typeof<Repo []>)
+                    :?> Repo []
                 return repos
             | Some repos ->
                 let json = JsonConvert.SerializeObject repos
-                File.WriteAllText("~/JSON/NewGitHubRepos.json", json)
+                File.WriteAllText(jsonPath, json)
                 return repos
         }
 
     [<Remote>]
     let updatedRepos() =
         async {
-            let! reposArray = GitHubRepos.RecentlyUpdated.repos()
+            let! reposArray = RecentlyUpdated.repos()
+            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/UpdatedGitHubRepos.json"
             match reposArray with
             | None ->
                 let repos =
-                    let json = File.ReadAllText("~/JSON/RecentlyUpdatedGitHubRepos.json")
-                    JsonConvert.DeserializeObject(json, typeof<GitHubRepos.Repo []>)
-                    :?> GitHubRepos.Repo []
+                    let json = File.ReadAllText jsonPath
+                    JsonConvert.DeserializeObject(json, typeof<Repo []>)
+                    :?> Repo []
                 return repos
             | Some repos ->
                 let json = JsonConvert.SerializeObject repos
-                File.WriteAllText("~/JSON/RecentlyUpdatedGitHubRepos.json", json)
+                File.WriteAllText(jsonPath, json)
                 return repos
         }
 
@@ -48,51 +125,83 @@ module private Client =
     open IntelliFactory.WebSharper.Html
     open IntelliFactory.WebSharper.JQuery
 
+    let hideProress() =
+        match JQuery.Of("[data-status=\"loading\"]").Length with
+        | 0 ->
+            JQuery.Of("#progress-bar").SlideUp().Ignore
+            JQuery.Of("[data-spy=\"scroll\"]").Each(
+                fun x -> JQuery.Of(x)?scrollspy("refresh")
+            ).Ignore
+        | _ ->
+            JQuery.Of("[data-spy=\"scroll\"]").Each(
+                fun x -> JQuery.Of(x)?scrollspy("refresh")
+            ).Ignore
+
     let newRepos() =
-        Div [Attr.Class "home-widget"]
+        Div [HTML5.Attr.Data "status" "loading"]
         |>! OnAfterRender (fun elt ->
             async {
                 let! repos = Server.newRepos()
-                let ul = UL [Attr.Class "media-list"; Attr.Id "tweets-ul"]
-                repos |> Array.iter (fun repo ->
-                    let li =
-                        LI [Attr.Class "media"] -< [
+                repos |> Array.mapi (fun idx repo ->
+                    let cls = if idx % 2 = 0 then "col-md-5" else "col-md-5 col-md-offset-1"
+                    Div [Attr.Class cls] -< [
+                        Div [Attr.Class "media"] -< [
                             A [Attr.Class "media-left"; Attr.HRef repo.ownerLink; Attr.Target "_blank"] -< [
                                 Img [Attr.Style "width: 30px; height: 30px;"; Attr.Src repo.ownerAvatar]
                             ]
                             Div [Attr.Class "media-body"] -< [
-                                H4 [Attr.Class "media-heading"] -< [
+                                H4 [Attr.Class "media-heading"; Attr.Style "word-break: break-word;"] -< [
                                     A [Attr.HRef repo.link; Attr.Target "_blank"; Text repo.name]                                        
                                 ]
                                 P [Text repo.createdAt]
+                                // TODO remove this tag if the repo description is ""
+                                P [Text repo.description]
                             ]               
                         ]
-                    ul.Append li)
-                elt.Append ul
+                    ]
+                )
+                |> Utils.split 2
+                |> Seq.iter (fun x ->
+                    Div [Attr.Class "row data-row"]
+                    -< x
+                    |> elt.Append
+                )
+                elt.RemoveAttribute "data-status"
+                hideProress()
             }
             |> Async.Start)
 
     let updatedRepos() =
-        Div [Attr.Class "home-widget"]
+        Div [HTML5.Attr.Data "status" "loading"]
         |>! OnAfterRender (fun elt ->
             async {
                 let! repos = Server.updatedRepos()
-                let ul = UL [Attr.Class "media-list"; Attr.Id "tweets-ul"]
-                repos |> Array.iter (fun repo ->
-                    let li =
-                        LI [Attr.Class "media"] -< [
+                repos |> Array.mapi (fun idx repo ->
+                    let cls = if idx % 2 = 0 then "col-md-5" else "col-md-5 col-md-offset-1"
+                    Div [Attr.Class cls] -< [
+                        Div [Attr.Class "media"] -< [
                             A [Attr.Class "media-left"; Attr.HRef repo.ownerLink; Attr.Target "_blank"] -< [
                                 Img [Attr.Style "width: 30px; height: 30px;"; Attr.Src repo.ownerAvatar]
                             ]
                             Div [Attr.Class "media-body"] -< [
-                                H4 [Attr.Class "media-heading"] -< [
+                                H4 [Attr.Class "media-heading"; Attr.Style "word-break: break-word;"] -< [
                                     A [Attr.HRef repo.link; Attr.Target "_blank"; Text repo.name]                                        
                                 ]
                                 P [Text repo.pushedAt]
+                                // TODO remove this tag if the repo description is ""
+                                P [Text repo.description]                            
                             ]               
                         ]
-                    ul.Append li)
-                elt.Append ul
+                    ]
+                )
+                |> Utils.split 2
+                |> Seq.iter (fun x ->
+                    Div [Attr.Class "row data-row"]
+                    -< x
+                    |> elt.Append
+                )
+                elt.RemoveAttribute "data-status"
+                hideProress()
             }
             |> Async.Start)
 

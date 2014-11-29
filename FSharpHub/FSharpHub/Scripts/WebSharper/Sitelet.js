@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,Arrays,GitHubGists,Client1,Seq,GitHubIssues,Client2,GitHubRepos,Client3,HTML5,Login,Client4,window,EventsPervasives,jQuery,News,OperatorIntrinsics,Questions,Client5,T,Snippets,Client6,Utils,StackOverflow,Client7,Twitter,Client8,VideosAdmin,Client9;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,Arrays,GitHubGists,Client1,Seq,GitHubIssues,Client2,jQuery,HTML5,Utils,GitHubRepos,Client3,Login,Client4,window,EventsPervasives,News,OperatorIntrinsics,Questions,Client5,T,Snippets,Client6,StackOverflow,Client7,Twitter,Client8,VideosAdmin,Client9;
  Runtime.Define(Global,{
   Website:{
    BooksAdmin:{
@@ -179,10 +179,28 @@
    },
    GitHubRepos:{
     Client:{
+     hideProress:function()
+     {
+      if(jQuery("[data-status=\"loading\"]").length===0)
+       {
+        jQuery("#progress-bar").slideUp();
+        return jQuery("[data-spy=\"scroll\"]").each(function()
+        {
+         return jQuery(this).scrollspy.call(null,"refresh");
+        });
+       }
+      else
+       {
+        return jQuery("[data-spy=\"scroll\"]").each(function()
+        {
+         return jQuery(this).scrollspy.call(null,"refresh");
+        });
+       }
+     },
      newRepos:function()
      {
       var x;
-      x=Default.Div(List.ofArray([Default.Attr().Class("home-widget")]));
+      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
       Operators.OnAfterRender(function(elt)
       {
        return Concurrency.Start(Concurrency.Delay(function()
@@ -191,17 +209,23 @@
         x1=Remoting.Async("Sitelet:2",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
-         var ul;
-         ul=Default.UL(List.ofArray([Default.Attr().Class("media-list"),Default.Attr().NewAttr("id","tweets-ul")]));
-         Arrays.iter(function(repo)
+         Seq.iter(function(x2)
          {
-          var arg102,arg103,arg104;
-          arg102=repo.ownerLink;
-          arg103=repo.ownerAvatar;
-          arg104=repo.link;
-          return ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("media")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Attr().Class("media-left"),Default.Attr().NewAttr("href",arg102),Default.Attr().NewAttr("target","_blank")])),List.ofArray([Default.Img(List.ofArray([Default.Attr().NewAttr("style","width: 30px; height: 30px;"),Default.Attr().NewAttr("src",arg103)]))])),Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media-body")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("media-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg104),Default.Attr().NewAttr("target","_blank"),Default.Text(repo.name)]))])),Default.P(List.ofArray([Default.Text(repo.createdAt)]))]))])));
-         },arg101);
-         elt.AppendI(ul);
+          return elt.AppendI(Operators.add(Default.Div(List.ofArray([Default.Attr().Class("row data-row")])),x2));
+         },Utils.split(2,Arrays.mapi(function(idx)
+         {
+          return function(repo)
+          {
+           var cls,arg102,arg103,arg104;
+           cls=idx%2===0?"col-md-5":"col-md-5 col-md-offset-1";
+           arg102=repo.ownerLink;
+           arg103=repo.ownerAvatar;
+           arg104=repo.link;
+           return Operators.add(Default.Div(List.ofArray([Default.Attr().Class(cls)])),List.ofArray([Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Attr().Class("media-left"),Default.Attr().NewAttr("href",arg102),Default.Attr().NewAttr("target","_blank")])),List.ofArray([Default.Img(List.ofArray([Default.Attr().NewAttr("style","width: 30px; height: 30px;"),Default.Attr().NewAttr("src",arg103)]))])),Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media-body")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("media-heading"),Default.Attr().NewAttr("style","word-break: break-word;")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg104),Default.Attr().NewAttr("target","_blank"),Default.Text(repo.name)]))])),Default.P(List.ofArray([Default.Text(repo.createdAt)])),Default.P(List.ofArray([Default.Text(repo.description)]))]))]))]));
+          };
+         },arg101)));
+         elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+         Client3.hideProress();
          return Concurrency.Return(null);
         });
        }));
@@ -211,7 +235,7 @@
      updatedRepos:function()
      {
       var x;
-      x=Default.Div(List.ofArray([Default.Attr().Class("home-widget")]));
+      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
       Operators.OnAfterRender(function(elt)
       {
        return Concurrency.Start(Concurrency.Delay(function()
@@ -220,17 +244,23 @@
         x1=Remoting.Async("Sitelet:3",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
-         var ul;
-         ul=Default.UL(List.ofArray([Default.Attr().Class("media-list"),Default.Attr().NewAttr("id","tweets-ul")]));
-         Arrays.iter(function(repo)
+         Seq.iter(function(x2)
          {
-          var arg102,arg103,arg104;
-          arg102=repo.ownerLink;
-          arg103=repo.ownerAvatar;
-          arg104=repo.link;
-          return ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("media")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Attr().Class("media-left"),Default.Attr().NewAttr("href",arg102),Default.Attr().NewAttr("target","_blank")])),List.ofArray([Default.Img(List.ofArray([Default.Attr().NewAttr("style","width: 30px; height: 30px;"),Default.Attr().NewAttr("src",arg103)]))])),Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media-body")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("media-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg104),Default.Attr().NewAttr("target","_blank"),Default.Text(repo.name)]))])),Default.P(List.ofArray([Default.Text(repo.pushedAt)]))]))])));
-         },arg101);
-         elt.AppendI(ul);
+          return elt.AppendI(Operators.add(Default.Div(List.ofArray([Default.Attr().Class("row data-row")])),x2));
+         },Utils.split(2,Arrays.mapi(function(idx)
+         {
+          return function(repo)
+          {
+           var cls,arg102,arg103,arg104;
+           cls=idx%2===0?"col-md-5":"col-md-5 col-md-offset-1";
+           arg102=repo.ownerLink;
+           arg103=repo.ownerAvatar;
+           arg104=repo.link;
+           return Operators.add(Default.Div(List.ofArray([Default.Attr().Class(cls)])),List.ofArray([Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Attr().Class("media-left"),Default.Attr().NewAttr("href",arg102),Default.Attr().NewAttr("target","_blank")])),List.ofArray([Default.Img(List.ofArray([Default.Attr().NewAttr("style","width: 30px; height: 30px;"),Default.Attr().NewAttr("src",arg103)]))])),Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media-body")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("media-heading"),Default.Attr().NewAttr("style","word-break: break-word;")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg104),Default.Attr().NewAttr("target","_blank"),Default.Text(repo.name)]))])),Default.P(List.ofArray([Default.Text(repo.pushedAt)])),Default.P(List.ofArray([Default.Text(repo.description)]))]))]))]));
+          };
+         },arg101)));
+         elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+         Client3.hideProress();
          return Concurrency.Return(null);
         });
        }));
@@ -727,14 +757,15 @@
   Seq=Runtime.Safe(WebSharper.Seq);
   GitHubIssues=Runtime.Safe(Website.GitHubIssues);
   Client2=Runtime.Safe(GitHubIssues.Client);
+  jQuery=Runtime.Safe(Global.jQuery);
+  HTML5=Runtime.Safe(Default.HTML5);
+  Utils=Runtime.Safe(Website.Utils);
   GitHubRepos=Runtime.Safe(Website.GitHubRepos);
   Client3=Runtime.Safe(GitHubRepos.Client);
-  HTML5=Runtime.Safe(Default.HTML5);
   Login=Runtime.Safe(Website.Login);
   Client4=Runtime.Safe(Login.Client);
   window=Runtime.Safe(Global.window);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
-  jQuery=Runtime.Safe(Global.jQuery);
   News=Runtime.Safe(Website.News);
   OperatorIntrinsics=Runtime.Safe(WebSharper.OperatorIntrinsics);
   Questions=Runtime.Safe(Website.Questions);
@@ -742,7 +773,6 @@
   T=Runtime.Safe(List.T);
   Snippets=Runtime.Safe(Website.Snippets);
   Client6=Runtime.Safe(Snippets.Client);
-  Utils=Runtime.Safe(Website.Utils);
   StackOverflow=Runtime.Safe(Website.StackOverflow);
   Client7=Runtime.Safe(StackOverflow.Client);
   Twitter=Runtime.Safe(Website.Twitter);

@@ -39,7 +39,17 @@ declare module Website {
             (): __ABBREV.__Html.Element;
         };
     }
-    module GitHubIssues {
+    module NuGet {
+        interface Package {
+            id: string;
+            version: string;
+            iconUrl: string;
+            projectUrl: string;
+            galleryDetailsUrl: string;
+            lastUpdated: string;
+            downloadCount: number;
+            tags: string[];
+        }
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
@@ -58,11 +68,6 @@ declare module Website {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
         interface UpdatedReposControl {
-            get_Body(): __ABBREV.__Html.IPagelet;
-        }
-    }
-    module GitHubGists {
-        interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
     }

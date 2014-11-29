@@ -101,6 +101,12 @@ module Home =
                 ] :> INode<_>
                 new GitHubRepos.UpdatedReposControl() :> _
             ]
+            Div [Id "nuget"; Class "anchor"] -< [
+                Div [Class "page-header"] -< [
+                    H2 [Text "NuGet"]
+                ] :> INode<_>
+                new NuGet.Control() :> _
+            ]
 
 //            H2 [Text "Gists (disabled)"] :> _
 ////            new GitHubGists.Control() :> _

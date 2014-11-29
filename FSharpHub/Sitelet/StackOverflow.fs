@@ -124,11 +124,11 @@ module private Client =
                                 Img [Attr.Src q.ownerAvatar; Attr.Class "avatar"]
                             ]
                             Div [Attr.Class "media-body"] -< [
-                                yield H4 [Attr.Class "media-heading"; Attr.Style "word-break: break-word;"] -< [
+                                H4 [Attr.Class "media-heading"; Attr.Style "word-break: break-word;"] -< [
                                     A [Attr.HRef q.link; Attr.Target "_blank"; Text q.title]                                        
                                 ]
-                                yield P [Text q.creationDate]
-                                yield P [
+                                P [Text q.creationDate]
+                                P [
                                     Text "Score: "
                                     Span [Attr.Class "badge"; Text (string q.score)] :> IPagelet
                                     Text " Answers: "
@@ -136,8 +136,8 @@ module private Client =
                                 ]
 //                                yield P [Text <| "Answers: " + string q.answerCount]
 //                                if q.acceptedAnswerId.IsSome then yield A [Attr.HRef (q.link + "#answer-" + q.acceptedAnswerId.Value.ToString()); Attr.Target "_blank"; Text "Accepted Answer"]
-                                yield Div [
-                                    for x in q.tags -> Span [Attr.Class "label label-primary"; Text x]
+                                Div [
+                                    for x in q.tags -> Span [Attr.Class "label label-info"; Text x]
                                 ]
                             ]               
                         ]

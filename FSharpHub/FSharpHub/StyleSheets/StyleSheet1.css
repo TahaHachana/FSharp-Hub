@@ -181,6 +181,10 @@ body {
     background-color: ghostwhite;
 }
 
+.list-group {
+    max-width: 75%;
+}
+
 /* Books */
 .books-row {
     margin-bottom: 20px;

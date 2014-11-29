@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,jQuery,HTML5,Seq,Utils,Arrays,GitHubRepos,Client1,Login,Client2,window,EventsPervasives,News,OperatorIntrinsics,NuGet,Client3,Questions,Client4,T,Snippets,Client5,StackOverflow,Client6,Twitter,Client7,VideosAdmin,Client8;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,jQuery,HTML5,Seq,Utils,Arrays,GitHubRepos,Client1,Login,Client2,window,EventsPervasives,News,NuGet,Client3,Questions,Client4,T,Snippets,Client5,StackOverflow,Client6,Twitter,Client7,VideosAdmin,Client8;
  Runtime.Define(Global,{
   Website:{
    BooksAdmin:{
@@ -273,25 +273,19 @@
     main:Runtime.Field(function()
     {
      var _ul_43_1;
-     _ul_43_1=Default.UL(List.ofArray([Default.Attr().NewAttr("id","news-list")]));
+     _ul_43_1=Default.UL(List.ofArray([Default.Attr().NewAttr("id","news-list"),Default.Attr().Class("list-group")]));
      jQuery.getJSON("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=http%3A%2F%2Ffpish.net%2Frss%2Fblogs%2Ftag%2F1%2Ff~23",Runtime.Tupled(function(tupledArg)
      {
-      var data,_arg1,entries,x;
+      var data,_arg1,entries;
       data=tupledArg[0];
       _arg1=tupledArg[1];
       entries=data.responseData.feed.entries;
-      x=OperatorIntrinsics.GetArraySlice(entries,{
-       $:0
-      },{
-       $:1,
-       $0:4
-      });
-      return Arrays.iter(function(x1)
+      return Arrays.iter(function(x)
       {
        var arg10;
-       arg10=x1.link;
-       return _ul_43_1.AppendI(Default.LI(List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x1.title)]))])),Default.P(List.ofArray([Default.Text(x1.contentSnippet)]))])));
-      },x);
+       arg10=x.link;
+       return _ul_43_1.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x.title)]))])),Default.P(List.ofArray([Default.Text(x.contentSnippet)]))])));
+      },entries);
      }));
      return Default.Div(List.ofArray([_ul_43_1]));
     })
@@ -739,7 +733,6 @@
   window=Runtime.Safe(Global.window);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
   News=Runtime.Safe(Website.News);
-  OperatorIntrinsics=Runtime.Safe(WebSharper.OperatorIntrinsics);
   NuGet=Runtime.Safe(Website.NuGet);
   Client3=Runtime.Safe(NuGet.Client);
   Questions=Runtime.Safe(Website.Questions);

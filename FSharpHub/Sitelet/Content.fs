@@ -107,19 +107,12 @@ module Home =
                 ] :> INode<_>
                 new NuGet.Control() :> _
             ]
-
-//            H2 [Text "Gists (disabled)"] :> _
-////            new GitHubGists.Control() :> _
-//            H2 [Text "New GitHub Repos"] :> _
-//            new GitHubRepos.NewReposControl() :> _
-//            H2 [Text "Recentely Updated GitHub Repos"] :> _
-//            new GitHubRepos.UpdatedReposControl() :> _
-////            H2 [Text "Active GitHub Issues"] :> _
-////            new GitHubIssues.Control() :> _
-//            H2 [Text "NuGet"] :> _
-////            new NuGet.Control() :> _
-//            H2 [Text "News"] :> _
-//            new News.Control() :> _
+            Div [Id "news"; Class "anchor"] -< [
+                Div [Class "page-header"] -< [
+                    H2 [Text "News"]
+                ] :> INode<_>
+                new News.Control() :> _
+            ]
         ]
 
 //        Div []

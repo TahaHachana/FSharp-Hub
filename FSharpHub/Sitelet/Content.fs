@@ -75,37 +75,42 @@ module Home =
             ]
         ]
 
-    let body :HtmlElement =
+    let body() :HtmlElement =
         Div [
             Div [Id "twitter"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "Twitter"] 
-                ] :> INode<_>
-                new Twitter.Control() :> _
+                ] //:> INode<_>
+                Twitter.Server.tweetsDiv()
+//                new Twitter.Control() :> _
             ] 
             Div [Id "stackoverflow"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "StackOverflow"]
-                ] :> INode<_>
-                new StackOverflow.Control() :> _
+                ]
+                StackOverflow.Server.stackDiv()
+//                new StackOverflow.Control() :> _
             ]
             Div [Id "new-github-repos"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "New GitHub Repos"]
-                ] :> INode<_>
-                new GitHubRepos.NewReposControl() :> _
+                ]
+                GitHubRepos.Server.newReposDiv()
+//                new GitHubRepos.NewReposControl() :> _
             ]
             Div [Id "updated-github-repos"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "Updated GitHub Repos"]
-                ] :> INode<_>
-                new GitHubRepos.UpdatedReposControl() :> _
+                ]
+                GitHubRepos.Server.updatedReposDiv()
+//                new GitHubRepos.UpdatedReposControl() :> _
             ]
             Div [Id "nuget"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "NuGet"]
-                ] :> INode<_>
-                new NuGet.Control() :> _
+                ]
+                NuGet.Server.pkgsDiv()
+//                new NuGet.Control() :> _
             ]
             Div [Id "news"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
@@ -113,6 +118,13 @@ module Home =
                 ] :> INode<_>
                 new News.Control() :> _
             ]
+            Div [Id "fpish"; Class "anchor"] -< [
+                Div [Class "page-header"] -< [
+                    H2 [Text "FPish"]
+                ] :> INode<_>
+                new FPish.Control() :> _
+            ]
+
         ]
 
 //        Div []

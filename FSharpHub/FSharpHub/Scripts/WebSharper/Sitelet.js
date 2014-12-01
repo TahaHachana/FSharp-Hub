@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,jQuery,HTML5,Seq,Utils,Arrays,GitHubRepos,Client1,Login,Client2,window,EventsPervasives,News,NuGet,Client3,Questions,Client4,T,Snippets,Client5,StackOverflow,Client6,Twitter,Client7,VideosAdmin,Client8;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,FPish,jQuery,HTML5,IntrinsicFunctionProxy,Seq,JavaScript,Utils,Arrays,GitHubRepos,Client1,Login,Client2,window,EventsPervasives,News,NuGet,Client3,Questions,Client4,T,Snippets,Client5,StackOverflow,Client6,Twitter,Client7,VideosAdmin,Client8;
  Runtime.Define(Global,{
   Website:{
    BooksAdmin:{
@@ -65,7 +65,7 @@
        cover=tupledArg[7];
        return Concurrency.Start(Concurrency.Delay(function()
        {
-        return Concurrency.Bind(Remoting.Async("Sitelet:10",[url,title,authors,publisher,isbn,pages,date,cover]),function(arg101)
+        return Concurrency.Bind(Remoting.Async("Sitelet:11",[url,title,authors,publisher,isbn,pages,date,cover]),function(arg101)
         {
          if(arg101)
           {
@@ -97,6 +97,55 @@
      }
     })
    },
+   FPish:{
+    Control:Runtime.Class({
+     get_Body:function()
+     {
+      return FPish.main();
+     }
+    }),
+    hideProress:function()
+    {
+     return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
+     {
+      return jQuery(this).scrollspy.call(null,"refresh");
+     });
+    },
+    main:function()
+    {
+     var x;
+     x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
+     Operators.OnAfterRender(function(elt)
+     {
+      var ul;
+      ul=Default.UL(List.ofArray([Default.Attr().Class("list-group")]));
+      jQuery.getJSON("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=http%3A%2F%2Ffpish.net%2Frss%2Ftopics%2Fall",Runtime.Tupled(function(tupledArg)
+      {
+       var data,_arg1,data1,idx,x1,arg10;
+       data=tupledArg[0];
+       _arg1=tupledArg[1];
+       data1=data.responseData.feed.entries;
+       for(idx=0;idx<=data1.length-1;idx++){
+        x1=IntrinsicFunctionProxy.GetArray(data1,idx);
+        arg10=x1.link;
+        ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x1.title)]))])),Default.Div(Seq.toList(Seq.delay(function()
+        {
+         return Seq.map(function(y)
+         {
+          return Operators.add(Default.Span(List.ofArray([Default.Attr().Class("label label-info")])),List.ofArray([Default.Text(y)]));
+         },x1.categories);
+        })))])));
+       }
+       return;
+      }));
+      elt.AppendI(ul);
+      JavaScript.Log("Appended fpish list");
+      elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+      return FPish.hideProress();
+     },x);
+     return x;
+    }
+   },
    GitHubRepos:{
     Client:{
      hideProress:function()
@@ -126,7 +175,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:2",[]);
+        x1=Remoting.Async("Sitelet:3",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -161,7 +210,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:3",[]);
+        x1=Remoting.Async("Sitelet:4",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -214,7 +263,7 @@
        {
         return Concurrency.Start(Concurrency.Delay(function()
         {
-         return Concurrency.Bind(Remoting.Async("Sitelet:8",[{
+         return Concurrency.Bind(Remoting.Async("Sitelet:9",[{
           Name:userInput.get_Value(),
           Password:Client2.passInput().get_Value()
          }]),function(arg101)
@@ -270,25 +319,49 @@
       return News.main();
      }
     }),
-    main:Runtime.Field(function()
+    hideProress:function()
     {
-     var _ul_43_1;
-     _ul_43_1=Default.UL(List.ofArray([Default.Attr().NewAttr("id","news-list"),Default.Attr().Class("list-group")]));
-     jQuery.getJSON("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=http%3A%2F%2Ffpish.net%2Frss%2Fblogs%2Ftag%2F1%2Ff~23",Runtime.Tupled(function(tupledArg)
+     return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
      {
-      var data,_arg1,entries;
-      data=tupledArg[0];
-      _arg1=tupledArg[1];
-      entries=data.responseData.feed.entries;
-      return Arrays.iter(function(x)
+      return jQuery(this).scrollspy.call(null,"refresh");
+     });
+    },
+    main:function()
+    {
+     var x;
+     Concurrency.Start(Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(Remoting.Async("Sitelet:1",[]),function()
       {
-       var arg10;
-       arg10=x.link;
-       return _ul_43_1.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x.title)]))])),Default.P(List.ofArray([Default.Text(x.contentSnippet)]))])));
-      },entries);
+       JavaScript.Log("Fetched new data");
+       return Concurrency.Return(null);
+      });
      }));
-     return Default.Div(List.ofArray([_ul_43_1]));
-    })
+     x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
+     Operators.OnAfterRender(function(elt)
+     {
+      var ul;
+      ul=Default.UL(List.ofArray([Default.Attr().NewAttr("id","news-list"),Default.Attr().Class("list-group")]));
+      jQuery.getJSON("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=http%3A%2F%2Ffpish.net%2Frss%2Fblogs%2Ftag%2F1%2Ff~23",Runtime.Tupled(function(tupledArg)
+      {
+       var data,_arg1,entries;
+       data=tupledArg[0];
+       _arg1=tupledArg[1];
+       entries=data.responseData.feed.entries;
+       return Arrays.iter(function(x1)
+       {
+        var arg10;
+        arg10=x1.link;
+        return ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x1.title)]))])),Default.P(List.ofArray([Default.Text(x1.contentSnippet)]))])));
+       },entries);
+      }));
+      elt.AppendI(ul);
+      JavaScript.Log("Appended news list");
+      elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+      return News.hideProress();
+     },x);
+     return x;
+    }
    },
    NuGet:{
     Client:{
@@ -319,7 +392,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:1",[]);
+        x1=Remoting.Async("Sitelet:2",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -391,7 +464,7 @@
       {
        return Concurrency.Start(Concurrency.Delay(function()
        {
-        return Concurrency.Bind(Remoting.Async("Sitelet:7",[]),function(arg101)
+        return Concurrency.Bind(Remoting.Async("Sitelet:8",[]),function(arg101)
         {
          if(arg101.$==1)
           {
@@ -444,7 +517,7 @@
       {
        return Concurrency.Start(Concurrency.Delay(function()
        {
-        return Concurrency.Bind(Remoting.Async("Sitelet:6",[]),function(arg101)
+        return Concurrency.Bind(Remoting.Async("Sitelet:7",[]),function(arg101)
         {
          if(arg101.$==1)
           {
@@ -497,7 +570,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:4",[]);
+        x1=Remoting.Async("Sitelet:5",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -566,7 +639,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:5",[]);
+        x1=Remoting.Async("Sitelet:6",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -721,9 +794,12 @@
   Website=Runtime.Safe(Global.Website);
   BooksAdmin=Runtime.Safe(Website.BooksAdmin);
   Client=Runtime.Safe(BooksAdmin.Client);
+  FPish=Runtime.Safe(Website.FPish);
   jQuery=Runtime.Safe(Global.jQuery);
   HTML5=Runtime.Safe(Default.HTML5);
+  IntrinsicFunctionProxy=Runtime.Safe(WebSharper.IntrinsicFunctionProxy);
   Seq=Runtime.Safe(WebSharper.Seq);
+  JavaScript=Runtime.Safe(WebSharper.JavaScript);
   Utils=Runtime.Safe(Website.Utils);
   Arrays=Runtime.Safe(WebSharper.Arrays);
   GitHubRepos=Runtime.Safe(Website.GitHubRepos);
@@ -749,7 +825,6 @@
  });
  Runtime.OnLoad(function()
  {
-  News.main();
   Client2.passInput();
   Client.addFormlet();
   return;

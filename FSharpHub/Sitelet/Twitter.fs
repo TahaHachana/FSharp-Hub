@@ -15,7 +15,7 @@ type Tweet =
 
     }
 
-module private Server =
+module Server =
     open System.IO
     open Newtonsoft.Json
     open LinqToTwitter
@@ -155,6 +155,71 @@ module private Server =
             with _ -> return None
         }
 
+    open IntelliFactory.Html
+
+    let tweetsDiv() =
+        let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
+        let tweets =
+            let json = File.ReadAllText jsonPath
+            JsonConvert.DeserializeObject(json, typeof<Tweet []>)
+            :?> Tweet []
+        let rows =
+            tweets
+            |> Array.mapi (fun idx tweet ->
+                let cls = if idx % 2 = 0 then "col-md-5" else "col-md-5 col-md-offset-1"
+                let p = VerbatimContent("<p>" + tweet.statusAsHtml + "</p>")
+                let screenName, statusId =
+                    match tweet.isRetweeted with
+                    | false -> tweet.screenName, tweet.id
+                    | true -> Option.get tweet.retweetedScreenName, Option.get tweet.retweetedId
+                Div [Class cls] -< [
+                    Div [Class "media"] -< [
+                        A [Class "media-left"; HRef ("https://twitter.com/" + tweet.screenName); Target "_blank"] -< [
+                            Img [Src tweet.avatar; Class "avatar"]
+                        ]
+                        Div [Class "media-body"] -< [
+                            H4 [Class "media-heading"] -< [
+                                A [
+                                    HRef ("https://twitter.com/" + tweet.screenName)
+                                    Target "_blank"
+//                                    Text tweet.screenName
+                                ] -< [Text tweet.screenName]
+                                Text " "                                 
+                                Small [
+                                    A [
+                                        HRef ("https://twitter.com/" + screenName + "/status/" + statusId)
+                                        Target "_blank"
+//                                        Text tweet.createdAt
+                                    ] -< [Text tweet.createdAt]                                    
+                                ]
+                            ]
+                            p
+                        ]                        
+                    ]
+                ]
+            )
+            |> Utils.split 2
+            |> Seq.map (fun x ->
+                Div [Class "row data-row"]
+                -< x)
+            |> fun x -> Div [] -< x
+        rows
+            //)
+//            elt.RemoveAttribute "data-status"
+
+    let fetchNewTweets() =
+        async {
+            let! tweetsArray = latestTweets()
+            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
+            match tweetsArray with
+            | None -> ()
+            | Some tweets ->
+                let json = JsonConvert.SerializeObject(tweets)
+                File.WriteAllText(jsonPath, json)
+//                return tweets        
+        }
+
+// TODO remove this
     [<Remote>]
     let tweets() =
         async {

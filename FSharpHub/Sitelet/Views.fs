@@ -11,7 +11,7 @@ module Views =
             Templates.home
             Home.title
             Home.metaDesc
-            <| fun ctx -> Home.body
+            <| fun ctx -> Home.body()
 
     let error =
         Skin.withTemplate<Action>

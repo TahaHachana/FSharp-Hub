@@ -31,7 +31,7 @@ type Package =
         }
 
 
-module private Server =
+module Server =
 
     open System
     open System.IO
@@ -64,6 +64,60 @@ module private Server =
             with _ -> return None
         }
 
+    open IntelliFactory.Html
+
+    let pkgsDiv() =
+        let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/NuGet.json"
+        let pkgs =
+            let json = File.ReadAllText jsonPath
+            JsonConvert.DeserializeObject(json, typeof<Package []>)
+            :?> Package []
+        let rows =
+            pkgs
+            |> Array.mapi (fun idx pkg ->
+                let cls = if idx % 2 = 0 then "col-md-5" else "col-md-5 col-md-offset-1"
+                Div [Class cls] -< [
+                    Div [Class "media"] -< [
+                        A [Class "media-left"; HRef pkg.projectUrl; Target "_blank"] -< [
+                            Img [Src pkg.iconUrl; Class "avatar"]
+                        ]
+                        Div [Class "media-body"] -< [
+                            H4 [Class "media-heading"] -< [
+                                A [HRef pkg.galleryDetailsUrl; Target "_blank"] -< [Text (pkg.id + " " + pkg.version)]                                        
+                            ]
+                            P [Text ("Pushed on: " + pkg.lastUpdated)]
+                            P [
+                                Text "Download Count: "
+                                Span [Class "badge"] -< [Text (string pkg.downloadCount)]
+                            ]
+                            Div [
+                                for x in pkg.tags -> Span [Class "label label-info"] -< [Text x]
+                            ]
+                        ]               
+                    ]
+                ]
+            )
+            |> Utils.split 2
+            |> Seq.map (fun x ->
+                Div [Class "row data-row"]
+                -< x)
+            |> fun x -> Div [] -< x
+        rows
+
+    let fetchPkgs() =
+        async {
+            let! pkgsArray = ``f#Pkgs``()
+            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/NuGet.json"
+            match pkgsArray with
+            | None -> ()
+            | Some pkgs ->
+                let json = JsonConvert.SerializeObject(pkgs)
+                File.WriteAllText(jsonPath, json)
+        }
+
+
+
+    // TODO remove this
     [<Remote>]
     let pkgs() =
         async {
@@ -71,11 +125,11 @@ module private Server =
             let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/NuGet.json"
             match pkgsArray with
             | None ->
-                let tweets =
+                let pkgs =
                     let json = File.ReadAllText jsonPath
                     JsonConvert.DeserializeObject(json, typeof<Package []>)
                     :?> Package []
-                return tweets
+                return pkgs
             | Some pkgs ->
                 let json = JsonConvert.SerializeObject(pkgs)
                 File.WriteAllText(jsonPath, json)

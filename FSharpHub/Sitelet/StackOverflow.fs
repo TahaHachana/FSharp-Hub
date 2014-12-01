@@ -16,7 +16,7 @@ type SoQuestion =
         acceptedAnswerId : int option
     }
 
-module private Server =
+module Server =
     
     open StackExchange.StacMan
     open System
@@ -74,6 +74,60 @@ module private Server =
             with _ -> return None
         }
 
+    open IntelliFactory.Html
+
+    let stackDiv() =
+        let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/StackOverflowQuestions.json"
+        let questions =
+            let json = File.ReadAllText jsonPath
+            JsonConvert.DeserializeObject(json, typeof<SoQuestion []>)
+            :?> SoQuestion []
+        let rows =
+            questions
+            |> Array.mapi (fun idx q ->
+                let cls = if idx % 2 = 0 then "col-md-5" else "col-md-5 col-md-offset-1"
+                Div [Class cls] -< [
+                    Div [Class "media"] -< [
+                        A [Class "media-left"; HRef q.ownerLink; Target "_blank"] -< [
+                            Img [Src q.ownerAvatar; Class "avatar"]
+                        ]
+                        Div [Class "media-body"] -< [
+                            H4 [Class "media-heading"; Style "word-break: break-word;"] -< [
+                                A [HRef q.link; Target "_blank"] -< [Text q.title]                                        
+                            ]
+                            P [Text q.creationDate]
+                            P [
+                                Text "Score: "
+                                Span [Class "badge"] -< [Text (string q.score)]
+                                Text " Answers: "
+                                Span [Class "badge"] -< [Text (string q.answerCount)]
+                            ]
+                            Div [
+                                for x in q.tags -> Span [Class "label label-info"] -< [Text x]
+                            ]
+                        ]               
+                    ]
+                ]
+            )
+            |> Utils.split 2
+            |> Seq.map (fun x ->
+                Div [Class "row data-row"]
+                -< x)
+            |> fun x -> Div [] -< x
+        rows
+
+
+    let fetchNewQuestions() =
+        async {
+            let! questionsArray = latestQuestions()
+            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/StackOverflowQuestions.json"
+            match questionsArray with
+            | None -> ()
+            | Some questions ->
+                let json = JsonConvert.SerializeObject questions
+                File.WriteAllText(jsonPath, json)
+        }
+
     [<Remote>]
     let questions() =
         async {
@@ -92,6 +146,7 @@ module private Server =
                 return questions
         }
 
+// TODO remove this
 /// Client-side code.
 [<JavaScript>]
 module private Client =

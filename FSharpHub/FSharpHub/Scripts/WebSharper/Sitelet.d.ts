@@ -17,6 +17,17 @@ declare module Website {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
+    module FPish {
+        interface Control {
+            get_Body(): __ABBREV.__Html.IPagelet;
+        }
+        var hideProress : {
+            (): void;
+        };
+        var main : {
+            (): __ABBREV.__Html.Element;
+        };
+    }
     module News {
         interface Response {
             responseData: any;
@@ -35,6 +46,9 @@ declare module Website {
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
+        var hideProress : {
+            (): void;
+        };
         var main : {
             (): __ABBREV.__Html.Element;
         };

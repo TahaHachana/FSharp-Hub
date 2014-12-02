@@ -104,16 +104,15 @@ module Server =
             |> fun x -> Div [] -< x
         rows
 
-    let fetchPkgs() =
+    let fetchPkgs jsonPath =
         async {
             let! pkgsArray = ``f#Pkgs``()
-            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/NuGet.json"
             match pkgsArray with
             | None -> ()
             | Some pkgs ->
                 let json = JsonConvert.SerializeObject(pkgs)
                 File.WriteAllText(jsonPath, json)
-        }
+        } |> Async.RunSynchronously
 
 
 

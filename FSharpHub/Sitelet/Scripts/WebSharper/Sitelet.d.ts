@@ -17,6 +17,17 @@ declare module Website {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
+    module Msdn {
+        interface Control {
+            get_Body(): __ABBREV.__Html.IPagelet;
+        }
+        var hideProress : {
+            (): void;
+        };
+        var main : {
+            (): __ABBREV.__Html.Element;
+        };
+    }
     module FPish {
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;

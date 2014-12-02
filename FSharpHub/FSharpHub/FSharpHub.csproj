@@ -166,6 +166,7 @@
     <Content Include="JSON\NewGitHubRepos.json" />
     <Content Include="JSON\UpdatedGitHubRepos.json" />
     <Content Include="JSON\NuGet.json" />
+    <Content Include="JSON\json1.json" />
     <None Include="Properties\PublishProfiles\FSharpHub.pubxml" />
     <None Include="Properties\PublishProfiles\FSharpHubFileSystem.pubxml" />
     <None Include="Web.Release.config">

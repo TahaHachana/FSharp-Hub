@@ -61,3 +61,46 @@ module Views =
             ""
             ""
             <| fun ctx -> VideosAdmin.body ctx
+
+    open IntelliFactory.Html
+    open IntelliFactory.WebSharper.Sitelets
+    open IntelliFactory.WebSharper.Sitelets.Content
+    open System.Web
+
+    let rss() : Content<Action> =
+        let twitterPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
+        let soPath = HttpContext.Current.Server.MapPath "~/JSON/StackOverflowQuestions.json"
+        let newReposPath = HttpContext.Current.Server.MapPath "~/JSON/NewGitHubRepos.json"
+        let updatedReposPath = HttpContext.Current.Server.MapPath "~/JSON/UpdatedGitHubRepos.json"
+        let nugetPath = HttpContext.Current.Server.MapPath "~/JSON/NuGet.json"
+#if DEBUG
+        Twitter.Server.fetchNewTweets twitterPath
+        StackOverflow.Server.fetchNewQuestions soPath
+        GitHubRepos.Server.fetchNewRepos newReposPath
+        GitHubRepos.Server.fetchUpdatedRepos updatedReposPath
+        NuGet.Server.fetchPkgs nugetPath
+#else
+        try
+            Twitter.Server.fetchNewTweets twitterPath
+            StackOverflow.Server.fetchNewQuestions soPath
+            GitHubRepos.Server.fetchNewRepos newReposPath
+            GitHubRepos.Server.fetchUpdatedRepos updatedReposPath
+            NuGet.Server.fetchPkgs nugetPath
+        with _ -> ()
+#endif
+        CustomContent <| fun context ->
+            {
+                Status = Http.Status.Ok
+                Headers = [] //Http.Header.Custom "Content-Type" "application/rss+xml"]
+                WriteBody = fun stream ->
+                    use tw = new System.IO.StreamWriter(stream)
+                    tw.WriteLine "Fetched latest data!"
+            }
+    //            async {
+    //    //            do! Twitter.Server.fetchNewTweets()
+    //    //            do! StackOverflow.Server.fetchNewQuestions()
+    //    //            do! GitHubRepos.Server.fetchNewRepos()
+    //    //            do! GitHubRepos.Server.fetchUpdatedRepos()
+    //    //            do! NuGet.Server.fetchPkgs()
+    //                }
+    //            |> Async.Start

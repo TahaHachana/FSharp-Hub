@@ -39,15 +39,15 @@ and Entry =
     }
 
 // TODO move this to last home section control
-[<Remote>]
-let fetchNewData() =
-        async {
-            do! Twitter.Server.fetchNewTweets()
-            do! StackOverflow.Server.fetchNewQuestions()
-            do! GitHubRepos.Server.fetchNewRepos()
-            do! GitHubRepos.Server.fetchUpdatedRepos()
-            do! NuGet.Server.fetchPkgs()
-        }
+//[<Remote>]
+//let fetchNewData() =
+//    async {
+//        do! Twitter.Server.fetchNewTweets()
+//        do! StackOverflow.Server.fetchNewQuestions()
+//        do! GitHubRepos.Server.fetchNewRepos()
+//        do! GitHubRepos.Server.fetchUpdatedRepos()
+//        do! NuGet.Server.fetchPkgs()
+//    }
 
 [<JavaScript>]
 let hideProress() =
@@ -64,10 +64,10 @@ let hideProress() =
 
 [<JavaScript>]
 let main() =
-    async {
-        do! fetchNewData()
-        JavaScript.Log "Fetched new data"
-    } |> Async.Start
+//    async {
+//        do! fetchNewData()
+//        JavaScript.Log "Fetched new data"
+//    } |> Async.Start
     Div [HTML5.Attr.Data "status" "loading"]
     |>! OnAfterRender (fun elt ->
         let ul = UL [Attr.Id "news-list"; Attr.Class "list-group"]

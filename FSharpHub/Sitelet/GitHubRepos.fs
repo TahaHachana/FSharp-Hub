@@ -121,16 +121,15 @@ module Server =
             |> fun x -> Div [] -< x
         rows
 
-    let fetchNewRepos() =
+    let fetchNewRepos jsonPath =
         async {
             let! reposArray = NewRepos.repos()
-            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/NewGitHubRepos.json"
             match reposArray with
             | None -> ()
             | Some repos ->
                 let json = JsonConvert.SerializeObject repos
                 File.WriteAllText(jsonPath, json)
-        }
+        } |> Async.RunSynchronously
 
     let updatedReposDiv() =
         let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/UpdatedGitHubRepos.json"
@@ -165,16 +164,15 @@ module Server =
             |> fun x -> Div [] -< x
         rows
 
-    let fetchUpdatedRepos() =
+    let fetchUpdatedRepos jsonPath =
         async {
             let! reposArray = RecentlyUpdated.repos()
-            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/UpdatedGitHubRepos.json"
             match reposArray with
             | None -> ()
             | Some repos ->
                 let json = JsonConvert.SerializeObject repos
                 File.WriteAllText(jsonPath, json)
-        }
+        } |> Async.RunSynchronously
 
 
 

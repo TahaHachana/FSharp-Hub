@@ -56,7 +56,7 @@ module Server =
             entityDetails' entities.UserMentionEntities userMentionDetails
         ]
         |> List.concat
-        |> List.filter (fun (start, _, _) -> start <> 139)
+        |> List.filter (fun (start, ``end`` , _) -> ``end`` - start <> 1)
         |> List.sortBy (fun (start, _, _) -> start)
 
     let skipTake (str:string) idx start =
@@ -207,17 +207,17 @@ module Server =
             //)
 //            elt.RemoveAttribute "data-status"
 
-    let fetchNewTweets() =
+    let fetchNewTweets jsonPath =
         async {
             let! tweetsArray = latestTweets()
-            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
+//            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
             match tweetsArray with
             | None -> ()
             | Some tweets ->
                 let json = JsonConvert.SerializeObject(tweets)
                 File.WriteAllText(jsonPath, json)
 //                return tweets        
-        }
+        } |> Async.RunSynchronously
 
 // TODO remove this
     [<Remote>]

@@ -124,7 +124,12 @@ module Home =
                 ] :> INode<_>
                 new FPish.Control() :> _
             ]
-
+            Div [Id "msdn"; Class "anchor"] -< [
+                Div [Class "page-header"] -< [
+                    H2 [Text "MSDN"]
+                ] :> INode<_>
+                new Msdn.Control() :> _
+            ]
         ]
 
 //        Div []
@@ -265,3 +270,5 @@ module VideosAdmin =
             Div [Id "push"]
             Shared.ga
         ]
+
+

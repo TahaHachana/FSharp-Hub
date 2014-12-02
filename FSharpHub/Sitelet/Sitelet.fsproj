@@ -128,6 +128,8 @@
     <Compile Include="NuGet.fs" />
     <Compile Include="News.fs" />
     <Compile Include="FPish.fs" />
+    <Compile Include="Msdn.fs" />
+    <Compile Include="TwitterBot.fs" />
     <Compile Include="Videos.fs" />
     <Compile Include="VideosAdmin.fs" />
     <Compile Include="Model.fs" />

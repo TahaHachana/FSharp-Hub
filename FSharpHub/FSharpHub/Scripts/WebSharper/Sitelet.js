@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,FPish,jQuery,HTML5,IntrinsicFunctionProxy,Seq,JavaScript,Utils,Arrays,GitHubRepos,Client1,Login,Client2,window,EventsPervasives,News,NuGet,Client3,Questions,Client4,T,Snippets,Client5,StackOverflow,Client6,Twitter,Client7,VideosAdmin,Client8;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,FPish,jQuery,HTML5,IntrinsicFunctionProxy,Seq,JavaScript,Utils,Arrays,GitHubRepos,Client1,Login,Client2,window,EventsPervasives,Msdn,News,NuGet,Client3,Questions,Client4,T,Snippets,Client5,StackOverflow,Client6,Twitter,Client7,VideosAdmin,Client8;
  Runtime.Define(Global,{
   Website:{
    BooksAdmin:{
@@ -65,7 +65,7 @@
        cover=tupledArg[7];
        return Concurrency.Start(Concurrency.Delay(function()
        {
-        return Concurrency.Bind(Remoting.Async("Sitelet:11",[url,title,authors,publisher,isbn,pages,date,cover]),function(arg101)
+        return Concurrency.Bind(Remoting.Async("Sitelet:10",[url,title,authors,publisher,isbn,pages,date,cover]),function(arg101)
         {
          if(arg101)
           {
@@ -175,7 +175,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:3",[]);
+        x1=Remoting.Async("Sitelet:2",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -210,7 +210,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:4",[]);
+        x1=Remoting.Async("Sitelet:3",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -263,7 +263,7 @@
        {
         return Concurrency.Start(Concurrency.Delay(function()
         {
-         return Concurrency.Bind(Remoting.Async("Sitelet:9",[{
+         return Concurrency.Bind(Remoting.Async("Sitelet:8",[{
           Name:userInput.get_Value(),
           Password:Client2.passInput().get_Value()
          }]),function(arg101)
@@ -312,6 +312,49 @@
      }
     })
    },
+   Msdn:{
+    Control:Runtime.Class({
+     get_Body:function()
+     {
+      return Msdn.main();
+     }
+    }),
+    hideProress:function()
+    {
+     return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
+     {
+      return jQuery(this).scrollspy.call(null,"refresh");
+     });
+    },
+    main:function()
+    {
+     var x;
+     x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
+     Operators.OnAfterRender(function(elt)
+     {
+      var ul;
+      ul=Default.UL(List.ofArray([Default.Attr().Class("list-group")]));
+      jQuery.getJSON("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=https%3A%2F%2Fsocial.msdn.microsoft.com%2FForums%2Fen-US%2Ffsharpgeneral%2Fthreads%3FoutputAs%3Drss",Runtime.Tupled(function(tupledArg)
+      {
+       var data,_arg1,data1,idx,x1,arg10;
+       data=tupledArg[0];
+       _arg1=tupledArg[1];
+       data1=data.responseData.feed.entries;
+       for(idx=0;idx<=data1.length-1;idx++){
+        x1=IntrinsicFunctionProxy.GetArray(data1,idx);
+        arg10=x1.link;
+        ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x1.title)]))])),Default.P(List.ofArray([Default.Text(x1.contentSnippet)]))])));
+       }
+       return;
+      }));
+      elt.AppendI(ul);
+      JavaScript.Log("Appended MSDN list");
+      elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+      return Msdn.hideProress();
+     },x);
+     return x;
+    }
+   },
    News:{
     Control:Runtime.Class({
      get_Body:function()
@@ -329,14 +372,6 @@
     main:function()
     {
      var x;
-     Concurrency.Start(Concurrency.Delay(function()
-     {
-      return Concurrency.Bind(Remoting.Async("Sitelet:1",[]),function()
-      {
-       JavaScript.Log("Fetched new data");
-       return Concurrency.Return(null);
-      });
-     }));
      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
      Operators.OnAfterRender(function(elt)
      {
@@ -392,7 +427,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:2",[]);
+        x1=Remoting.Async("Sitelet:1",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -464,7 +499,7 @@
       {
        return Concurrency.Start(Concurrency.Delay(function()
        {
-        return Concurrency.Bind(Remoting.Async("Sitelet:8",[]),function(arg101)
+        return Concurrency.Bind(Remoting.Async("Sitelet:7",[]),function(arg101)
         {
          if(arg101.$==1)
           {
@@ -517,7 +552,7 @@
       {
        return Concurrency.Start(Concurrency.Delay(function()
        {
-        return Concurrency.Bind(Remoting.Async("Sitelet:7",[]),function(arg101)
+        return Concurrency.Bind(Remoting.Async("Sitelet:6",[]),function(arg101)
         {
          if(arg101.$==1)
           {
@@ -570,7 +605,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:5",[]);
+        x1=Remoting.Async("Sitelet:4",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -639,7 +674,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:6",[]);
+        x1=Remoting.Async("Sitelet:5",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -808,6 +843,7 @@
   Client2=Runtime.Safe(Login.Client);
   window=Runtime.Safe(Global.window);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
+  Msdn=Runtime.Safe(Website.Msdn);
   News=Runtime.Safe(Website.News);
   NuGet=Runtime.Safe(Website.NuGet);
   Client3=Runtime.Safe(NuGet.Client);

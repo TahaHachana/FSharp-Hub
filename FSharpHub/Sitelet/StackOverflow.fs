@@ -117,16 +117,15 @@ module Server =
         rows
 
 
-    let fetchNewQuestions() =
+    let fetchNewQuestions jsonPath =
         async {
             let! questionsArray = latestQuestions()
-            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/StackOverflowQuestions.json"
             match questionsArray with
             | None -> ()
             | Some questions ->
                 let json = JsonConvert.SerializeObject questions
                 File.WriteAllText(jsonPath, json)
-        }
+        } |> Async.RunSynchronously
 
     [<Remote>]
     let questions() =

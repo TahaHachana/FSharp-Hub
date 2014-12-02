@@ -25,5 +25,6 @@ let controller =
         | Logout        -> logout()
         | BooksAdmin    -> protect Views.booksAdmin
         | VideosAdmin   -> protect Views.videosAdmin
+        | Rss -> Views.rss()
 
     { Handle = handle }

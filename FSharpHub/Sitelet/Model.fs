@@ -12,3 +12,4 @@ type Action =
     | Logout
     | [<CompiledName("videos")>] Videos of PageId
     | VideosAdmin
+    | Rss

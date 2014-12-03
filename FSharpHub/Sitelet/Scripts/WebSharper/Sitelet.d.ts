@@ -17,6 +17,38 @@ declare module Website {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
+    module GoogleGroup {
+        interface Control {
+            get_Body(): __ABBREV.__Html.IPagelet;
+        }
+        var hideProress : {
+            (): void;
+        };
+        var main : {
+            (): __ABBREV.__Html.Element;
+        };
+    }
+    module FSSnip {
+        module Client {
+            var hideProress : {
+                (): void;
+            };
+            var main : {
+                (): __ABBREV.__Html.Element;
+            };
+        }
+        interface Snippet {
+            author: string;
+            description: string;
+            likes: number;
+            link: string;
+            published: string;
+            title: string;
+        }
+        interface Control {
+            get_Body(): __ABBREV.__Html.IPagelet;
+        }
+    }
     module Msdn {
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;

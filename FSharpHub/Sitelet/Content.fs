@@ -130,6 +130,18 @@ module Home =
                 ] :> INode<_>
                 new Msdn.Control() :> _
             ]
+            Div [Id "fssnip"; Class "anchor"] -< [
+                Div [Class "page-header"] -< [
+                    H2 [Text "F# Snippets"]
+                ] :> INode<_>
+                new FSSnip.Control() :> _
+            ]
+            Div [Id "google-group"; Class "anchor"] -< [
+                Div [Class "page-header"] -< [
+                    H2 [Text "Google Group"]
+                ] :> INode<_>
+                new GoogleGroup.Control() :> _
+            ]
         ]
 
 //        Div []

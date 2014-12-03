@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,FPish,jQuery,HTML5,IntrinsicFunctionProxy,Seq,JavaScript,Utils,Arrays,GitHubRepos,Client1,Login,Client2,window,EventsPervasives,Msdn,News,NuGet,Client3,Questions,Client4,T,Snippets,Client5,StackOverflow,Client6,Twitter,Client7,VideosAdmin,Client8;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,FPish,jQuery,HTML5,IntrinsicFunctionProxy,Seq,JavaScript,FSSnip,Client1,Utils,Arrays,GitHubRepos,Client2,GoogleGroup,Login,Client3,window,EventsPervasives,Msdn,News,NuGet,Client4,Questions,Client5,T,Snippets,Client6,StackOverflow,Client7,Twitter,Client8,VideosAdmin,Client9;
  Runtime.Define(Global,{
   Website:{
    BooksAdmin:{
@@ -65,7 +65,7 @@
        cover=tupledArg[7];
        return Concurrency.Start(Concurrency.Delay(function()
        {
-        return Concurrency.Bind(Remoting.Async("Sitelet:10",[url,title,authors,publisher,isbn,pages,date,cover]),function(arg101)
+        return Concurrency.Bind(Remoting.Async("Sitelet:11",[url,title,authors,publisher,isbn,pages,date,cover]),function(arg101)
         {
          if(arg101)
           {
@@ -146,6 +146,61 @@
      return x;
     }
    },
+   FSSnip:{
+    Client:{
+     hideProress:function()
+     {
+      return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
+      {
+       return jQuery(this).scrollspy.call(null,"refresh");
+      });
+     },
+     main:function()
+     {
+      var x;
+      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
+      Operators.OnAfterRender(function(elt)
+      {
+       return Concurrency.Start(Concurrency.Delay(function()
+       {
+        var x1;
+        x1=Remoting.Async("Sitelet:1",[]);
+        return Concurrency.Bind(x1,function(arg101)
+        {
+         var ul,a,b;
+         ul=Default.UL(List.ofArray([Default.Attr().Class("list-group")]));
+         a=Concurrency.For(arg101,function(arg102)
+         {
+          var arg103;
+          arg103=arg102.link;
+          ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg103),Default.Attr().NewAttr("target","_blank"),Default.Text(arg102.title)]))])),Default.P(List.ofArray([Default.Text(arg102.description)])),Default.P(List.ofArray([Default.Text("Published "+arg102.published+" by "+arg102.author)]))])));
+          return Concurrency.Return(null);
+         });
+         b=Concurrency.Delay(function()
+         {
+          elt.AppendI(ul);
+          JavaScript.Log("Appended snippets list");
+          elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+          Client1.hideProress();
+          return Concurrency.Return(null);
+         });
+         return Concurrency.Bind(a,function()
+         {
+          return b;
+         });
+        });
+       }));
+      },x);
+      return x;
+     }
+    },
+    Control:Runtime.Class({
+     get_Body:function()
+     {
+      return Client1.main();
+     }
+    })
+   },
    GitHubRepos:{
     Client:{
      hideProress:function()
@@ -175,7 +230,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:2",[]);
+        x1=Remoting.Async("Sitelet:3",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -194,7 +249,7 @@
           };
          },arg101)));
          elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
-         Client1.hideProress();
+         Client2.hideProress();
          return Concurrency.Return(null);
         });
        }));
@@ -210,7 +265,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:3",[]);
+        x1=Remoting.Async("Sitelet:4",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -229,7 +284,7 @@
           };
          },arg101)));
          elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
-         Client1.hideProress();
+         Client2.hideProress();
          return Concurrency.Return(null);
         });
        }));
@@ -240,15 +295,57 @@
     NewReposControl:Runtime.Class({
      get_Body:function()
      {
-      return Client1.newRepos();
+      return Client2.newRepos();
      }
     }),
     UpdatedReposControl:Runtime.Class({
      get_Body:function()
      {
-      return Client1.updatedRepos();
+      return Client2.updatedRepos();
      }
     })
+   },
+   GoogleGroup:{
+    Control:Runtime.Class({
+     get_Body:function()
+     {
+      return GoogleGroup.main();
+     }
+    }),
+    hideProress:function()
+    {
+     return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
+     {
+      return jQuery(this).scrollspy.call(null,"refresh");
+     });
+    },
+    main:function()
+    {
+     var x;
+     x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
+     Operators.OnAfterRender(function(elt)
+     {
+      var ul;
+      ul=Default.UL(List.ofArray([Default.Attr().Class("list-group")]));
+      jQuery.getJSON("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=?&q=https%3A%2F%2Fgroups.google.com%2Fforum%2Ffeed%2Ffsharp-opensource%2Ftopics%2Frss.xml%3Fnum%3D15",Runtime.Tupled(function(tupledArg)
+      {
+       var data,_arg1,data1,idx,x1,arg10;
+       data=tupledArg[0];
+       _arg1=tupledArg[1];
+       data1=data.responseData.feed.entries;
+       for(idx=0;idx<=data1.length-1;idx++){
+        x1=IntrinsicFunctionProxy.GetArray(data1,idx);
+        arg10=x1.link;
+        ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x1.title)]))])),Default.P(List.ofArray([Default.Text(x1.contentSnippet)])),Default.P(List.ofArray([Default.Text("Author "+x1.author)]))])));
+       }
+       return;
+      }));
+      elt.AppendI(ul);
+      elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+      return GoogleGroup.hideProress();
+     },x);
+     return x;
+    }
    },
    Login:{
     Client:{
@@ -263,9 +360,9 @@
        {
         return Concurrency.Start(Concurrency.Delay(function()
         {
-         return Concurrency.Bind(Remoting.Async("Sitelet:8",[{
+         return Concurrency.Bind(Remoting.Async("Sitelet:9",[{
           Name:userInput.get_Value(),
-          Password:Client2.passInput().get_Value()
+          Password:Client3.passInput().get_Value()
          }]),function(arg101)
          {
           if(arg101.$==1)
@@ -288,7 +385,7 @@
       arg103=List.ofArray([Default.Text("Username"),Default.Attr().NewAttr("for","username")]);
       arg104=List.ofArray([Default.Text("Password"),Default.Attr().NewAttr("for","password")]);
       arg105=List.ofArray([submitBtn]);
-      return Operators.add(Default.Form(List.ofArray([Default.Attr().NewAttr("role","form"),Default.Attr().NewAttr("id","signin")])),List.ofArray([Default.H2(List.ofArray([Default.Text("Please sign in")])),Operators.add(Default.Tags().NewTag("fieldset",arg102),List.ofArray([Default.Tags().NewTag("label",arg103),userInput,Default.Tags().NewTag("label",arg104),Client2.passInput()])),Default.Tags().NewTag("fieldset",arg105)]));
+      return Operators.add(Default.Form(List.ofArray([Default.Attr().NewAttr("role","form"),Default.Attr().NewAttr("id","signin")])),List.ofArray([Default.H2(List.ofArray([Default.Text("Please sign in")])),Operators.add(Default.Tags().NewTag("fieldset",arg102),List.ofArray([Default.Tags().NewTag("label",arg103),userInput,Default.Tags().NewTag("label",arg104),Client3.passInput()])),Default.Tags().NewTag("fieldset",arg105)]));
      },
      passInput:Runtime.Field(function()
      {
@@ -308,7 +405,7 @@
     Control:Runtime.Class({
      get_Body:function()
      {
-      return Client2.loginForm(this.redirectUrl);
+      return Client3.loginForm(this.redirectUrl);
      }
     })
    },
@@ -427,7 +524,7 @@
        return Concurrency.Start(Concurrency.Delay(function()
        {
         var x1;
-        x1=Remoting.Async("Sitelet:1",[]);
+        x1=Remoting.Async("Sitelet:2",[]);
         return Concurrency.Bind(x1,function(arg101)
         {
          Seq.iter(function(x2)
@@ -452,7 +549,7 @@
           };
          },arg101)));
          elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
-         Client3.hideProress();
+         Client4.hideProress();
          return Concurrency.Return(null);
         });
        }));
@@ -463,7 +560,7 @@
     Control:Runtime.Class({
      get_Body:function()
      {
-      return Client3.main();
+      return Client4.main();
      }
     })
    },
@@ -478,7 +575,7 @@
        return ul.AppendI(arg00);
       },Arrays.map(Runtime.Tupled(function(tupledArg)
       {
-       return Client4.li(tupledArg[0],tupledArg[1],tupledArg[2],tupledArg[3],tupledArg[4]);
+       return Client5.li(tupledArg[0],tupledArg[1],tupledArg[2],tupledArg[3],tupledArg[4]);
       }),arr));
       return elt.AppendI(ul);
      },
@@ -499,64 +596,11 @@
       {
        return Concurrency.Start(Concurrency.Delay(function()
        {
-        return Concurrency.Bind(Remoting.Async("Sitelet:7",[]),function(arg101)
+        return Concurrency.Bind(Remoting.Async("Sitelet:8",[]),function(arg101)
         {
          if(arg101.$==1)
           {
-           Client4.displayQuestions(arg101.$0,elt);
-           return Concurrency.Return(null);
-          }
-         else
-          {
-           return Concurrency.Return(null);
-          }
-        });
-       }));
-      },x);
-      return x;
-     }
-    },
-    Control:Runtime.Class({
-     get_Body:function()
-     {
-      return Client4.main();
-     }
-    })
-   },
-   Snippets:{
-    Client:{
-     dispalySnippets:function(arr,elt)
-     {
-      var ul;
-      ul=Default.UL(List.ofArray([Default.Attr().Class("list-group")]));
-      Arrays.iter(function(arg00)
-      {
-       return ul.AppendI(arg00);
-      },Arrays.map(Runtime.Tupled(function(tupledArg)
-      {
-       return Client5.li(tupledArg[0],tupledArg[1],tupledArg[2]);
-      }),arr));
-      return elt.AppendI(ul);
-     },
-     li:function(link,title,description)
-     {
-      var arg10;
-      arg10=List.ofArray([Default.Text(title)]);
-      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link),Default.Attr().NewAttr("target","_blank")])),List.ofArray([Default.Tags().NewTag("strong",arg10)])),Default.P(List.ofArray([Default.Text(description)]))]));
-     },
-     main:function()
-     {
-      var x;
-      x=Default.Div(List.ofArray([Default.Attr().Class("home-widget")]));
-      Operators.OnAfterRender(function(elt)
-      {
-       return Concurrency.Start(Concurrency.Delay(function()
-       {
-        return Concurrency.Bind(Remoting.Async("Sitelet:6",[]),function(arg101)
-        {
-         if(arg101.$==1)
-          {
-           Client5.dispalySnippets(arg101.$0,elt);
+           Client5.displayQuestions(arg101.$0,elt);
            return Concurrency.Return(null);
           }
          else
@@ -576,62 +620,46 @@
      }
     })
    },
-   StackOverflow:{
+   Snippets:{
     Client:{
-     hideProress:function()
+     dispalySnippets:function(arr,elt)
      {
-      if(jQuery("[data-status=\"loading\"]").length===0)
-       {
-        jQuery("#progress-bar").slideUp();
-        return jQuery("[data-spy=\"scroll\"]").each(function()
-        {
-         return jQuery(this).scrollspy.call(null,"refresh");
-        });
-       }
-      else
-       {
-        return jQuery("[data-spy=\"scroll\"]").each(function()
-        {
-         return jQuery(this).scrollspy.call(null,"refresh");
-        });
-       }
+      var ul;
+      ul=Default.UL(List.ofArray([Default.Attr().Class("list-group")]));
+      Arrays.iter(function(arg00)
+      {
+       return ul.AppendI(arg00);
+      },Arrays.map(Runtime.Tupled(function(tupledArg)
+      {
+       return Client6.li(tupledArg[0],tupledArg[1],tupledArg[2]);
+      }),arr));
+      return elt.AppendI(ul);
+     },
+     li:function(link,title,description)
+     {
+      var arg10;
+      arg10=List.ofArray([Default.Text(title)]);
+      return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.HRef(link),Default.Attr().NewAttr("target","_blank")])),List.ofArray([Default.Tags().NewTag("strong",arg10)])),Default.P(List.ofArray([Default.Text(description)]))]));
      },
      main:function()
      {
       var x;
-      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
+      x=Default.Div(List.ofArray([Default.Attr().Class("home-widget")]));
       Operators.OnAfterRender(function(elt)
       {
        return Concurrency.Start(Concurrency.Delay(function()
        {
-        var x1;
-        x1=Remoting.Async("Sitelet:4",[]);
-        return Concurrency.Bind(x1,function(arg101)
+        return Concurrency.Bind(Remoting.Async("Sitelet:7",[]),function(arg101)
         {
-         Seq.iter(function(x2)
-         {
-          return elt.AppendI(Operators.add(Default.Div(List.ofArray([Default.Attr().Class("row data-row")])),x2));
-         },Utils.split(2,Arrays.mapi(function(idx)
-         {
-          return function(q)
+         if(arg101.$==1)
           {
-           var cls,arg102,arg103,arg104;
-           cls=idx%2===0?"col-md-5":"col-md-5 col-md-offset-1";
-           arg102=q.ownerLink;
-           arg103=q.ownerAvatar;
-           arg104=q.link;
-           return Operators.add(Default.Div(List.ofArray([Default.Attr().Class(cls)])),List.ofArray([Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Attr().Class("media-left"),Default.Attr().NewAttr("href",arg102),Default.Attr().NewAttr("target","_blank")])),List.ofArray([Default.Img(List.ofArray([Default.Attr().NewAttr("src",arg103),Default.Attr().Class("avatar")]))])),Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media-body")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("media-heading"),Default.Attr().NewAttr("style","word-break: break-word;")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg104),Default.Attr().NewAttr("target","_blank"),Default.Text(q.title)]))])),Default.P(List.ofArray([Default.Text(q.creationDate)])),Default.P(List.ofArray([Default.Text("Score: "),Default.Span(List.ofArray([Default.Attr().Class("badge"),Default.Text(Global.String(q.score))])),Default.Text(" Answers: "),Default.Span(List.ofArray([Default.Attr().Class("badge"),Default.Text(Global.String(q.answerCount))]))])),Default.Div(Seq.toList(Seq.delay(function()
-           {
-            return Seq.map(function(x2)
-            {
-             return Default.Span(List.ofArray([Default.Attr().Class("label label-info"),Default.Text(x2)]));
-            },q.tags);
-           })))]))]))]));
-          };
-         },arg101)));
-         elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
-         Client6.hideProress();
-         return Concurrency.Return(null);
+           Client6.dispalySnippets(arg101.$0,elt);
+           return Concurrency.Return(null);
+          }
+         else
+          {
+           return Concurrency.Return(null);
+          }
         });
        }));
       },x);
@@ -645,7 +673,7 @@
      }
     })
    },
-   Twitter:{
+   StackOverflow:{
     Client:{
      hideProress:function()
      {
@@ -682,6 +710,75 @@
           return elt.AppendI(Operators.add(Default.Div(List.ofArray([Default.Attr().Class("row data-row")])),x2));
          },Utils.split(2,Arrays.mapi(function(idx)
          {
+          return function(q)
+          {
+           var cls,arg102,arg103,arg104;
+           cls=idx%2===0?"col-md-5":"col-md-5 col-md-offset-1";
+           arg102=q.ownerLink;
+           arg103=q.ownerAvatar;
+           arg104=q.link;
+           return Operators.add(Default.Div(List.ofArray([Default.Attr().Class(cls)])),List.ofArray([Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media")])),List.ofArray([Operators.add(Default.A(List.ofArray([Default.Attr().Class("media-left"),Default.Attr().NewAttr("href",arg102),Default.Attr().NewAttr("target","_blank")])),List.ofArray([Default.Img(List.ofArray([Default.Attr().NewAttr("src",arg103),Default.Attr().Class("avatar")]))])),Operators.add(Default.Div(List.ofArray([Default.Attr().Class("media-body")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("media-heading"),Default.Attr().NewAttr("style","word-break: break-word;")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg104),Default.Attr().NewAttr("target","_blank"),Default.Text(q.title)]))])),Default.P(List.ofArray([Default.Text(q.creationDate)])),Default.P(List.ofArray([Default.Text("Score: "),Default.Span(List.ofArray([Default.Attr().Class("badge"),Default.Text(Global.String(q.score))])),Default.Text(" Answers: "),Default.Span(List.ofArray([Default.Attr().Class("badge"),Default.Text(Global.String(q.answerCount))]))])),Default.Div(Seq.toList(Seq.delay(function()
+           {
+            return Seq.map(function(x2)
+            {
+             return Default.Span(List.ofArray([Default.Attr().Class("label label-info"),Default.Text(x2)]));
+            },q.tags);
+           })))]))]))]));
+          };
+         },arg101)));
+         elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+         Client7.hideProress();
+         return Concurrency.Return(null);
+        });
+       }));
+      },x);
+      return x;
+     }
+    },
+    Control:Runtime.Class({
+     get_Body:function()
+     {
+      return Client7.main();
+     }
+    })
+   },
+   Twitter:{
+    Client:{
+     hideProress:function()
+     {
+      if(jQuery("[data-status=\"loading\"]").length===0)
+       {
+        jQuery("#progress-bar").slideUp();
+        return jQuery("[data-spy=\"scroll\"]").each(function()
+        {
+         return jQuery(this).scrollspy.call(null,"refresh");
+        });
+       }
+      else
+       {
+        return jQuery("[data-spy=\"scroll\"]").each(function()
+        {
+         return jQuery(this).scrollspy.call(null,"refresh");
+        });
+       }
+     },
+     main:function()
+     {
+      var x;
+      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
+      Operators.OnAfterRender(function(elt)
+      {
+       return Concurrency.Start(Concurrency.Delay(function()
+       {
+        var x1;
+        x1=Remoting.Async("Sitelet:6",[]);
+        return Concurrency.Bind(x1,function(arg101)
+        {
+         Seq.iter(function(x2)
+         {
+          return elt.AppendI(Operators.add(Default.Div(List.ofArray([Default.Attr().Class("row data-row")])),x2));
+         },Utils.split(2,Arrays.mapi(function(idx)
+         {
           return function(tweet)
           {
            var cls,p,patternInput,statusId,screenName,arg102,arg103,arg104,arg105,arg106;
@@ -702,7 +799,7 @@
           };
          },arg101)));
          elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
-         Client7.hideProress();
+         Client8.hideProress();
          return Concurrency.Return(null);
         });
        }));
@@ -713,7 +810,7 @@
     Control:Runtime.Class({
      get_Body:function()
      {
-      return Client7.main();
+      return Client8.main();
      }
     })
    },
@@ -805,7 +902,7 @@
     Control:Runtime.Class({
      get_Body:function()
      {
-      return Client8.main();
+      return Client9.main();
      }
     })
    }
@@ -835,33 +932,36 @@
   IntrinsicFunctionProxy=Runtime.Safe(WebSharper.IntrinsicFunctionProxy);
   Seq=Runtime.Safe(WebSharper.Seq);
   JavaScript=Runtime.Safe(WebSharper.JavaScript);
+  FSSnip=Runtime.Safe(Website.FSSnip);
+  Client1=Runtime.Safe(FSSnip.Client);
   Utils=Runtime.Safe(Website.Utils);
   Arrays=Runtime.Safe(WebSharper.Arrays);
   GitHubRepos=Runtime.Safe(Website.GitHubRepos);
-  Client1=Runtime.Safe(GitHubRepos.Client);
+  Client2=Runtime.Safe(GitHubRepos.Client);
+  GoogleGroup=Runtime.Safe(Website.GoogleGroup);
   Login=Runtime.Safe(Website.Login);
-  Client2=Runtime.Safe(Login.Client);
+  Client3=Runtime.Safe(Login.Client);
   window=Runtime.Safe(Global.window);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
   Msdn=Runtime.Safe(Website.Msdn);
   News=Runtime.Safe(Website.News);
   NuGet=Runtime.Safe(Website.NuGet);
-  Client3=Runtime.Safe(NuGet.Client);
+  Client4=Runtime.Safe(NuGet.Client);
   Questions=Runtime.Safe(Website.Questions);
-  Client4=Runtime.Safe(Questions.Client);
+  Client5=Runtime.Safe(Questions.Client);
   T=Runtime.Safe(List.T);
   Snippets=Runtime.Safe(Website.Snippets);
-  Client5=Runtime.Safe(Snippets.Client);
+  Client6=Runtime.Safe(Snippets.Client);
   StackOverflow=Runtime.Safe(Website.StackOverflow);
-  Client6=Runtime.Safe(StackOverflow.Client);
+  Client7=Runtime.Safe(StackOverflow.Client);
   Twitter=Runtime.Safe(Website.Twitter);
-  Client7=Runtime.Safe(Twitter.Client);
+  Client8=Runtime.Safe(Twitter.Client);
   VideosAdmin=Runtime.Safe(Website.VideosAdmin);
-  return Client8=Runtime.Safe(VideosAdmin.Client);
+  return Client9=Runtime.Safe(VideosAdmin.Client);
  });
  Runtime.OnLoad(function()
  {
-  Client2.passInput();
+  Client3.passInput();
   Client.addFormlet();
   return;
  });

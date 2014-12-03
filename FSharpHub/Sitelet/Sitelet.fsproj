@@ -129,6 +129,8 @@
     <Compile Include="News.fs" />
     <Compile Include="FPish.fs" />
     <Compile Include="Msdn.fs" />
+    <Compile Include="FSSnip.fs" />
+    <Compile Include="GoogleGroup.fs" />
     <Compile Include="TwitterBot.fs" />
     <Compile Include="Videos.fs" />
     <Compile Include="VideosAdmin.fs" />

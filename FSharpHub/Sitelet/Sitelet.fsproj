@@ -110,6 +110,7 @@
   <ItemGroup>
     <Compile Include="Skin.fs" />
     <Compile Include="Utils.fs" />
+    <Compile Include="JsUtils.fs" />
     <Compile Include="Records.fs" />
     <Compile Include="Credentials.fs" />
     <Compile Include="Mongo.fs" />

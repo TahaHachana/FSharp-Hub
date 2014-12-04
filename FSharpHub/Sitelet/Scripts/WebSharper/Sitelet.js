@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,FPish,jQuery,HTML5,IntrinsicFunctionProxy,Seq,JavaScript,FSSnip,Client1,GoogleGroup,Login,Client2,window,EventsPervasives,Msdn,News,Arrays,Utils,VideosAdmin,Client3;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,FPish,Seq,HTML5,JsUtils,jQuery,JavaScript,FSSnip,Client1,GoogleGroup,Arrays,Login,Client2,window,EventsPervasives,Msdn,News,Utils,VideosAdmin,Client3;
  Runtime.Define(Global,{
   Website:{
    BooksAdmin:{
@@ -104,12 +104,17 @@
       return FPish.main();
      }
     }),
-    hideProress:function()
+    itemLi:function(item)
     {
-     return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
+     var arg10;
+     arg10=item.link;
+     return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(item.title)]))])),Default.Div(Seq.toList(Seq.delay(function()
      {
-      return jQuery(this).scrollspy.call(null,"refresh");
-     });
+      return Seq.map(function(y)
+      {
+       return Operators.add(Default.Span(List.ofArray([Default.Attr().Class("label label-info")])),List.ofArray([Default.Text(y)]));
+      },item.categories);
+     })))]));
     },
     main:function()
     {
@@ -117,31 +122,10 @@
      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
      Operators.OnAfterRender(function(elt)
      {
-      var ul;
-      ul=Default.UL(List.ofArray([Default.Attr().Class("list-group")]));
-      jQuery.getJSON("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=http%3A%2F%2Ffpish.net%2Frss%2Ftopics%2Fall",Runtime.Tupled(function(tupledArg)
+      return JsUtils.displayFeed("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=http%3A%2F%2Ffpish.net%2Frss%2Ftopics%2Fall",function(item)
       {
-       var data,_arg1,data1,idx,x1,arg10;
-       data=tupledArg[0];
-       _arg1=tupledArg[1];
-       data1=data.responseData.feed.entries;
-       for(idx=0;idx<=data1.length-1;idx++){
-        x1=IntrinsicFunctionProxy.GetArray(data1,idx);
-        arg10=x1.link;
-        ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x1.title)]))])),Default.Div(Seq.toList(Seq.delay(function()
-        {
-         return Seq.map(function(y)
-         {
-          return Operators.add(Default.Span(List.ofArray([Default.Attr().Class("label label-info")])),List.ofArray([Default.Text(y)]));
-         },x1.categories);
-        })))])));
-       }
-       return;
-      }));
-      elt.AppendI(ul);
-      JavaScript.Log("Appended fpish list");
-      elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
-      return FPish.hideProress();
+       return FPish.itemLi(item);
+      },elt);
      },x);
      return x;
     }
@@ -208,12 +192,11 @@
       return GoogleGroup.main();
      }
     }),
-    hideProress:function()
+    itemLi:function(item)
     {
-     return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
-     {
-      return jQuery(this).scrollspy.call(null,"refresh");
-     });
+     var arg10;
+     arg10=item.link;
+     return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(item.title)]))])),Default.P(List.ofArray([Default.Text(item.contentSnippet)])),Default.P(List.ofArray([Default.Text("Author: "+item.author)]))]));
     },
     main:function()
     {
@@ -221,26 +204,36 @@
      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
      Operators.OnAfterRender(function(elt)
      {
-      var ul;
-      ul=Default.UL(List.ofArray([Default.Attr().Class("list-group")]));
-      jQuery.getJSON("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=?&q=https%3A%2F%2Fgroups.google.com%2Fforum%2Ffeed%2Ffsharp-opensource%2Ftopics%2Frss.xml%3Fnum%3D15",Runtime.Tupled(function(tupledArg)
+      return JsUtils.displayFeed("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&callback=?&q=https%3A%2F%2Fgroups.google.com%2Fforum%2Ffeed%2Ffsharp-opensource%2Ftopics%2Frss.xml%3Fnum%3D15",function(item)
       {
-       var data,_arg1,data1,idx,x1,arg10;
-       data=tupledArg[0];
-       _arg1=tupledArg[1];
-       data1=data.responseData.feed.entries;
-       for(idx=0;idx<=data1.length-1;idx++){
-        x1=IntrinsicFunctionProxy.GetArray(data1,idx);
-        arg10=x1.link;
-        ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x1.title)]))])),Default.P(List.ofArray([Default.Text(x1.contentSnippet)])),Default.P(List.ofArray([Default.Text("Author: "+x1.author)]))])));
-       }
-       return;
-      }));
-      elt.AppendI(ul);
-      elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
-      return GoogleGroup.hideProress();
+       return GoogleGroup.itemLi(item);
+      },elt);
      },x);
      return x;
+    }
+   },
+   JsUtils:{
+    displayFeed:function(url,itemLi,elt)
+    {
+     var ul;
+     ul=Default.UL(List.ofArray([Default.Attr().Class("list-group")]));
+     jQuery.getJSON(url,Runtime.Tupled(function(tupledArg)
+     {
+      return Arrays.iter(function(x)
+      {
+       return ul.AppendI(itemLi(x));
+      },tupledArg[0].responseData.feed.entries);
+     }));
+     elt.AppendI(ul);
+     elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
+     return JsUtils.hideProress();
+    },
+    hideProress:function()
+    {
+     return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
+     {
+      return jQuery(this).scrollspy.call(null,"refresh");
+     });
     }
    },
    Login:{
@@ -312,12 +305,11 @@
       return Msdn.main();
      }
     }),
-    hideProress:function()
+    itemLi:function(item)
     {
-     return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
-     {
-      return jQuery(this).scrollspy.call(null,"refresh");
-     });
+     var arg10;
+     arg10=item.link;
+     return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(item.title)]))])),Default.P(List.ofArray([Default.Text(item.contentSnippet)]))]));
     },
     main:function()
     {
@@ -325,25 +317,10 @@
      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
      Operators.OnAfterRender(function(elt)
      {
-      var ul;
-      ul=Default.UL(List.ofArray([Default.Attr().Class("list-group")]));
-      jQuery.getJSON("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=https%3A%2F%2Fsocial.msdn.microsoft.com%2FForums%2Fen-US%2Ffsharpgeneral%2Fthreads%3FoutputAs%3Drss",Runtime.Tupled(function(tupledArg)
+      return JsUtils.displayFeed("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=https%3A%2F%2Fsocial.msdn.microsoft.com%2FForums%2Fen-US%2Ffsharpgeneral%2Fthreads%3FoutputAs%3Drss",function(item)
       {
-       var data,_arg1,data1,idx,x1,arg10;
-       data=tupledArg[0];
-       _arg1=tupledArg[1];
-       data1=data.responseData.feed.entries;
-       for(idx=0;idx<=data1.length-1;idx++){
-        x1=IntrinsicFunctionProxy.GetArray(data1,idx);
-        arg10=x1.link;
-        ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x1.title)]))])),Default.P(List.ofArray([Default.Text(x1.contentSnippet)]))])));
-       }
-       return;
-      }));
-      elt.AppendI(ul);
-      JavaScript.Log("Appended MSDN list");
-      elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
-      return Msdn.hideProress();
+       return Msdn.itemLi(item);
+      },elt);
      },x);
      return x;
     }
@@ -355,12 +332,11 @@
       return News.main();
      }
     }),
-    hideProress:function()
+    itemLi:function(item)
     {
-     return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
-     {
-      return jQuery(this).scrollspy.call(null,"refresh");
-     });
+     var arg10;
+     arg10=item.link;
+     return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(item.title)]))])),Default.P(List.ofArray([Default.Text(item.contentSnippet)]))]));
     },
     main:function()
     {
@@ -368,25 +344,10 @@
      x=Default.Div(List.ofArray([HTML5.Attr().NewAttr("data-"+"status","loading")]));
      Operators.OnAfterRender(function(elt)
      {
-      var ul;
-      ul=Default.UL(List.ofArray([Default.Attr().NewAttr("id","news-list"),Default.Attr().Class("list-group")]));
-      jQuery.getJSON("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=http%3A%2F%2Ffpish.net%2Frss%2Fblogs%2Ftag%2F1%2Ff~23",Runtime.Tupled(function(tupledArg)
+      return JsUtils.displayFeed("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=http%3A%2F%2Ffpish.net%2Frss%2Fblogs%2Ftag%2F1%2Ff~23",function(item)
       {
-       var data,_arg1,entries;
-       data=tupledArg[0];
-       _arg1=tupledArg[1];
-       entries=data.responseData.feed.entries;
-       return Arrays.iter(function(x1)
-       {
-        var arg10;
-        arg10=x1.link;
-        return ul.AppendI(Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(x1.title)]))])),Default.P(List.ofArray([Default.Text(x1.contentSnippet)]))])));
-       },entries);
-      }));
-      elt.AppendI(ul);
-      JavaScript.Log("Appended news list");
-      elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
-      return News.hideProress();
+       return News.itemLi(item);
+      },elt);
      },x);
      return x;
     }
@@ -504,21 +465,21 @@
   BooksAdmin=Runtime.Safe(Website.BooksAdmin);
   Client=Runtime.Safe(BooksAdmin.Client);
   FPish=Runtime.Safe(Website.FPish);
-  jQuery=Runtime.Safe(Global.jQuery);
-  HTML5=Runtime.Safe(Default.HTML5);
-  IntrinsicFunctionProxy=Runtime.Safe(WebSharper.IntrinsicFunctionProxy);
   Seq=Runtime.Safe(WebSharper.Seq);
+  HTML5=Runtime.Safe(Default.HTML5);
+  JsUtils=Runtime.Safe(Website.JsUtils);
+  jQuery=Runtime.Safe(Global.jQuery);
   JavaScript=Runtime.Safe(WebSharper.JavaScript);
   FSSnip=Runtime.Safe(Website.FSSnip);
   Client1=Runtime.Safe(FSSnip.Client);
   GoogleGroup=Runtime.Safe(Website.GoogleGroup);
+  Arrays=Runtime.Safe(WebSharper.Arrays);
   Login=Runtime.Safe(Website.Login);
   Client2=Runtime.Safe(Login.Client);
   window=Runtime.Safe(Global.window);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
   Msdn=Runtime.Safe(Website.Msdn);
   News=Runtime.Safe(Website.News);
-  Arrays=Runtime.Safe(WebSharper.Arrays);
   Utils=Runtime.Safe(Website.Utils);
   VideosAdmin=Runtime.Safe(Website.VideosAdmin);
   return Client3=Runtime.Safe(VideosAdmin.Client);

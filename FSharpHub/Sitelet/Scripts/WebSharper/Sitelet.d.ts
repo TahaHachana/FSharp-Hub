@@ -21,8 +21,8 @@ declare module Website {
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
-        var hideProress : {
-            (): void;
+        var itemLi : {
+            <_M1>(item: _M1): __ABBREV.__Html.Element;
         };
         var main : {
             (): __ABBREV.__Html.Element;
@@ -53,8 +53,8 @@ declare module Website {
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
-        var hideProress : {
-            (): void;
+        var itemLi : {
+            <_M1>(item: _M1): __ABBREV.__Html.Element;
         };
         var main : {
             (): __ABBREV.__Html.Element;
@@ -64,33 +64,19 @@ declare module Website {
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
-        var hideProress : {
-            (): void;
+        var itemLi : {
+            <_M1>(item: _M1): __ABBREV.__Html.Element;
         };
         var main : {
             (): __ABBREV.__Html.Element;
         };
     }
     module News {
-        interface Response {
-            responseData: any;
-        }
-        interface data {
-            feed: any;
-        }
-        interface feedDetails {
-            entries: any[];
-        }
-        interface Entry {
-            title: string;
-            link: string;
-            contentSnippet: string;
-        }
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
-        var hideProress : {
-            (): void;
+        var itemLi : {
+            <_M1>(item: _M1): __ABBREV.__Html.Element;
         };
         var main : {
             (): __ABBREV.__Html.Element;
@@ -208,6 +194,16 @@ declare module Website {
             ReleaseDate: __ABBREV.__WebSharper.DateTimeProxy;
             Cover: string;
         }
+    }
+    module JsUtils {
+        var hideProress : {
+            (): void;
+        };
+        var displayFeed : {
+            <_M1>(url: string, itemLi: {
+                (x: _M1): __ABBREV.__Html.Element;
+            }, elt: __ABBREV.__Html.Element): void;
+        };
     }
     module Utils {
         var truncate : {

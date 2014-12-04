@@ -39,20 +39,6 @@ module Server =
 
 module Client =
 
-    // TODO refactor this
-    [<JavaScript>]
-    let hideProress() =
-        match JQuery.Of("[data-status=\"loading\"]").Length with
-        | 0 ->
-            JQuery.Of("#progress-bar").SlideUp().Ignore
-    //        JQuery.Of("[data-spy=\"scroll\"]").Each(
-    //            fun x -> JQuery.Of(x)?scrollspy("refresh")
-    //        ).Ignore
-        | _ ->
-            JQuery.Of("[data-spy=\"scroll\"]").Each(
-                fun x -> JQuery.Of(x)?scrollspy("refresh")
-            ).Ignore
-
     [<JavaScript>]
     let main() =
         Div [HTML5.Attr.Data "status" "loading"]
@@ -73,7 +59,7 @@ module Client =
                 elt.Append ul
                 JavaScript.Log "Appended snippets list"
                 elt.RemoveAttribute "data-status"
-                hideProress()
+                JsUtils.hideProress()
             } |> Async.Start)
 
 type Control() =

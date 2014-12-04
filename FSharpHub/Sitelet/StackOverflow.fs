@@ -76,46 +76,52 @@ module Server =
 
     open IntelliFactory.Html
 
+    let questionDiv q =
+        Div [Class "media"]
+        -< [
+            A [
+                Class "media-left"
+                HRef q.ownerLink
+                Target "_blank"
+            ]
+            -< [
+                Img [
+                    Src q.ownerAvatar
+                    Class "avatar"
+                ]
+            ]
+            Div [Class "media-body"] -< [
+                H4 [
+                    Class "media-heading"
+                    Style "word-break: break-word;"
+                ] 
+                -< [
+                    A [
+                        HRef q.link
+                        Target "_blank"
+                    ]
+                    -< [Text q.title]                                        
+                ]
+                P [Text q.creationDate]
+                P [
+                    Text "Score: "
+                    Span [Class "badge"]
+                    -< [Text (string q.score)]
+                    Text " Answers: "
+                    Span [Class "badge"]
+                    -< [Text (string q.answerCount)]
+                ]
+                Div [
+                    for x in q.tags ->
+                        Span [Class "label label-info"]
+                        -< [Text x]
+                ]
+            ]               
+        ]
+
     let stackDiv() =
         let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/StackOverflowQuestions.json"
-        let questions =
-            let json = File.ReadAllText jsonPath
-            JsonConvert.DeserializeObject(json, typeof<SoQuestion []>)
-            :?> SoQuestion []
-        let rows =
-            questions
-            |> Array.mapi (fun idx q ->
-                let cls = if idx % 2 = 0 then "col-md-5" else "col-md-5 col-md-offset-1"
-                Div [Class cls] -< [
-                    Div [Class "media"] -< [
-                        A [Class "media-left"; HRef q.ownerLink; Target "_blank"] -< [
-                            Img [Src q.ownerAvatar; Class "avatar"]
-                        ]
-                        Div [Class "media-body"] -< [
-                            H4 [Class "media-heading"; Style "word-break: break-word;"] -< [
-                                A [HRef q.link; Target "_blank"] -< [Text q.title]                                        
-                            ]
-                            P [Text q.creationDate]
-                            P [
-                                Text "Score: "
-                                Span [Class "badge"] -< [Text (string q.score)]
-                                Text " Answers: "
-                                Span [Class "badge"] -< [Text (string q.answerCount)]
-                            ]
-                            Div [
-                                for x in q.tags -> Span [Class "label label-info"] -< [Text x]
-                            ]
-                        ]               
-                    ]
-                ]
-            )
-            |> Utils.split 2
-            |> Seq.map (fun x ->
-                Div [Class "row data-row"]
-                -< x)
-            |> fun x -> Div [] -< x
-        rows
-
+        Utils.dataDiv<SoQuestion> jsonPath questionDiv
 
     let fetchNewQuestions jsonPath =
         async {
@@ -126,94 +132,3 @@ module Server =
                 let json = JsonConvert.SerializeObject questions
                 File.WriteAllText(jsonPath, json)
         } |> Async.RunSynchronously
-
-    [<Remote>]
-    let questions() =
-        async {
-            let! questionsArray = latestQuestions()
-            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/StackOverflowQuestions.json"
-            match questionsArray with
-            | None ->
-                let questions =
-                    let json = File.ReadAllText jsonPath
-                    JsonConvert.DeserializeObject(json, typeof<SoQuestion []>)
-                    :?> SoQuestion []
-                return questions
-            | Some questions ->
-                let json = JsonConvert.SerializeObject questions
-                File.WriteAllText(jsonPath, json)
-                return questions
-        }
-
-// TODO remove this
-/// Client-side code.
-[<JavaScript>]
-module private Client =
-    open IntelliFactory.WebSharper.Html
-    open IntelliFactory.WebSharper.JQuery
-
-    let hideProress() =
-        match JQuery.Of("[data-status=\"loading\"]").Length with
-        | 0 ->
-            JQuery.Of("#progress-bar").SlideUp().Ignore
-            JQuery.Of("[data-spy=\"scroll\"]").Each(
-                fun x -> JQuery.Of(x)?scrollspy("refresh")
-            ).Ignore
-        | _ ->
-            JQuery.Of("[data-spy=\"scroll\"]").Each(
-                fun x -> JQuery.Of(x)?scrollspy("refresh")
-            ).Ignore
-
-    let main() =
-        Div [HTML5.Attr.Data "status" "loading"]
-        |>! OnAfterRender (fun elt ->
-            async {
-                let! questions = Server.questions()
-                questions
-                |> Array.mapi (fun idx q ->
-                    let cls = if idx % 2 = 0 then "col-md-5" else "col-md-5 col-md-offset-1"
-                    Div [Attr.Class cls] -< [
-                        Div [Attr.Class "media"] -< [
-                            A [Attr.Class "media-left"; Attr.HRef q.ownerLink; Attr.Target "_blank"] -< [
-                                Img [Attr.Src q.ownerAvatar; Attr.Class "avatar"]
-                            ]
-                            Div [Attr.Class "media-body"] -< [
-                                H4 [Attr.Class "media-heading"; Attr.Style "word-break: break-word;"] -< [
-                                    A [Attr.HRef q.link; Attr.Target "_blank"; Text q.title]                                        
-                                ]
-                                P [Text q.creationDate]
-                                P [
-                                    Text "Score: "
-                                    Span [Attr.Class "badge"; Text (string q.score)] :> IPagelet
-                                    Text " Answers: "
-                                    Span [Attr.Class "badge"; Text (string q.answerCount)] :> IPagelet
-                                ]
-//                                yield P [Text <| "Answers: " + string q.answerCount]
-//                                if q.acceptedAnswerId.IsSome then yield A [Attr.HRef (q.link + "#answer-" + q.acceptedAnswerId.Value.ToString()); Attr.Target "_blank"; Text "Accepted Answer"]
-                                Div [
-                                    for x in q.tags -> Span [Attr.Class "label label-info"; Text x]
-                                ]
-                            ]               
-                        ]
-                    ]
-                )
-                |> Utils.split 2
-                |> Seq.iter (fun x ->
-                    Div [Attr.Class "row data-row"]
-                    -< x
-                    |> elt.Append
-                )
-                elt.RemoveAttribute "data-status"
-                hideProress()
-            }
-            |> Async.Start)
-
-/// A control for serving the main pagelet.
-type Control() =
-    inherit Web.Control()
-
-    [<JavaScript>]
-    override this.Body = Client.main() :> _
-
-
-

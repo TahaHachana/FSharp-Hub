@@ -34,83 +34,84 @@ module Home =
 
     let metaDesc = "Latest tweets, snippets and questions about the F# programming language."
 
-    let definition : HtmlElement =
-            P [Id "lead"] -< [
-                Strong [Text "FSharp"]
-                Text " is an advanced, multi-paradigm, strongly typed open source programming language.
-                    F# allows you to solve complex problems with simple, accurate and maintainable code
-                    and to be more productive thanks to features like functions as values, type inference, 
-                    pattern matching and computation expressions. It's a general purpose language that you can
-                    use to build desktop, web and mobile applications and to perform cloud computations."
-            ]
-
-    let jumbotron : HtmlElement =
-        Div [Class "jumbotron"; Id "jumbotron"] -< [
-            Div [Class "text-center"] -< [
-                H1 [Text "FSharp Language"]
-                definition
-                P [
-                    A [
-                        Class "btn btn-success btn-lg"
-                        HRef "http://www.tryfsharp.org/"
-                        Target "_blank"
-                    ] -< [Text "Try F#"] 
-                ]
-            ]
-        ]
-
-    let widgetsRow : HtmlElement =
-        Div [Class "row"] -< [
-            Div [Class "col-lg-4"] -< [
-                H3 [Text "Tweets"] :> INode<_>
-                new Twitter.Control() :> _
-            ]
-            Div [Class "col-lg-4"] -< [
-                H3 [Text "Questions"] :> INode<_>
-                new Questions.Control() :> _
-            ]
-            Div [Class "col-lg-4"] -< [
-                H3 [Text "Snippets"] :> INode<_>
-                new Snippets.Control() :> _
-            ]
-        ]
+//    let definition : HtmlElement =
+//            P [Id "lead"] -< [
+//                Strong [Text "FSharp"]
+//                Text " is an advanced, multi-paradigm, strongly typed open source programming language.
+//                    F# allows you to solve complex problems with simple, accurate and maintainable code
+//                    and to be more productive thanks to features like functions as values, type inference, 
+//                    pattern matching and computation expressions. It's a general purpose language that you can
+//                    use to build desktop, web and mobile applications and to perform cloud computations."
+//            ]
+//
+//    let jumbotron : HtmlElement =
+//        Div [Class "jumbotron"; Id "jumbotron"] -< [
+//            Div [Class "text-center"] -< [
+//                H1 [Text "FSharp Language"]
+//                definition
+//                P [
+//                    A [
+//                        Class "btn btn-success btn-lg"
+//                        HRef "http://www.tryfsharp.org/"
+//                        Target "_blank"
+//                    ] -< [Text "Try F#"] 
+//                ]
+//            ]
+//        ]
+//
+//    let widgetsRow : HtmlElement =
+//        Div [Class "row"] -< [
+//            Div [Class "col-lg-4"] -< [
+//                H3 [Text "Tweets"] :> INode<_>
+//                new Twitter.Control() :> _
+//            ]
+//            Div [Class "col-lg-4"] -< [
+//                H3 [Text "Questions"] :> INode<_>
+//                new Questions.Control() :> _
+//            ]
+//            Div [Class "col-lg-4"] -< [
+//                H3 [Text "Snippets"] :> INode<_>
+//                new Snippets.Control() :> _
+//            ]
+//        ]
 
     let body() :HtmlElement =
         Div [
             Div [Id "twitter"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "Twitter"] 
-                ] //:> INode<_>
+                ]
                 Twitter.Server.tweetsDiv()
-//                new Twitter.Control() :> _
             ] 
             Div [Id "stackoverflow"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "StackOverflow"]
                 ]
                 StackOverflow.Server.stackDiv()
-//                new StackOverflow.Control() :> _
             ]
             Div [Id "new-github-repos"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "New GitHub Repos"]
                 ]
                 GitHubRepos.Server.newReposDiv()
-//                new GitHubRepos.NewReposControl() :> _
             ]
             Div [Id "updated-github-repos"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "Updated GitHub Repos"]
                 ]
                 GitHubRepos.Server.updatedReposDiv()
-//                new GitHubRepos.UpdatedReposControl() :> _
             ]
+//            Div [Id "gists"; Class "anchor"] -< [
+//                Div [Class "page-header"] -< [
+//                    H2 [Text "GitHub Gists"]
+//                ]
+//                GitHubGists.Server.newGistsDiv()
+//            ]
             Div [Id "nuget"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
                     H2 [Text "NuGet"]
                 ]
                 NuGet.Server.pkgsDiv()
-//                new NuGet.Control() :> _
             ]
             Div [Id "news"; Class "anchor"] -< [
                 Div [Class "page-header"] -< [
@@ -143,17 +144,6 @@ module Home =
                 new GoogleGroup.Control() :> _
             ]
         ]
-
-//        Div []
-//        Div [Id "wrap"] -< [
-//            Nav.navElt <| Some "Home"
-//            Div [Class "container"; Id "main"] -< [
-//                jumbotron :> INode<_>
-//                widgetsRow :> _
-//            ]
-//            Div [Id "push"]
-//            Shared.ga
-//        ]
 
 module Books =
     let title = "FSharp Books"

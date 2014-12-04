@@ -16,6 +16,7 @@ type Tweet =
     }
 
 module Server =
+
     open System.IO
     open Newtonsoft.Json
     open LinqToTwitter
@@ -157,160 +158,50 @@ module Server =
 
     open IntelliFactory.Html
 
-    let tweetsDiv() =
-        let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
-        let tweets =
-            let json = File.ReadAllText jsonPath
-            JsonConvert.DeserializeObject(json, typeof<Tweet []>)
-            :?> Tweet []
-        let rows =
-            tweets
-            |> Array.mapi (fun idx tweet ->
-                let cls = if idx % 2 = 0 then "col-md-5" else "col-md-5 col-md-offset-1"
-                let p = VerbatimContent("<p>" + tweet.statusAsHtml + "</p>")
-                let screenName, statusId =
-                    match tweet.isRetweeted with
-                    | false -> tweet.screenName, tweet.id
-                    | true -> Option.get tweet.retweetedScreenName, Option.get tweet.retweetedId
-                Div [Class cls] -< [
-                    Div [Class "media"] -< [
-                        A [Class "media-left"; HRef ("https://twitter.com/" + tweet.screenName); Target "_blank"] -< [
-                            Img [Src tweet.avatar; Class "avatar"]
-                        ]
-                        Div [Class "media-body"] -< [
-                            H4 [Class "media-heading"] -< [
-                                A [
-                                    HRef ("https://twitter.com/" + tweet.screenName)
-                                    Target "_blank"
-//                                    Text tweet.screenName
-                                ] -< [Text tweet.screenName]
-                                Text " "                                 
-                                Small [
-                                    A [
-                                        HRef ("https://twitter.com/" + screenName + "/status/" + statusId)
-                                        Target "_blank"
-//                                        Text tweet.createdAt
-                                    ] -< [Text tweet.createdAt]                                    
-                                ]
-                            ]
-                            p
-                        ]                        
+    let tweetDiv tweet =
+        let p = VerbatimContent("<p>" + tweet.statusAsHtml + "</p>")
+        let screenName, statusId =
+            match tweet.isRetweeted with
+            | false -> tweet.screenName, tweet.id
+            | true -> Option.get tweet.retweetedScreenName, Option.get tweet.retweetedId
+        Div [Class "media"] -< [
+            A [
+                Class "media-left"
+                HRef ("https://twitter.com/" + tweet.screenName)
+                Target "_blank"
+            ] -< [
+                Img [
+                    Src tweet.avatar
+                    Class "avatar"]
+            ]
+            Div [Class "media-body"] -< [
+                H4 [Class "media-heading"] -< [
+                    A [
+                        HRef ("https://twitter.com/" + tweet.screenName)
+                        Target "_blank"
+                    ] -< [Text tweet.screenName]
+                    Text " "                                 
+                    Small [
+                        A [
+                            HRef ("https://twitter.com/" + screenName + "/status/" + statusId)
+                            Target "_blank"
+                        ] -< [Text tweet.createdAt]                                    
                     ]
                 ]
-            )
-            |> Utils.split 2
-            |> Seq.map (fun x ->
-                Div [Class "row data-row"]
-                -< x)
-            |> fun x -> Div [] -< x
-        rows
-            //)
-//            elt.RemoveAttribute "data-status"
+                p
+            ]                        
+        ]
+     
+    let tweetsDiv() =
+        let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
+        Utils.dataDiv<Tweet> jsonPath tweetDiv
 
     let fetchNewTweets jsonPath =
         async {
             let! tweetsArray = latestTweets()
-//            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
             match tweetsArray with
             | None -> ()
             | Some tweets ->
                 let json = JsonConvert.SerializeObject(tweets)
                 File.WriteAllText(jsonPath, json)
-//                return tweets        
         } |> Async.RunSynchronously
-
-// TODO remove this
-    [<Remote>]
-    let tweets() =
-        async {
-            let! tweetsArray = latestTweets()
-            let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
-            match tweetsArray with
-            | None ->
-                let tweets =
-                    let json = File.ReadAllText jsonPath
-                    JsonConvert.DeserializeObject(json, typeof<Tweet []>)
-                    :?> Tweet []
-                return tweets
-            | Some tweets ->
-                let json = JsonConvert.SerializeObject(tweets)
-                File.WriteAllText(jsonPath, json)
-                return tweets
-        }
-
-/// Client-side code.
-[<JavaScript>]
-module private Client =
-    open IntelliFactory.WebSharper.Html
-    open IntelliFactory.WebSharper.JQuery
-
-    let hideProress() =
-        match JQuery.Of("[data-status=\"loading\"]").Length with
-        | 0 ->
-            JQuery.Of("#progress-bar").SlideUp().Ignore
-            JQuery.Of("[data-spy=\"scroll\"]").Each(
-                fun x -> JQuery.Of(x)?scrollspy("refresh")
-            ).Ignore
-        | _ ->
-            JQuery.Of("[data-spy=\"scroll\"]").Each(
-                fun x -> JQuery.Of(x)?scrollspy("refresh")
-            ).Ignore
-
-    let main() =
-        Div [HTML5.Attr.Data "status" "loading"]
-        |>! OnAfterRender (fun elt ->
-            async {
-                let! tweets = Server.tweets()
-                tweets
-                |> Array.mapi (fun idx tweet ->
-                    let cls = if idx % 2 = 0 then "col-md-5" else "col-md-5 col-md-offset-1"
-                    let p = P []
-                    p.Html <- tweet.statusAsHtml
-                    let screenName, statusId =
-                        match tweet.isRetweeted with
-                        | false -> tweet.screenName, tweet.id
-                        | true -> Option.get tweet.retweetedScreenName, Option.get tweet.retweetedId
-                    Div [Attr.Class cls] -< [
-                        Div [Attr.Class "media"] -< [
-                            A [Attr.Class "media-left"; Attr.HRef ("https://twitter.com/" + tweet.screenName); Attr.Target "_blank"] -< [
-                                Img [Attr.Src tweet.avatar; Attr.Class "avatar"]
-                            ]
-                            Div [Attr.Class "media-body"] -< [
-                                H4 [Attr.Class "media-heading"] -< [
-                                    A [
-                                        Attr.HRef ("https://twitter.com/" + tweet.screenName)
-                                        Attr.Target "_blank"
-                                        Text tweet.screenName
-                                    ] :> IPagelet
-                                    Text " "                                 
-                                    Small [
-                                        A [
-                                            Attr.HRef ("https://twitter.com/" + screenName + "/status/" + statusId)
-                                            Attr.Target "_blank"
-                                            Text tweet.createdAt
-                                        ]                                    
-                                    ] :> _
-                                ]
-                                p
-                            ]                        
-                        ]
-                    ]
-                )
-                |> Utils.split 2
-                |> Seq.iter (fun x ->
-                    Div [Attr.Class "row data-row"]
-                    -< x
-                    |> elt.Append
-                )
-                elt.RemoveAttribute "data-status"
-                hideProress()
-            }
-            |> Async.Start)
-
-
-/// A control for serving the main pagelet.
-type Control() =
-    inherit Web.Control()
-
-    [<JavaScript>]
-    override this.Body = Client.main() :> _

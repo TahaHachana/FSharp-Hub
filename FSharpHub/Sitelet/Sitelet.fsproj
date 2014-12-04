@@ -117,14 +117,12 @@
     <Compile Include="BooksAdmin.fs" />
     <Compile Include="Login.fs" />
     <Compile Include="Nav.fs" />
-    <Compile Include="Questions.fs" />
-    <Compile Include="Snippets.fs" />
     <Compile Include="Templates.fs" />
     <Compile Include="Twitter.fs" />
     <Compile Include="StackOverflow.fs" />
-    <Compile Include="GitHubGists.fs" />
     <Compile Include="GitHub.fs" />
     <Compile Include="GitHubRepos.fs" />
+    <Compile Include="GitHubGists.fs" />
     <Compile Include="NuGet.fs" />
     <Compile Include="News.fs" />
     <Compile Include="FPish.fs" />
@@ -139,7 +137,6 @@
     <Compile Include="Views.fs" />
     <Compile Include="Controller.fs" />
     <Compile Include="Site.fs" />
-    <None Include="web.config" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

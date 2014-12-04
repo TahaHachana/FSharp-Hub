@@ -4,27 +4,6 @@ open System
 open MongoDB.Bson
         
 [<CLIMutable>]
-type Question =
-    {
-        _id     : ObjectId
-        Link    : string
-        Title   : string
-        Date    : DateTime
-        Website : string
-        Summary : string
-    }
-
-[<CLIMutable>]
-type Snippet =
-    {
-        _id         : ObjectId
-        Link        : string
-        Title       : string
-        Description : string
-        Date        : DateTime
-    }
-
-[<CLIMutable>]
 type Video =
     {
         _id       : ObjectId

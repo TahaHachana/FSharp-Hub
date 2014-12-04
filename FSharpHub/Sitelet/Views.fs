@@ -72,12 +72,14 @@ module Views =
         let soPath = HttpContext.Current.Server.MapPath "~/JSON/StackOverflowQuestions.json"
         let newReposPath = HttpContext.Current.Server.MapPath "~/JSON/NewGitHubRepos.json"
         let updatedReposPath = HttpContext.Current.Server.MapPath "~/JSON/UpdatedGitHubRepos.json"
+        let gistsPath = HttpContext.Current.Server.MapPath "~/JSON/Gists.json"
         let nugetPath = HttpContext.Current.Server.MapPath "~/JSON/NuGet.json"
 #if DEBUG
         Twitter.Server.fetchNewTweets twitterPath
         StackOverflow.Server.fetchNewQuestions soPath
         GitHubRepos.Server.fetchNewRepos newReposPath
         GitHubRepos.Server.fetchUpdatedRepos updatedReposPath
+//        GitHubGists.Server.fetchNewGists gistsPath
         NuGet.Server.fetchPkgs nugetPath
 #else
         try
@@ -85,6 +87,7 @@ module Views =
             StackOverflow.Server.fetchNewQuestions soPath
             GitHubRepos.Server.fetchNewRepos newReposPath
             GitHubRepos.Server.fetchUpdatedRepos updatedReposPath
+//            GitHubGists.Server.fetchNewGists gistsPath
             NuGet.Server.fetchPkgs nugetPath
         with _ -> ()
 #endif

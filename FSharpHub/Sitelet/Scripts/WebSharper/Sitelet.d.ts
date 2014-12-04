@@ -107,8 +107,13 @@ declare module Website {
             downloadCount: number;
             tags: string[];
         }
-        interface Control {
-            get_Body(): __ABBREV.__Html.IPagelet;
+    }
+    module GitHubGists {
+        interface GitHubGist {
+            ownerAvatar: string;
+            ownerName: string;
+            ownerLink: string;
+            link: string;
         }
     }
     module GitHubRepos {
@@ -120,12 +125,6 @@ declare module Website {
             link: string;
             createdAt: string;
             pushedAt: string;
-        }
-        interface NewReposControl {
-            get_Body(): __ABBREV.__Html.IPagelet;
-        }
-        interface UpdatedReposControl {
-            get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
     module StackOverflow {
@@ -141,9 +140,6 @@ declare module Website {
             score: number;
             acceptedAnswerId: __ABBREV.__WebSharper.OptionProxy<number>;
         }
-        interface Control {
-            get_Body(): __ABBREV.__Html.IPagelet;
-        }
     }
     module Twitter {
         interface Tweet {
@@ -155,41 +151,6 @@ declare module Website {
             isRetweeted: boolean;
             retweetedId: __ABBREV.__WebSharper.OptionProxy<string>;
             retweetedScreenName: __ABBREV.__WebSharper.OptionProxy<string>;
-        }
-        interface Control {
-            get_Body(): __ABBREV.__Html.IPagelet;
-        }
-    }
-    module Snippets {
-        module Client {
-            var li : {
-                (link: string, title: string, description: string): __ABBREV.__Html.Element;
-            };
-            var dispalySnippets : {
-                (arr: any[], elt: __ABBREV.__Html.Element): void;
-            };
-            var main : {
-                (): __ABBREV.__Html.Element;
-            };
-        }
-        interface Control {
-            get_Body(): __ABBREV.__Html.IPagelet;
-        }
-    }
-    module Questions {
-        module Client {
-            var li : {
-                (link: string, title: string, date: string, website: string, summary: string): __ABBREV.__Html.Element;
-            };
-            var displayQuestions : {
-                (arr: any[], elt: __ABBREV.__Html.Element): void;
-            };
-            var main : {
-                (): __ABBREV.__Html.Element;
-            };
-        }
-        interface Control {
-            get_Body(): __ABBREV.__Html.IPagelet;
         }
     }
     module Login {
@@ -228,21 +189,6 @@ declare module Website {
         }
     }
     module Records {
-        interface Question {
-            _id: any;
-            Link: string;
-            Title: string;
-            Date: __ABBREV.__WebSharper.DateTimeProxy;
-            Website: string;
-            Summary: string;
-        }
-        interface Snippet {
-            _id: any;
-            Link: string;
-            Title: string;
-            Description: string;
-            Date: __ABBREV.__WebSharper.DateTimeProxy;
-        }
         interface Video {
             _id: any;
             Title: string;

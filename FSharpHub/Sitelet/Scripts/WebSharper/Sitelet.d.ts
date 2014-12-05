@@ -30,9 +30,6 @@ declare module Website {
     }
     module FSSnip {
         module Client {
-            var hideProress : {
-                (): void;
-            };
             var main : {
                 (): __ABBREV.__Html.Element;
             };

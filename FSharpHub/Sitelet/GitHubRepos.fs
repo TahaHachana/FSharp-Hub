@@ -1,6 +1,7 @@
 module Website.GitHubRepos
 
 open IntelliFactory.WebSharper
+open Octokit
 
 type Repo =
     {
@@ -13,29 +14,30 @@ type Repo =
         pushedAt : string
     }
 
+    static member New (r:Repository) =        
+        {
+            ownerLink = r.Owner.HtmlUrl
+            ownerAvatar = r.Owner.AvatarUrl
+            name = r.FullName
+            description =
+                match r.Description with
+                | null -> ""
+                | d -> d
+            link = r.HtmlUrl
+            createdAt = r.CreatedAt.ToString()
+            pushedAt = r.PushedAt.ToString()
+        }
+
+
 module Server =
 
     open System.IO
     open Newtonsoft.Json
-    open Octokit
     open Octokit.Internal
     open System
     open System.Globalization
     open System.Web
     open IntelliFactory.Html
-
-    let newRepo (r:Repository) =
-        
-        {
-            ownerLink = r.Owner.HtmlUrl
-            ownerAvatar = r.Owner.AvatarUrl
-            name = r.FullName
-            // TODO replace with string option
-            description = match r.Description with null -> "" | x -> x
-            link = r.HtmlUrl
-            createdAt = r.CreatedAt.ToString()
-            pushedAt = r.PushedAt.ToString()
-        }
 
     module NewRepos =
 
@@ -52,8 +54,11 @@ module Server =
                         |> Seq.toArray
                         |> Array.sortBy (fun x -> x.CreatedAt)
                         |> Array.rev
-                        |> fun x -> x.[..49]
-                        |> Array.map newRepo
+                        |> fun arr ->
+                            match arr.Length > 50 with
+                            | false -> arr
+                            | true -> arr.[..49]
+                        |> Array.map Repo.New
                     return Some reposArray
                 with _ -> return None
             }
@@ -72,8 +77,11 @@ module Server =
                         |> Seq.toArray
                         |> Array.sortBy (fun x -> x.PushedAt.Value)
                         |> Array.rev
-                        |> fun x -> x.[..49]
-                        |> Array.map newRepo
+                        |> fun arr ->
+                            match arr.Length > 50 with
+                            | false -> arr
+                            | true -> arr.[..49]
+                        |> Array.map Repo.New
                     return Some reposArray
                 with _ -> return None
             }
@@ -84,12 +92,13 @@ module Server =
                 Img [Style "width: 30px; height: 30px;"; Src repo.ownerAvatar]
             ]
             Div [Class "media-body"] -< [
-                H4 [Class "media-heading"; Style "word-break: break-word;"] -< [
+                yield H4 [Class "media-heading"; Style "word-break: break-word;"] -< [
                     A [HRef repo.link; Target "_blank"] -< [Text repo.name]                                        
                 ]
-                P [Text repo.createdAt]
-                // TODO remove this tag if the repo description is ""
-                P [Text repo.description]
+                yield P [Text repo.createdAt]
+                match repo.description with
+                | "" -> ()
+                | d -> yield P [Text d]
             ]               
         ]
         
@@ -113,12 +122,13 @@ module Server =
                 Img [Style "width: 30px; height: 30px;"; Src repo.ownerAvatar]
             ]
             Div [Class "media-body"] -< [
-                H4 [Class "media-heading"; Style "word-break: break-word;"] -< [
+                yield H4 [Class "media-heading"; Style "word-break: break-word;"] -< [
                     A [HRef repo.link; Target "_blank"] -< [Text repo.name]                                        
                 ]
-                P [Text repo.pushedAt]
-                // TODO remove this tag if the repo description is ""
-                P [Text repo.description]                            
+                yield P [Text repo.pushedAt]
+                match repo.description with
+                | "" -> ()
+                | d -> yield P [Text d]
             ]               
         ]
 

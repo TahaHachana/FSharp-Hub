@@ -57,7 +57,6 @@ module Client =
                         ]
                     ul.Append li
                 elt.Append ul
-                JavaScript.Log "Appended snippets list"
                 elt.RemoveAttribute "data-status"
                 JsUtils.hideProress()
             } |> Async.Start)

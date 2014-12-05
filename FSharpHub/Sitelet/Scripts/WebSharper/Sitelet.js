@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,FPish,Seq,HTML5,JsUtils,jQuery,JavaScript,FSSnip,Client1,GoogleGroup,Arrays,Login,Client2,window,EventsPervasives,Msdn,News,Utils,VideosAdmin,Client3;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,FPish,Seq,HTML5,JsUtils,FSSnip,Client1,GoogleGroup,jQuery,Arrays,Login,Client2,window,EventsPervasives,Msdn,News,Utils,VideosAdmin,Client3;
  Runtime.Define(Global,{
   Website:{
    BooksAdmin:{
@@ -132,13 +132,6 @@
    },
    FSSnip:{
     Client:{
-     hideProress:function()
-     {
-      return jQuery("[data-status=\"loading\"]").length===0?jQuery("#progress-bar").slideUp():jQuery("[data-spy=\"scroll\"]").each(function()
-      {
-       return jQuery(this).scrollspy.call(null,"refresh");
-      });
-     },
      main:function()
      {
       var x;
@@ -163,9 +156,8 @@
          b=Concurrency.Delay(function()
          {
           elt.AppendI(ul);
-          JavaScript.Log("Appended snippets list");
           elt["HtmlProvider@32"].RemoveAttribute(elt.Body,"data-status");
-          Client1.hideProress();
+          JsUtils.hideProress();
           return Concurrency.Return(null);
          });
          return Concurrency.Bind(a,function()
@@ -468,11 +460,10 @@
   Seq=Runtime.Safe(WebSharper.Seq);
   HTML5=Runtime.Safe(Default.HTML5);
   JsUtils=Runtime.Safe(Website.JsUtils);
-  jQuery=Runtime.Safe(Global.jQuery);
-  JavaScript=Runtime.Safe(WebSharper.JavaScript);
   FSSnip=Runtime.Safe(Website.FSSnip);
   Client1=Runtime.Safe(FSSnip.Client);
   GoogleGroup=Runtime.Safe(Website.GoogleGroup);
+  jQuery=Runtime.Safe(Global.jQuery);
   Arrays=Runtime.Safe(WebSharper.Arrays);
   Login=Runtime.Safe(Website.Login);
   Client2=Runtime.Safe(Login.Client);

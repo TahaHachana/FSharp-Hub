@@ -17,7 +17,7 @@
       <script src="/Scripts/respond.min.js"></script>
     <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#sidebar">
+<body>  <!--data-spy="scroll" data-target="#sidebar">-->
     <!-- Navbar -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
@@ -87,9 +87,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <![CDATA[
     <script>
-        $('[data-spy="scroll"]').each(function () {
-            var $spy = $(this).scrollspy('refresh')
-        })</script>
+        $(function () {
+            $('body').scrollspy({ target: '#sidebar' })
+        });
+    </script>
     ]]>
 </body>
 </html>

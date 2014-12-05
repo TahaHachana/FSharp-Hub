@@ -19,11 +19,15 @@ type Package =
             match pkg.IconUrl with
             | null -> "https://nuget.org/Content/Images/packageDefaultIcon.png"
             | x -> x
+        let projectUrl =
+            match pkg.ProjectUrl with
+            | null -> "#"
+            | url -> url
         {
             id = pkg.Id
             version = pkg.Version
             iconUrl = iconUrl
-            projectUrl = pkg.ProjectUrl
+            projectUrl = projectUrl
             galleryDetailsUrl = pkg.GalleryDetailsUrl
             lastUpdated = pkg.LastUpdated.ToString()
             downloadCount = pkg.DownloadCount

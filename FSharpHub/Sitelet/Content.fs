@@ -27,12 +27,12 @@ module Shared =
                     ] -< [Text "Sign in"]
         Div [Class "pull-right"] -< [link]
 
-    let ga = Script [Src "/Scripts/ga.js"]
+//    let ga = Script [Src "/Scripts/ga.js"]
 
 module Home =
     let title = "FSharp Hub"
 
-    let metaDesc = "Latest tweets, snippets and questions about the F# programming language."
+    let metaDesc = "Aggregator for the F# programming language community activity."
 
 //    let definition : HtmlElement =
 //            P [Id "lead"] -< [
@@ -164,7 +164,6 @@ module Books =
                 yield! Books.main()
             ]
             Div [Id "push"]
-            Shared.ga
         ]
 
 module Videos =
@@ -194,7 +193,6 @@ module Videos =
                 yield Videos.paginationDiv videos pageId
             ]
             Div [Id "push"]
-            Shared.ga
         ]
 
 module Error =
@@ -207,7 +205,6 @@ module Error =
                 ]
             ]
             Div [Id "push"]
-            Shared.ga
         ]
 
 module Login =
@@ -223,7 +220,6 @@ module Login =
                     Div [new Login.Control(link)]
                 ]
                 Div [Id "push"]
-                Shared.ga
             ]
 
 module Admin =
@@ -245,7 +241,6 @@ module Admin =
                 btns
             ]
             Div [Id "push"]
-            Shared.ga
         ]
 
 module BooksAdmin =
@@ -257,7 +252,6 @@ module BooksAdmin =
                 Div [new BooksAdmin.Control()]                  
             ]
             Div [Id "push"]
-            Shared.ga
         ]
 
 module VideosAdmin =
@@ -270,7 +264,6 @@ module VideosAdmin =
                 Div [new VideosAdmin.Control()]               
             ]
             Div [Id "push"]
-            Shared.ga
         ]
 
 

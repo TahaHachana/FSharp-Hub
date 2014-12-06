@@ -164,6 +164,9 @@ module Server =
             match tweet.isRetweeted with
             | false -> tweet.screenName, tweet.id
             | true -> Option.get tweet.retweetedScreenName, Option.get tweet.retweetedId
+        let replyLink = "https://twitter.com/intent/tweet?in_reply_to=" + statusId
+        let retweetLink = "https://twitter.com/intent/retweet?tweet_id="  + statusId
+        let favoriteLink = "https://twitter.com/intent/favorite?tweet_id=" + statusId
         Div [Class "media"] -< [
             A [
                 Class "media-left"
@@ -175,7 +178,7 @@ module Server =
                     Class "avatar lazy"
                 ]
             ]
-            Div [Class "media-body"] -< [
+            Div [Class "media-body twitter-media-body"] -< [
                 H4 [Class "media-heading"] -< [
                     A [
                         HRef ("https://twitter.com/" + tweet.screenName)
@@ -190,6 +193,11 @@ module Server =
                     ]
                 ]
                 p
+                Div [Class "tweet-actions"] -< [
+                    A [HRef replyLink; Class "tweet-action"; Style "margin-right: 5px;"; Target "_blank"] -< [Text "Reply"]
+                    A [HRef retweetLink; Class "tweet-action"; Style "margin-right: 5px;"; Target "_blank"] -< [Text "Retweet"]
+                    A [HRef favoriteLink; Class "tweet-action"; Target "_blank"] -< [Text "Favorite"]
+                ]
             ]                        
         ]
      

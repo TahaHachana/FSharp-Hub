@@ -185,6 +185,11 @@ body {
     max-width: 75%;
 }
 
+.tweet-actions {
+    visibility: hidden;
+    text-align: right;
+}
+
 /* Books */
 .books-row {
     margin-bottom: 20px;

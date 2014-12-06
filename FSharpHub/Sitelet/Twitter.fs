@@ -171,8 +171,9 @@ module Server =
                 Target "_blank"
             ] -< [
                 Img [
-                    Src tweet.avatar
-                    Class "avatar"]
+                    HTML5.Data "original" tweet.avatar
+                    Class "avatar lazy"
+                ]
             ]
             Div [Class "media-body"] -< [
                 H4 [Class "media-heading"] -< [
@@ -196,12 +197,26 @@ module Server =
         let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
         Utils.dataDiv<Tweet> jsonPath tweetDiv
 
+    open System
+    open System.Text
+
+    let utf8Encoder =
+        Encoding.GetEncoding(
+            "UTF-8",
+            new EncoderReplacementFallback(String.Empty),
+            new DecoderExceptionFallback()
+        )
+
+    let utf8Text (text:string) = utf8Encoder.GetString(utf8Encoder.GetBytes(text))
+
     let fetchNewTweets jsonPath =
         async {
             let! tweetsArray = latestTweets()
             match tweetsArray with
             | None -> ()
             | Some tweets ->
-                let json = JsonConvert.SerializeObject(tweets)
+                let json =
+                    JsonConvert.SerializeObject tweets
+                    |> utf8Text
                 File.WriteAllText(jsonPath, json)
         } |> Async.RunSynchronously

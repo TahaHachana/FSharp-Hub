@@ -86,8 +86,8 @@ module Server =
             ]
             -< [
                 Img [
-                    Src q.ownerAvatar
-                    Class "avatar"
+                    HTML5.Data "original" q.ownerAvatar
+                    Class "avatar lazy"
                 ]
             ]
             Div [Class "media-body"] -< [

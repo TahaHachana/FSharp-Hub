@@ -65,7 +65,10 @@ module Server =
     let pkgDiv pkg =
         Div [Class "media"] -< [
             A [Class "media-left"; HRef pkg.projectUrl; Target "_blank"] -< [
-                Img [Src pkg.iconUrl; Class "avatar"]
+                Img [
+                    HTML5.Data "original" pkg.iconUrl
+                    Class "avatar lazy"
+                ]
             ]
             Div [Class "media-body"] -< [
                 H4 [Class "media-heading"] -< [

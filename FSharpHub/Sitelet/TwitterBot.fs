@@ -141,9 +141,34 @@ do ()
 //        retweetedScreenName = retweetedScreenName
 //    }
 //
+//open Newtonsoft.Json
+//
+//open System
+//open System.Text
+//
+//let utf8Encoder =
+//    Encoding.GetEncoding(
+//        "UTF-8",
+//        new EncoderReplacementFallback(String.Empty),
+//        new DecoderExceptionFallback()
+//    )
+//
+//let utf8Text (text:string) = utf8Encoder.GetString(utf8Encoder.GetBytes(text))
+//
 //let statuses =
 //    ``#fsharpSearch``.Statuses.ToArray()
-//    |> Array.iteri (fun i x -> try newTweet x |> ignore with _ -> printfn "%d" i)
+//    |> Array.map newTweet
+//    |> JsonConvert.SerializeObject
+//    |> utf8Text
 //
-//let status = ``#fsharpSearch``.Statuses.[23] |> newTweet
-//status.statusAsHtml
+//File.WriteAllText(@"C:\Users\AHMED\Documents\GitHub\FSharpWebsite\FSharpHub\FSharpHub\JSON\Tweets.json", statuses)
+////    |> Array.iteri (fun i x -> try newTweet x |> ignore with _ -> printfn "%d" i)
+////    |> Array.iteri (fun i x -> try JsonConvert.SerializeObject(x) |> ignore with _ -> printfn "%d" i)
+//
+//let status =
+//    ``#fsharpSearch``.Statuses
+//    |> Seq.find(fun x -> x.StatusID = 540947965322747904UL)
+//
+//let json = JsonConvert.SerializeObject (newTweet status)
+//let test = JsonConvert.DeserializeObject(json, typeof<Tweet>)
+////status.statusAsHtml

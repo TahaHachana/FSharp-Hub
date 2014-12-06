@@ -7,24 +7,24 @@
     Client:{
      addFormlet:Runtime.Field(function()
      {
-      var x,_urlInput_40_1,x1,_titleInput_43_1,formlet,x2,_authorInput_46_1,x3,_publisherInput_51_1,x4,_isbnInput_54_1,x5,_pagesCountInput_57_1,x6,_releaseDateInput_60_1,x7,_coverInput_63_1,formlet1,x8,formlet2;
+      var x,urlInput,x1,titleInput,formlet,x2,authorInput,x3,publisherInput,x4,isbnInput,x5,pagesCountInput,x6,releaseDateInput,x7,coverInput,formlet1,x8,formlet2;
       x=Controls.Input("");
-      _urlInput_40_1=Enhance.WithTextLabel("URL",x);
+      urlInput=Enhance.WithTextLabel("URL",x);
       x1=Controls.Input("");
-      _titleInput_43_1=Enhance.WithTextLabel("Title",x1);
+      titleInput=Enhance.WithTextLabel("Title",x1);
       formlet=Enhance.WithTextLabel("Author",Controls.Input(""));
       x2=Enhance.Many(formlet);
-      _authorInput_46_1=Enhance.WithFormContainer(x2);
+      authorInput=Enhance.WithFormContainer(x2);
       x3=Controls.Input("");
-      _publisherInput_51_1=Enhance.WithTextLabel("Publisher",x3);
+      publisherInput=Enhance.WithTextLabel("Publisher",x3);
       x4=Controls.Input("");
-      _isbnInput_54_1=Enhance.WithTextLabel("ISBN",x4);
+      isbnInput=Enhance.WithTextLabel("ISBN",x4);
       x5=Controls.Input("");
-      _pagesCountInput_57_1=Enhance.WithTextLabel("Pages",x5);
+      pagesCountInput=Enhance.WithTextLabel("Pages",x5);
       x6=Controls.Input("");
-      _releaseDateInput_60_1=Enhance.WithTextLabel("Release Date",x6);
+      releaseDateInput=Enhance.WithTextLabel("Release Date",x6);
       x7=Controls.Input("");
-      _coverInput_63_1=Enhance.WithTextLabel("Cover URL",x7);
+      coverInput=Enhance.WithTextLabel("Cover URL",x7);
       formlet1=Data.$(Data.$(Data.$(Data.$(Data.$(Data.$(Data.$(Data.$(Formlet1.Return(function(url)
       {
        return function(title)
@@ -49,7 +49,7 @@
          };
         };
        };
-      }),_urlInput_40_1),_titleInput_43_1),_authorInput_46_1),_publisherInput_51_1),_isbnInput_54_1),_pagesCountInput_57_1),_releaseDateInput_60_1),_coverInput_63_1);
+      }),urlInput),titleInput),authorInput),publisherInput),isbnInput),pagesCountInput),releaseDateInput),coverInput);
       x8=Enhance.WithSubmitAndResetButtons(formlet1);
       formlet2=Enhance.WithFormContainer(x8);
       return Formlet1.Run(Runtime.Tupled(function(tupledArg)

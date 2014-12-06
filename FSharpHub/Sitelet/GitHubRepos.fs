@@ -89,7 +89,10 @@ module Server =
     let newRepoDiv repo =
         Div [Class "media"] -< [
             A [Class "media-left"; HRef repo.ownerLink; Target "_blank"] -< [
-                Img [Style "width: 30px; height: 30px;"; Src repo.ownerAvatar]
+                Img [
+                    HTML5.Data "original" repo.ownerAvatar
+                    Class "avatar lazy"
+                ]
             ]
             Div [Class "media-body"] -< [
                 yield H4 [Class "media-heading"; Style "word-break: break-word;"] -< [
@@ -119,7 +122,10 @@ module Server =
     let updatedRepoDiv repo =
         Div [Class "media"] -< [
             A [Class "media-left"; HRef repo.ownerLink; Target "_blank"] -< [
-                Img [Style "width: 30px; height: 30px;"; Src repo.ownerAvatar]
+                Img [
+                    HTML5.Data "original" repo.ownerAvatar
+                    Class "avatar lazy"
+                ]
             ]
             Div [Class "media-body"] -< [
                 yield H4 [Class "media-heading"; Style "word-break: break-word;"] -< [

@@ -30,7 +30,7 @@ module Shared =
     let ga = Script [Src "/Scripts/ga.js"]
 
 module Home =
-    let title = "FSharp Programming Language"
+    let title = "FSharp Hub"
 
     let metaDesc = "Latest tweets, snippets and questions about the F# programming language."
 

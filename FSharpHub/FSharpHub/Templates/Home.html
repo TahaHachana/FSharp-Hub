@@ -83,14 +83,16 @@
         </div>
     </footer>
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50af450141ce9366"></script>
-    <script src="/Scripts/addthis.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="/Scripts/jquery.lazyload.min.js" type="text/javascript"></script>
     <![CDATA[
     <script>
         $(function () {
+            $("img.lazy").lazyload();
             $('body').scrollspy({ target: '#sidebar' })
         });
     </script>
     ]]>
+    <script src="/Scripts/addthis.js"></script>
 </body>
 </html>

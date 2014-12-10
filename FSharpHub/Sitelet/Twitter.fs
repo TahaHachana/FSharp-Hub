@@ -1,4 +1,4 @@
-﻿module Website.Twitter
+﻿module Sitelet.Twitter
 
 open IntelliFactory.WebSharper
 
@@ -12,18 +12,19 @@ type Tweet =
         isRetweeted : bool
         retweetedId : string option
         retweetedScreenName : string option
-
     }
 
 module Server =
 
-    open System.IO
-    open Newtonsoft.Json
+    open IntelliFactory.Html
     open LinqToTwitter
     open LinqToTwitter.Security
+    open Newtonsoft.Json
     open System
     open System.Collections.Generic
     open System.Configuration
+    open System.IO
+    open System.Text
     open System.Text.RegularExpressions
     open System.Web
 
@@ -111,16 +112,19 @@ module Server =
 
     let ``#fsharpSearch``() =
         let context = new TwitterContext(authorizer)
-
         query {
             for x in context.Search do
-                where (x.Type = SearchType.Search && x.Query = "#fsharp" && x.Count = 50)
+                where (
+                    x.Type = SearchType.Search
+                    && x.Query = "#fsharp"
+                    && x.Count = 50
+                )
                 select x
         }
         |> fun x -> x.SingleOrDefaultAsync()
         |> Async.AwaitTask
                                     
-    let newTweet (status:LinqToTwitter.Status) =
+    let newTweet (status:Status) =
         let retweetedStatus = status.RetweetedStatus
         let retweeted =
             match retweetedStatus.StatusID with
@@ -139,7 +143,10 @@ module Server =
             screenName = status.User.ScreenNameResponse
             avatar = status.User.ProfileImageUrl
             statusAsHtml = statusHtml status
-            createdAt = status.CreatedAt.ToShortDateString() + " " + status.CreatedAt.ToShortTimeString()
+            createdAt =
+                status.CreatedAt.ToShortDateString()
+                + " "
+                + status.CreatedAt.ToShortTimeString()
             isRetweeted = retweeted
             retweetedId = retweetedId
             retweetedScreenName = retweetedScreenName
@@ -156,8 +163,6 @@ module Server =
             with _ -> return None
         }
 
-    open IntelliFactory.Html
-
     let tweetDiv tweet =
         let p = VerbatimContent("<p>" + tweet.statusAsHtml + "</p>")
         let screenName, statusId =
@@ -167,46 +172,68 @@ module Server =
         let replyLink = "https://twitter.com/intent/tweet?in_reply_to=" + statusId
         let retweetLink = "https://twitter.com/intent/retweet?tweet_id="  + statusId
         let favoriteLink = "https://twitter.com/intent/favorite?tweet_id=" + statusId
-        Div [Class "media"] -< [
+        Div [Class "media"]
+        -< [
             A [
                 Class "media-left"
                 HRef ("https://twitter.com/" + tweet.screenName)
                 Target "_blank"
-            ] -< [
+            ]
+            -< [
                 Img [
                     HTML5.Data "original" tweet.avatar
                     Class "avatar lazy"
                 ]
             ]
-            Div [Class "media-body twitter-media-body"] -< [
-                H4 [Class "media-heading"] -< [
+            Div [Class "media-body twitter-media-body"]
+            -< [
+                H4 [Class "media-heading"]
+                -< [
                     A [
                         HRef ("https://twitter.com/" + tweet.screenName)
                         Target "_blank"
-                    ] -< [Text tweet.screenName]
+                    ]
+                    -< [Text tweet.screenName]
                     Text " "                                 
                     Small [
                         A [
                             HRef ("https://twitter.com/" + screenName + "/status/" + statusId)
                             Target "_blank"
-                        ] -< [Text tweet.createdAt]                                    
+                        ]
+                        -< [Text tweet.createdAt]                                    
                     ]
                 ]
                 p
-                Div [Class "tweet-actions"] -< [
-                    A [HRef replyLink; Class "tweet-action"; Style "margin-right: 5px;"; Target "_blank"] -< [Text "Reply"]
-                    A [HRef retweetLink; Class "tweet-action"; Style "margin-right: 5px;"; Target "_blank"] -< [Text "Retweet"]
-                    A [HRef favoriteLink; Class "tweet-action"; Target "_blank"] -< [Text "Favorite"]
+                Div [Class "tweet-actions"]
+                -< [
+                    A [
+                        HRef replyLink
+                        Class "tweet-action"
+                        Style "margin-right: 5px;"
+                        Target "_blank"
+                    ]
+                    -< [Text "Reply"]
+                    A [
+                        HRef retweetLink
+                        Class "tweet-action"
+                        Style "margin-right: 5px;"
+                        Target "_blank"
+                    ]
+                    -< [Text "Retweet"]
+                    A [
+                        HRef favoriteLink
+                        Class "tweet-action"
+                        Target "_blank"
+                    ]
+                    -< [Text "Favorite"]
                 ]
             ]                        
         ]
      
     let tweetsDiv() =
-        let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/Tweets.json"
-        Utils.dataDiv<Tweet> jsonPath tweetDiv
-
-    open System
-    open System.Text
+        Utils.dataDiv<Tweet>
+            "~/JSON/Tweets.json"
+            tweetDiv
 
     let utf8Encoder =
         Encoding.GetEncoding(
@@ -215,7 +242,8 @@ module Server =
             new DecoderExceptionFallback()
         )
 
-    let utf8Text (text:string) = utf8Encoder.GetString(utf8Encoder.GetBytes(text))
+    let utf8Text (text:string) =
+        utf8Encoder.GetString(utf8Encoder.GetBytes(text))
 
     let fetchNewTweets jsonPath =
         async {

@@ -1,28 +1,29 @@
-﻿module Website.Skin
+﻿module Sitelet.Skin
 
-open System.Web
 open IntelliFactory.WebSharper.Sitelets
+open IntelliFactory.WebSharper.Sitelets.Content
+open System.Web
 
 type Page =
     {
-        Title    : string
+        Title : string
         MetaDesc : string
-        Body     : Content.HtmlElement
+        Body : HtmlElement
     }
 
     static member New title metaDesc makeBody ctx =
         {
-            Title    = title
+            Title = title
             MetaDesc = metaDesc
-            Body     = makeBody ctx
+            Body = makeBody ctx
         }
 
 let loadFrequency =
-    #if DEBUG
-        Content.Template.PerRequest
-    #else
-        Content.Template.Once
-    #endif
+#if DEBUG
+    Content.Template.PerRequest
+#else
+    Content.Template.Once
+#endif
 
 let template<'T> path =
     let path = HttpContext.Current.Server.MapPath path
@@ -30,11 +31,11 @@ let template<'T> path =
     
 let pageTemplate path =
     (template<Page> path)
-        .With("title"    , fun page -> page.Title)
+        .With("title", fun page -> page.Title)
         .With("meta-desc", fun page -> page.MetaDesc)
-        .With("body"     , fun page -> page.Body)
+        .With("body", fun page -> page.Body)
 
 let withTemplate<'T> template title metaDesc makeBody : Content<'T> =
     Content.WithTemplate
         template
-        <| fun ctx -> Page.New title metaDesc makeBody ctx
+        <| Page.New title metaDesc makeBody

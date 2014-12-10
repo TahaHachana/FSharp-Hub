@@ -1,4 +1,4 @@
-module Website.GitHubRepos
+module Sitelet.GitHubRepos
 
 open IntelliFactory.WebSharper
 open Octokit
@@ -12,9 +12,11 @@ type Repo =
         link : string
         createdAt : string
         pushedAt : string
+        stargazers : int
+        forks : int
     }
 
-    static member New (r:Repository) =        
+    static member New (r:Repository) =     
         {
             ownerLink = r.Owner.HtmlUrl
             ownerAvatar = r.Owner.AvatarUrl
@@ -26,18 +28,19 @@ type Repo =
             link = r.HtmlUrl
             createdAt = r.CreatedAt.ToString()
             pushedAt = r.PushedAt.ToString()
+            stargazers = r.StargazersCount
+            forks = r.ForksCount
         }
-
 
 module Server =
 
-    open System.IO
+    open IntelliFactory.Html
     open Newtonsoft.Json
     open Octokit.Internal
     open System
     open System.Globalization
+    open System.IO
     open System.Web
-    open IntelliFactory.Html
 
     module NewRepos =
 
@@ -106,8 +109,9 @@ module Server =
         ]
         
     let newReposDiv() =
-        let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/NewGitHubRepos.json"
-        Utils.dataDiv<Repo> jsonPath newRepoDiv
+        Utils.dataDiv<Repo>
+            "~/JSON/NewGitHubRepos.json"
+            newRepoDiv
 
     let fetchNewRepos jsonPath =
         async {
@@ -135,12 +139,21 @@ module Server =
                 match repo.description with
                 | "" -> ()
                 | d -> yield P [Text d]
+                yield P [
+                    Text "Stargazers: "
+                    Span [Class "badge"]
+                    -< [Text (string repo.stargazers)]
+                    Text " Forks: "
+                    Span [Class "badge"]
+                    -< [Text (string repo.forks)]
+                ]
             ]               
         ]
 
     let updatedReposDiv() =
-        let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/UpdatedGitHubRepos.json"
-        Utils.dataDiv<Repo> jsonPath updatedRepoDiv
+        Utils.dataDiv<Repo>
+            "~/JSON/UpdatedGitHubRepos.json"
+            updatedRepoDiv
 
     let fetchUpdatedRepos jsonPath =
         async {

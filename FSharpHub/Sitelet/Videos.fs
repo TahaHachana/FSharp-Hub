@@ -1,4 +1,4 @@
-﻿module Website.Videos
+﻿module Sitelet.Videos
 
 open IntelliFactory.Html
 open Records
@@ -13,26 +13,41 @@ let skip (videos:seq<Video>) n =
     |> List.map (fun x -> Seq.toList x)
 
 let thumbnail (url, thumbnail, title, website) =
-    Div[Class "col-lg-4"] -< [
-        Div [Class "thumbnail"] -< [
-            A [HRef url; Target "_blank"] -< [
-                Img [Class "thumb"; Src thumbnail; Alt title]
+    Div [Class "col-lg-4"]
+    -< [
+        Div [Class "thumbnail"]
+        -< [
+            A [
+                HRef url
+                Target "_blank"
+            ]
+            -< [
+                Img [
+                    Class "thumb"
+                    Src thumbnail
+                    Alt title
+                ]
             ]
             H4 [Text title]
         ]
     ]
 
-let rows divs = Div [Class "row videos-row"] -< divs
+let rows divs =
+    Div [Class "row videos-row"]
+    -< divs
 
 let prevLi pageId =
     match pageId with
-    | 1 -> LI [Class "disabled"] -< [Utils.link "#" "«"]
+    | 1 ->
+        LI [Class "disabled"]
+        -< [Utils.link "#" "«"]
     | _ -> LI [Utils.link ("/videos/" + string (pageId - 1)) "«"]
 
 let nextLi pageId pagesLength =
     match pageId with
     | _ when pageId = pagesLength ->
-        LI [Class "disabled"] -< [
+        LI [Class "disabled"]
+        -< [
             Utils.link "#" "»"
         ]
     | _ -> LI [Utils.link ("/videos/" + string (pageId + 1)) "»"]
@@ -41,13 +56,15 @@ let pageLi x pageId =
     let xStr = string x
     match x with
     | _ when x = pageId ->
-        LI [Class "active"] -< [
+        LI [Class "active"]
+        -< [
             Utils.link ("/videos/" + xStr) xStr
         ]
     | _ -> LI [Utils.link ("/videos/" + xStr) xStr]
 
 let pagesUl pageId pages length =
-    UL [Class "pagination"] -< [
+    UL [Class "pagination"]
+    -< [
         yield prevLi pageId
         yield! Array.map (fun x -> pageLi x pageId) pages
         yield nextLi pageId length
@@ -60,7 +77,10 @@ let paginationDiv items pageId =
     let length = pages.Length
     let pages' =
         match pageId with
-        | _ when pageId < 7 -> pages |> Seq.truncate 10 |> Seq.toArray
+        | _ when pageId < 7 ->
+            pages
+            |> Seq.truncate 10
+            |> Seq.toArray
         | _ ->
             let tail =
                 pages.[pageId ..]
@@ -75,7 +95,8 @@ let paginationDiv items pageId =
     match length with
         | 1 -> Div []
         | _ ->
-            Div [Class "row"] -< [
+            Div [Class "row"]
+            -< [
                 pagesUl pageId pages' length
             ]
 

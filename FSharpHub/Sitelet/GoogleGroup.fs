@@ -1,4 +1,4 @@
-﻿module Website.GoogleGroup
+﻿module Sitelet.GoogleGroup
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.Html
@@ -6,9 +6,15 @@ open IntelliFactory.WebSharper.JQuery
 
 [<JavaScript>]
 let itemLi item =
-    LI [Attr.Class "list-group-item"] -< [
-        H4 [Attr.Class "list-group-item-heading"] -< [
-            A [Attr.HRef item?link; Attr.Target "_blank"; Text item?title]
+    LI [Attr.Class "list-group-item"]
+    -< [
+        H4 [Attr.Class "list-group-item-heading"]
+        -< [
+            A [
+                Attr.HRef item?link
+                Attr.Target "_blank"
+                Text item?title
+            ]
         ]
         P [Text item?contentSnippet]
         P [Text ("Author: " + item?author)]

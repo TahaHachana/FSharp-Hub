@@ -1,11 +1,12 @@
-﻿module Website.BooksAdmin
+﻿module Sitelet.BooksAdmin
 
 open IntelliFactory.WebSharper
 
 module Server =
-    open System
+
     open Mongo
     open Records
+    open System
 
     [<Remote>]
     let books() =
@@ -47,7 +48,7 @@ module Client =
             Controls.Input ""
             |> Enhance.WithTextLabel "Author"
             |> Enhance.Many
-            |> Enhance.WithFormContainer
+//            |> Enhance.WithFormContainer
         let publisherInput =
             Controls.Input ""
             |> Enhance.WithTextLabel "Publisher"
@@ -93,7 +94,8 @@ module Client =
         ]
 
     let main() =
-        Div [Attr.Class "row"] -< [
+        Div [Attr.Class "row"]
+        -< [
             Div [
                 H1 [Text "Add new book"]                
                 Div [addFormlet]

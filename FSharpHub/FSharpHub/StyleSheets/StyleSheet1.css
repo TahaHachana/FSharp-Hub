@@ -202,6 +202,7 @@ body {
 .cover {
     display: block;
     margin: 0 auto;
+    max-height: 220px;
 }
 
 /* Videos */
@@ -218,4 +219,10 @@ body {
     display: block;
     margin: 0 auto;
     max-width: 210px;
+}
+
+/* Login */
+#signin {
+    max-width: 300px;
+    margin: 0 auto;
 }

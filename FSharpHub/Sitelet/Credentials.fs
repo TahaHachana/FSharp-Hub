@@ -1,13 +1,16 @@
-﻿module Website.Credentials
+﻿module Sitelet.Credentials
 
 open System.Configuration
 
 let connectionString = ConfigurationManager.ConnectionStrings.["Mongo"].ConnectionString 
-let password = ConfigurationManager.AppSettings.Get "Password"
-let consumerKey =  ConfigurationManager.AppSettings.Get "ConsumerKey"
-let consumerSecret = ConfigurationManager.AppSettings.Get "ConsumerSecret"
-let accessToken = ConfigurationManager.AppSettings.Get "AccessToken"
-let accessTokenSecret = ConfigurationManager.AppSettings.Get "AccessTokenSecret"
-let stackExchangeKey = ConfigurationManager.AppSettings.Get "StackExchangeKey"
-let gitHubLogin = ConfigurationManager.AppSettings.Get "GitHubLogin"
-let gitHubPassword = ConfigurationManager.AppSettings.Get "GitHubPassword"
+
+let appSettings = ConfigurationManager.AppSettings
+
+let password = appSettings.Get "Password"
+let consumerKey =  appSettings.Get "ConsumerKey"
+let consumerSecret = appSettings.Get "ConsumerSecret"
+let accessToken = appSettings.Get "AccessToken"
+let accessTokenSecret = appSettings.Get "AccessTokenSecret"
+let stackExchangeKey = appSettings.Get "StackExchangeKey"
+let gitHubLogin = appSettings.Get "GitHubLogin"
+let gitHubPassword = appSettings.Get "GitHubPassword"

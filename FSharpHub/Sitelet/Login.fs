@@ -1,16 +1,19 @@
-﻿module Website.Login
+﻿module Sitelet.Login
 
 open IntelliFactory.WebSharper
 
 type LoginInfo =
     {
-        Name     : string
+        Name : string
         Password : string
     }
 
-type Access = Denied | Granted
+type Access = 
+    | Denied
+    | Granted
 
 module Server =
+
     open IntelliFactory.WebSharper.Sitelets
 
     [<Remote>]
@@ -26,6 +29,7 @@ module Server =
         }
 
 module Client =
+
     open IntelliFactory.WebSharper.Html
     open IntelliFactory.WebSharper.JQuery
 
@@ -59,15 +63,24 @@ module Client =
             -- Text "Submit"
             |>! OnClick (fun _ _ ->
                 async {
-                    let info = {Name = userInput.Value; Password = passInput.Value}
+                    let info =
+                        {
+                            Name = userInput.Value
+                            Password = passInput.Value
+                        }
                     let! access = Server.login info
                     match access with
                     | Denied -> JavaScript.Alert "Login failed"
                     | Granted -> Html5.Window.Self.Location.Assign redirectUrl
                 } |> Async.Start)
-        Form [Attr.NewAttr "role" "form"; Attr.Id "signin"] -< [
+        Form [
+            Attr.NewAttr "role" "form"
+            Attr.Id "signin"
+        ] 
+        -< [
             H2 [Text "Please sign in"]
-            FieldSet [Attr.Class "form-group"] -< [
+            FieldSet [Attr.Class "form-group"]
+            -< [
                 Label [Text "Username"; Attr.For "username"]
                 userInput
                 Label [Text "Password"; Attr.For "password"]
@@ -79,6 +92,7 @@ module Client =
         ]
 
 type Control(redirectUrl) =
+    
     inherit Web.Control ()
 
     [<JavaScript>]

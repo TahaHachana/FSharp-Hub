@@ -1,4 +1,4 @@
-module Website.StackOverflow
+module Sitelet.StackOverflow
 
 open IntelliFactory.WebSharper
 
@@ -18,6 +18,7 @@ type SoQuestion =
 
 module Server =
     
+    open IntelliFactory.Html
     open StackExchange.StacMan
     open System
     open System.Configuration
@@ -27,42 +28,43 @@ module Server =
     open Newtonsoft.Json
     open System.Web
 
-    [<AutoOpen>]
-    module private Private =
-        let culture = CultureInfo.CreateSpecificCulture "en-US"
-        CultureInfo.DefaultThreadCurrentCulture <- culture
+    let culture = CultureInfo.CreateSpecificCulture "en-US"
+    CultureInfo.DefaultThreadCurrentCulture <- culture
 
-        let client =
-            let key = Credentials.stackExchangeKey
-            new StacManClient(key=key, version="2.1")
+    let client =
+        new StacManClient(
+            key = Credentials.stackExchangeKey,
+            version="2.1"
+        )
 
-        let ``f#Questions``() =
-            client.Questions.GetAll(
-                "stackoverflow",
-                page = Nullable(1),
-                pagesize = Nullable(50),
-                sort = Nullable(Questions.AllSort.Creation),
-                order = Nullable(Order.Desc),
-                tagged = "f#")
+    let ``f#Questions``() =
+        client.Questions.GetAll(
+            "stackoverflow",
+            page = Nullable(1),
+            pagesize = Nullable(50),
+            sort = Nullable(Questions.AllSort.Creation),
+            order = Nullable(Order.Desc),
+            tagged = "f#"
+        )
 
-        let newQuestion (q:StackExchange.StacMan.Question) =
-            let acceptedAnswer = q.AcceptedAnswerId
-            let acceptedAnwserId =
-                match acceptedAnswer.HasValue with
-                | false -> None
-                | true -> Some acceptedAnswer.Value
-            {
-                id = q.QuestionId
-                link = q.Link
-                title = q.Title |> WebUtility.HtmlDecode
-                creationDate = q.CreationDate.ToString()
-                answerCount = q.AnswerCount
-                ownerAvatar = q.Owner.ProfileImage
-                ownerLink = q.Owner.Link
-                tags = q.Tags
-                score = q.Score
-                acceptedAnswerId = acceptedAnwserId
-            }
+    let newQuestion (q:Question) =
+        let acceptedAnswer = q.AcceptedAnswerId
+        let acceptedAnwserId =
+            match acceptedAnswer.HasValue with
+            | false -> None
+            | true -> Some acceptedAnswer.Value
+        {
+            id = q.QuestionId
+            link = q.Link
+            title = q.Title |> WebUtility.HtmlDecode
+            creationDate = q.CreationDate.ToString()
+            answerCount = q.AnswerCount
+            ownerAvatar = q.Owner.ProfileImage
+            ownerLink = q.Owner.Link
+            tags = q.Tags
+            score = q.Score
+            acceptedAnswerId = acceptedAnwserId
+        }
     
     let latestQuestions() =
         async {
@@ -73,8 +75,6 @@ module Server =
                 return Some questions
             with _ -> return None
         }
-
-    open IntelliFactory.Html
 
     let questionDiv q =
         Div [Class "media"]
@@ -90,7 +90,8 @@ module Server =
                     Class "avatar lazy"
                 ]
             ]
-            Div [Class "media-body"] -< [
+            Div [Class "media-body"]
+            -< [
                 H4 [
                     Class "media-heading"
                     Style "word-break: break-word;"
@@ -120,8 +121,9 @@ module Server =
         ]
 
     let stackDiv() =
-        let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/StackOverflowQuestions.json"
-        Utils.dataDiv<SoQuestion> jsonPath questionDiv
+        Utils.dataDiv<SoQuestion>
+            "~/JSON/StackOverflowQuestions.json"
+            questionDiv
 
     let fetchNewQuestions jsonPath =
         async {

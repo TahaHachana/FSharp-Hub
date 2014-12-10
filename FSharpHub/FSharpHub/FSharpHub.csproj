@@ -119,8 +119,6 @@
     <Content Include="Images\Books\RealWorldFunctionalProgramming.jpg" />
     <Content Include="Images\Books\WebCloudMobileFSharp.gif" />
     <Content Include="robots.txt" />
-    <Content Include="Scripts\addthis.js" />
-    <Content Include="Scripts\ga.js" />
     <Content Include="Scripts\jquery.lazyload.min.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.Formlet.js" />
     <Content Include="Scripts\WebSharper\IntelliFactory.Formlet.min.js" />

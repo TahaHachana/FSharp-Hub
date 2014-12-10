@@ -1,8 +1,8 @@
-﻿module Website.Books
+﻿module Sitelet.Books
 
 open IntelliFactory.Html
-open Records
 open Mongo
+open Records
 
 let bookData book =
     book.Url, book.Cover, book.Title,
@@ -13,7 +13,7 @@ let booksData() =
     Books.all()
     |> Seq.map bookData
     |> Utils.split 3
-    |> List.map (fun x -> Seq.toList x)
+    |> List.map Seq.toList
 
 let authorsStr authors =
     let str = String.concat ", " authors
@@ -22,9 +22,13 @@ let authorsStr authors =
     | _ -> "Authors: " + str
 
 let coverLink url cover title =
-    A [HRef url; Target "_blank"] -< [
+    A [
+        HRef url
+        Target "_blank"
+    ]
+    -< [
         Img [
-            Class "cover"
+            Class "cover img-responsive"
             Src cover
             Alt title
             Height "220"
@@ -32,7 +36,8 @@ let coverLink url cover title =
     ]
 
 let caption title authors publisher isbn pages =
-    Div [Class "caption"] -< [
+    Div [Class "caption"] 
+    -< [
         H4 [Text title]
         P [Text <| authorsStr authors]
         P [Text <| "Publisher: " + publisher]
@@ -41,14 +46,18 @@ let caption title authors publisher isbn pages =
     ]
 
 let thumbnail (url, cover, title, authors, publisher, isbn, pages) =
-    Div [Class "col-lg-4"] -< [
-        Div [Class "thumbnail"] -< [
+    Div [Class "col-lg-4"]
+    -< [
+        Div [Class "thumbnail"]
+        -< [
             coverLink url cover title
             caption title authors publisher isbn pages
         ]
     ]
 
-let rows divs = Div [Class "row books-row"] -< divs
+let rows divs =
+    Div [Class "row books-row"]
+    -< divs
 
 let main() =
     booksData()

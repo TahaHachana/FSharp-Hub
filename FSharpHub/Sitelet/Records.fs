@@ -1,7 +1,7 @@
-﻿module Website.Records
+﻿module Sitelet.Records
 
-open System
 open MongoDB.Bson
+open System
         
 [<CLIMutable>]
 type Video =

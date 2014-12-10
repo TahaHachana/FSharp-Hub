@@ -1,4 +1,4 @@
-﻿module Website.VideosAdmin    
+﻿module Sitelet.VideosAdmin    
 
 open IntelliFactory.WebSharper
 

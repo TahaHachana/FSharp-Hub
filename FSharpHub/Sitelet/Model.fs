@@ -1,4 +1,4 @@
-﻿module Website.Model
+﻿module Sitelet.Model
 
 type PageId = int
 
@@ -12,4 +12,4 @@ type Action =
     | Logout
     | [<CompiledName("videos")>] Videos of PageId
     | VideosAdmin
-    | Rss
+    | CheckNewData

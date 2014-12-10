@@ -1,4 +1,4 @@
-module Website.NuGet
+module Sitelet.NuGet
 
 open IntelliFactory.WebSharper
 
@@ -36,10 +36,11 @@ type Package =
 
 module Server =
 
+    open IntelliFactory.Html
+    open Newtonsoft.Json
     open System
     open System.IO
     open System.Web
-    open Newtonsoft.Json
 
     let context = NuGet.Main.context
 
@@ -60,34 +61,48 @@ module Server =
             with _ -> return None
         }
 
-    open IntelliFactory.Html
-
     let pkgDiv pkg =
-        Div [Class "media"] -< [
-            A [Class "media-left"; HRef pkg.projectUrl; Target "_blank"] -< [
+        Div [Class "media"]
+        -< [
+            A [
+                Class "media-left"
+                HRef pkg.projectUrl
+                Target "_blank"
+            ]
+            -< [
                 Img [
                     HTML5.Data "original" pkg.iconUrl
                     Class "avatar lazy"
                 ]
             ]
-            Div [Class "media-body"] -< [
-                H4 [Class "media-heading"] -< [
-                    A [HRef pkg.galleryDetailsUrl; Target "_blank"] -< [Text (pkg.id + " " + pkg.version)]                                        
+            Div [Class "media-body"]
+            -< [
+                H4 [Class "media-heading"]
+                -< [
+                    A [
+                        HRef pkg.galleryDetailsUrl
+                        Target "_blank"
+                    ]
+                    -< [Text (pkg.id + " " + pkg.version)]                                        
                 ]
                 P [Text ("Pushed on: " + pkg.lastUpdated)]
                 P [
                     Text "Download Count: "
-                    Span [Class "badge"] -< [Text (string pkg.downloadCount)]
+                    Span [Class "badge"]
+                    -< [Text (string pkg.downloadCount)]
                 ]
                 Div [
-                    for x in pkg.tags -> Span [Class "label label-info"] -< [Text x]
+                    for x in pkg.tags ->
+                        Span [Class "label label-info"]
+                        -< [Text x]
                 ]
             ]               
         ]
 
     let pkgsDiv() =
-        let jsonPath = HttpContext.Current.Server.MapPath "~/JSON/NuGet.json"
-        Utils.dataDiv<Package> jsonPath pkgDiv
+        Utils.dataDiv<Package>
+            "~/JSON/NuGet.json"
+            pkgDiv
 
     let fetchPkgs jsonPath =
         async {

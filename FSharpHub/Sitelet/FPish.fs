@@ -1,4 +1,4 @@
-module Website.FPish
+module Sitelet.FPish
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.Html
@@ -6,12 +6,19 @@ open IntelliFactory.WebSharper.JQuery
 
 [<JavaScript>]
 let itemLi item =
-    LI [Attr.Class "list-group-item"] -< [
-        H4 [Attr.Class "list-group-item-heading"] -< [
-            A [Attr.HRef item?link; Attr.Target "_blank"; Text item?title]
+    LI [Attr.Class "list-group-item"]
+    -< [
+        H4 [Attr.Class "list-group-item-heading"]
+        -< [
+            A [
+                Attr.HRef item?link
+                Attr.Target "_blank"
+                Text item?title]
         ]
         Div [
-            for y in item?categories -> Span [Attr.Class "label label-info"] -< [Text y]
+            for y in item?categories ->
+                Span [Attr.Class "label label-info"]
+                -< [Text y]
         ]
     ]
 

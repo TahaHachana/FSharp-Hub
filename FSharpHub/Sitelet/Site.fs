@@ -1,19 +1,20 @@
-﻿module Website.Site
+﻿module Sitelet.Site
 
+open Controller
 open IntelliFactory.WebSharper.Sitelets
 open Model
-open Controller
 
 let router =
     Router.Table
         [
-            Home       , "/"
-            BooksAdmin , "/admin/books"
+            Home, "/"
+            BooksAdmin, "/admin/books"
             VideosAdmin, "/admin/videos"
-            Login None , "/login"
-            Error      , "/error"
-            Books      , "/books"
-            Admin      , "/admin"
+            Login None, "/login"
+            Error, "/error"
+            Books, "/books"
+            Admin, "/admin"
+            CheckNewData, "/check-new-data"
         ]
     <|>
     Router.Infer()
@@ -21,7 +22,7 @@ let router =
 let Main =
     {
         Controller = controller
-        Router     = router
+        Router = router
     }
     
 type Website() =

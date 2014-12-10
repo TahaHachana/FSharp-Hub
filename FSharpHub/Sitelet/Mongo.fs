@@ -1,9 +1,9 @@
-﻿module Website.Mongo
+﻿module Sitelet.Mongo
 
-open System.Globalization
-open System.Linq
 open MongoDB.Driver
 open Records
+open System.Globalization
+open System.Linq
     
 let culture = CultureInfo.CreateSpecificCulture "en-US"
 CultureInfo.DefaultThreadCurrentCulture <- culture
@@ -13,13 +13,15 @@ let server = client.GetServer()
 let db = server.GetDatabase "fsharpwebsite"
 let collByName<'T> (name:string) = db.GetCollection<'T> name
     
-let books     = collByName<Book>     "books"
-let videos    = collByName<Video>    "videos"
+let books = collByName<Book> "books"
+let videos = collByName<Video> "videos"
         
-let asQueryable (collection : MongoCollection<_>) = collection.FindAll().AsQueryable()
+let asQueryable (collection:MongoCollection<_>) =
+    collection.FindAll()
+        .AsQueryable()
         
-let booksQueryable     = asQueryable books
-let videosQueryable    = asQueryable videos
+let booksQueryable = asQueryable books
+let videosQueryable = asQueryable videos
 
 module Books =
 

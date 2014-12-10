@@ -1,4 +1,4 @@
-﻿module Website.Controller
+﻿module Sitelet.Controller
 
 open IntelliFactory.WebSharper.Sitelets
 open Model
@@ -16,15 +16,15 @@ let logout() =
 let controller =
 
     let handle = function
-        | Home          -> Views.home
-        | Books         -> Views.books
-        | Error         -> Views.error
+        | Home -> Views.home
+        | Books -> Views.books
+        | Error -> Views.error
         | Videos pageId -> Views.videos pageId
-        | Admin         -> protect Views.admin
-        | Login action  -> Views.login action
-        | Logout        -> logout()
-        | BooksAdmin    -> protect Views.booksAdmin
-        | VideosAdmin   -> protect Views.videosAdmin
-        | Rss -> Views.rss()
+        | Admin -> protect Views.admin
+        | Login action -> Views.login action
+        | Logout -> logout()
+        | BooksAdmin -> protect Views.booksAdmin
+        | VideosAdmin -> protect Views.videosAdmin
+        | CheckNewData -> Views.checkNewData()
 
     { Handle = handle }

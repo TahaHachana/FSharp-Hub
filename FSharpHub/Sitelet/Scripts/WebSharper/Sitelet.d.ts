@@ -1,4 +1,4 @@
-declare module Website {
+declare module Sitelet {
     module Site {
         interface Website {
         }
@@ -50,9 +50,6 @@ declare module Website {
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
-        var itemLi : {
-            <_M1>(item: _M1): __ABBREV.__Html.Element;
-        };
         var main : {
             (): __ABBREV.__Html.Element;
         };
@@ -72,9 +69,6 @@ declare module Website {
         interface Control {
             get_Body(): __ABBREV.__Html.IPagelet;
         }
-        var itemLi : {
-            <_M1>(item: _M1): __ABBREV.__Html.Element;
-        };
         var main : {
             (): __ABBREV.__Html.Element;
         };
@@ -91,14 +85,6 @@ declare module Website {
             tags: string[];
         }
     }
-    module GitHubGists {
-        interface GitHubGist {
-            ownerAvatar: string;
-            ownerName: string;
-            ownerLink: string;
-            link: string;
-        }
-    }
     module GitHubRepos {
         interface Repo {
             ownerLink: string;
@@ -108,6 +94,8 @@ declare module Website {
             link: string;
             createdAt: string;
             pushedAt: string;
+            stargazers: number;
+            forks: number;
         }
     }
     module StackOverflow {
@@ -200,6 +188,9 @@ declare module Website {
             <_M1>(url: string, itemLi: {
                 (x: _M1): __ABBREV.__Html.Element;
             }, elt: __ABBREV.__Html.Element): void;
+        };
+        var itemLi : {
+            <_M1>(item: _M1): __ABBREV.__Html.Element;
         };
     }
     module Utils {

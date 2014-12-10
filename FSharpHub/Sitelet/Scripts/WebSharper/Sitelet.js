@@ -1,30 +1,30 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Website,BooksAdmin,Client,FPish,Seq,HTML5,JsUtils,FSSnip,Client1,GoogleGroup,jQuery,Arrays,Login,Client2,window,EventsPervasives,Msdn,News,Utils,VideosAdmin,Client3;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Formlet,Controls,Enhance,Data,Formlet1,Concurrency,Remoting,alert,Html,Operators,Default,List,Sitelet,BooksAdmin,Client,FPish,Seq,HTML5,JsUtils,FSSnip,Client1,GoogleGroup,jQuery,Arrays,Login,Client2,window,EventsPervasives,Msdn,News,Utils,VideosAdmin,Client3;
  Runtime.Define(Global,{
-  Website:{
+  Sitelet:{
    BooksAdmin:{
     Client:{
      addFormlet:Runtime.Field(function()
      {
-      var x,_urlInput_40_1,x1,_titleInput_43_1,formlet,x2,_authorInput_46_1,x3,_publisherInput_51_1,x4,_isbnInput_54_1,x5,_pagesCountInput_57_1,x6,_releaseDateInput_60_1,x7,_coverInput_63_1,formlet1,x8,formlet2;
+      var x,_urlInput_41_1,x1,_titleInput_44_1,formlet,x2,_authorInput_47_1,x3,_publisherInput_52_1,x4,_isbnInput_55_1,x5,_pagesCountInput_58_1,x6,_releaseDateInput_61_1,x7,_coverInput_64_1,formlet1,x8,formlet2;
       x=Controls.Input("");
-      _urlInput_40_1=Enhance.WithTextLabel("URL",x);
+      _urlInput_41_1=Enhance.WithTextLabel("URL",x);
       x1=Controls.Input("");
-      _titleInput_43_1=Enhance.WithTextLabel("Title",x1);
-      formlet=Enhance.WithTextLabel("Author",Controls.Input(""));
-      x2=Enhance.Many(formlet);
-      _authorInput_46_1=Enhance.WithFormContainer(x2);
+      _titleInput_44_1=Enhance.WithTextLabel("Title",x1);
+      formlet=Controls.Input("");
+      x2=Enhance.WithTextLabel("Author",formlet);
+      _authorInput_47_1=Enhance.Many(x2);
       x3=Controls.Input("");
-      _publisherInput_51_1=Enhance.WithTextLabel("Publisher",x3);
+      _publisherInput_52_1=Enhance.WithTextLabel("Publisher",x3);
       x4=Controls.Input("");
-      _isbnInput_54_1=Enhance.WithTextLabel("ISBN",x4);
+      _isbnInput_55_1=Enhance.WithTextLabel("ISBN",x4);
       x5=Controls.Input("");
-      _pagesCountInput_57_1=Enhance.WithTextLabel("Pages",x5);
+      _pagesCountInput_58_1=Enhance.WithTextLabel("Pages",x5);
       x6=Controls.Input("");
-      _releaseDateInput_60_1=Enhance.WithTextLabel("Release Date",x6);
+      _releaseDateInput_61_1=Enhance.WithTextLabel("Release Date",x6);
       x7=Controls.Input("");
-      _coverInput_63_1=Enhance.WithTextLabel("Cover URL",x7);
+      _coverInput_64_1=Enhance.WithTextLabel("Cover URL",x7);
       formlet1=Data.$(Data.$(Data.$(Data.$(Data.$(Data.$(Data.$(Data.$(Formlet1.Return(function(url)
       {
        return function(title)
@@ -49,7 +49,7 @@
          };
         };
        };
-      }),_urlInput_40_1),_titleInput_43_1),_authorInput_46_1),_publisherInput_51_1),_isbnInput_54_1),_pagesCountInput_57_1),_releaseDateInput_60_1),_coverInput_63_1);
+      }),_urlInput_41_1),_titleInput_44_1),_authorInput_47_1),_publisherInput_52_1),_isbnInput_55_1),_pagesCountInput_58_1),_releaseDateInput_61_1),_coverInput_64_1);
       x8=Enhance.WithSubmitAndResetButtons(formlet1);
       formlet2=Enhance.WithFormContainer(x8);
       return Formlet1.Run(Runtime.Tupled(function(tupledArg)
@@ -226,6 +226,12 @@
      {
       return jQuery(this).scrollspy.call(null,"refresh");
      });
+    },
+    itemLi:function(item)
+    {
+     var arg10;
+     arg10=item.link;
+     return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(item.title)]))])),Default.P(List.ofArray([Default.Text(item.contentSnippet)]))]));
     }
    },
    Login:{
@@ -297,12 +303,6 @@
       return Msdn.main();
      }
     }),
-    itemLi:function(item)
-    {
-     var arg10;
-     arg10=item.link;
-     return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(item.title)]))])),Default.P(List.ofArray([Default.Text(item.contentSnippet)]))]));
-    },
     main:function()
     {
      var x;
@@ -311,7 +311,7 @@
      {
       return JsUtils.displayFeed("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=https%3A%2F%2Fsocial.msdn.microsoft.com%2FForums%2Fen-US%2Ffsharpgeneral%2Fthreads%3FoutputAs%3Drss",function(item)
       {
-       return Msdn.itemLi(item);
+       return JsUtils.itemLi(item);
       },elt);
      },x);
      return x;
@@ -324,12 +324,6 @@
       return News.main();
      }
     }),
-    itemLi:function(item)
-    {
-     var arg10;
-     arg10=item.link;
-     return Operators.add(Default.LI(List.ofArray([Default.Attr().Class("list-group-item")])),List.ofArray([Operators.add(Default.H4(List.ofArray([Default.Attr().Class("list-group-item-heading")])),List.ofArray([Default.A(List.ofArray([Default.Attr().NewAttr("href",arg10),Default.Attr().NewAttr("target","_blank"),Default.Text(item.title)]))])),Default.P(List.ofArray([Default.Text(item.contentSnippet)]))]));
-    },
     main:function()
     {
      var x;
@@ -338,7 +332,7 @@
      {
       return JsUtils.displayFeed("http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=http%3A%2F%2Ffpish.net%2Frss%2Fblogs%2Ftag%2F1%2Ff~23",function(item)
       {
-       return News.itemLi(item);
+       return JsUtils.itemLi(item);
       },elt);
      },x);
      return x;
@@ -453,26 +447,26 @@
   Operators=Runtime.Safe(Html.Operators);
   Default=Runtime.Safe(Html.Default);
   List=Runtime.Safe(WebSharper.List);
-  Website=Runtime.Safe(Global.Website);
-  BooksAdmin=Runtime.Safe(Website.BooksAdmin);
+  Sitelet=Runtime.Safe(Global.Sitelet);
+  BooksAdmin=Runtime.Safe(Sitelet.BooksAdmin);
   Client=Runtime.Safe(BooksAdmin.Client);
-  FPish=Runtime.Safe(Website.FPish);
+  FPish=Runtime.Safe(Sitelet.FPish);
   Seq=Runtime.Safe(WebSharper.Seq);
   HTML5=Runtime.Safe(Default.HTML5);
-  JsUtils=Runtime.Safe(Website.JsUtils);
-  FSSnip=Runtime.Safe(Website.FSSnip);
+  JsUtils=Runtime.Safe(Sitelet.JsUtils);
+  FSSnip=Runtime.Safe(Sitelet.FSSnip);
   Client1=Runtime.Safe(FSSnip.Client);
-  GoogleGroup=Runtime.Safe(Website.GoogleGroup);
+  GoogleGroup=Runtime.Safe(Sitelet.GoogleGroup);
   jQuery=Runtime.Safe(Global.jQuery);
   Arrays=Runtime.Safe(WebSharper.Arrays);
-  Login=Runtime.Safe(Website.Login);
+  Login=Runtime.Safe(Sitelet.Login);
   Client2=Runtime.Safe(Login.Client);
   window=Runtime.Safe(Global.window);
   EventsPervasives=Runtime.Safe(Html.EventsPervasives);
-  Msdn=Runtime.Safe(Website.Msdn);
-  News=Runtime.Safe(Website.News);
-  Utils=Runtime.Safe(Website.Utils);
-  VideosAdmin=Runtime.Safe(Website.VideosAdmin);
+  Msdn=Runtime.Safe(Sitelet.Msdn);
+  News=Runtime.Safe(Sitelet.News);
+  Utils=Runtime.Safe(Sitelet.Utils);
+  VideosAdmin=Runtime.Safe(Sitelet.VideosAdmin);
   return Client3=Runtime.Safe(VideosAdmin.Client);
  });
  Runtime.OnLoad(function()

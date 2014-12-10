@@ -1,11 +1,11 @@
-﻿module Website.FSSnip
+﻿module Sitelet.FSSnip
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.Html
 open IntelliFactory.WebSharper.JQuery
+open Newtonsoft.Json
 open System
 open System.Net
-open Newtonsoft.Json
 
 type Snippet =
     {
@@ -48,9 +48,15 @@ module Client =
                 let ul = UL [Attr.Class "list-group"]
                 for x in snippets do
                     let li =
-                        LI [Attr.Class "list-group-item"] -< [
-                            H4 [Attr.Class "list-group-item-heading"] -< [
-                                A [Attr.HRef x.link; Attr.Target "_blank"; Text x.title]
+                        LI [Attr.Class "list-group-item"]
+                        -< [
+                            H4 [Attr.Class "list-group-item-heading"]
+                            -< [
+                                A [
+                                    Attr.HRef x.link
+                                    Attr.Target "_blank"
+                                    Text x.title
+                                ]
                             ]
                             P [Text x.description]
                             P [Text ("Published " + x.published + " by " + x.author)]

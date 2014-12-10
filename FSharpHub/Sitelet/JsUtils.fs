@@ -1,4 +1,4 @@
-﻿module Website.JsUtils
+﻿module Sitelet.JsUtils
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.Html
@@ -8,7 +8,9 @@ open IntelliFactory.WebSharper.JQuery
 let hideProress() =
     match JQuery.Of("[data-status=\"loading\"]").Length with
     | 0 ->
-        JQuery.Of("#progress-bar").SlideUp().Ignore
+        JQuery.Of("#progress-bar")
+            .SlideUp()
+            .Ignore
     | _ ->
         JQuery.Of("[data-spy=\"scroll\"]").Each(
             fun x -> JQuery.Of(x)?scrollspy("refresh")
@@ -28,3 +30,17 @@ let displayFeed url (itemLi:'T -> Element) (elt:Element) =
     elt.RemoveAttribute "data-status"
     hideProress()
 
+[<JavaScript>]
+let itemLi item =
+    LI [Attr.Class "list-group-item"]
+    -< [
+        H4 [Attr.Class "list-group-item-heading"]
+        -< [
+            A [
+                Attr.HRef item?link
+                Attr.Target "_blank"
+                Text item?title
+            ]
+        ]
+        P [Text item?contentSnippet ]
+    ]

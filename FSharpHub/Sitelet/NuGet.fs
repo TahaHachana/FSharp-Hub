@@ -87,7 +87,7 @@ module Server =
                 ]
                 P [Text ("Pushed on: " + pkg.lastUpdated)]
                 P [
-                    Text "Download Count: "
+                    Text "Downloads: "
                     Span [Class "badge"]
                     -< [Text (string pkg.downloadCount)]
                 ]

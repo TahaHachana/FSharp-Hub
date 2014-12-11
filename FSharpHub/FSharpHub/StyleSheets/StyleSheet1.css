@@ -107,6 +107,12 @@ body {
     /*position: relative;*/
 }
 
+.jumbotron {
+    background-color: white;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
 #push {
     height: 60px;
 }
@@ -124,7 +130,7 @@ body {
 
 .affix {
     position: fixed;
-    top: 150px;
+    top: 80px;
     /*width:225px;*/
 }
 
@@ -190,6 +196,10 @@ body {
     text-align: right;
 }
 
+.list-group-item p {
+    word-break: break-all;
+}
+
 /* Books */
 .books-row {
     margin-bottom: 20px;
@@ -215,10 +225,14 @@ body {
     }
 
 .thumb {
-    height: 120px;
+    max-height: 120px;
     display: block;
     margin: 0 auto;
     max-width: 210px;
+}
+
+.thumbnail {
+    border: none;
 }
 
 /* Login */

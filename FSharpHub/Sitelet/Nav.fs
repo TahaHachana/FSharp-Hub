@@ -26,7 +26,11 @@ let navHeader =
         navToggle
         A [Class "navbar-brand"; HRef "/"]
         -< [
-            Text "F# Hub"
+            Img [
+                Alt "F# Hub"
+                Src "/Images/logo.png"
+                Height "30"
+            ]
         ]
     ]
 

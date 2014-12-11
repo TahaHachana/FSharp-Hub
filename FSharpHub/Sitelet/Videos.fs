@@ -23,7 +23,7 @@ let thumbnail (url, thumbnail, title, website) =
             ]
             -< [
                 Img [
-                    Class "thumb"
+                    Class "thumb img-responsive"
                     Src thumbnail
                     Alt title
                 ]

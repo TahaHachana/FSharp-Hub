@@ -157,10 +157,15 @@ module Books =
         ]
 
 module Videos =
-
     let title pageId = sprintf "FSharp Videos - Page %d" pageId
     
     let metaDesc = "F# videos available on YouTube, Vimeo, SkillsMatter..."
+
+    let header : HtmlElement =
+        Div [Class "page-header"] -< [
+            H1 [Text "FSharp Videos"]
+            P [Text "Watch F# presentations, tutorials, podcasts and short videos."]
+        ]
         
     let nav pageId =
         match pageId with
@@ -171,8 +176,12 @@ module Videos =
         let videos = Mongo.Videos.all()
         let divs = Videos.main videos <| (pageId - 1) * 15
         Div [
-            yield! divs
-            yield Videos.paginationDiv videos pageId
+            nav pageId
+            Div [Class "container"; Id "main"] -< [
+                yield header
+                yield! divs
+                yield Videos.paginationDiv videos pageId
+            ]
         ]
 
 module Error =

@@ -3,13 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C31B06D1-9E6F-4A3B-AF28-32D417B67091}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSharpHub", "FSharpHub\FSharpHub.csproj", "{339922CE-86B8-4294-9984-DF069D6AA1BB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B967E460-04ED-4DF9-883E-9A5179676B92} = {B967E460-04ED-4DF9-883E-9A5179676B92}

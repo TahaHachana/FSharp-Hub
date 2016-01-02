@@ -38,7 +38,7 @@ module Home =
             -< [
                 Div [Class "page-header"]
                 -< [
-                    H2 [Text "Twitter"] 
+                    H2 [Text "Twitter"]
                 ]
                 Twitter.Server.tweetsDiv()
             ] 

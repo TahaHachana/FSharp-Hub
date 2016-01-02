@@ -1,6 +1,9 @@
 FSharp-Hub
 ==========
 
+This project is not maintained anymore.
+---------------------------------------
+
 About
 -----
 

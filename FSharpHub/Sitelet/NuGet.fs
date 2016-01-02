@@ -50,9 +50,9 @@ module Server =
                 let pkgs =
                     query {
                         for pkg in context.Packages do
-                            sortByDescending pkg.Published
                             where (pkg.Tags.Contains("F#"))
                             where (pkg.Published > (DateTime.Today.AddDays -7.))
+                            sortByDescending pkg.Published
                             take 50
                         }
                     |> Seq.toArray
